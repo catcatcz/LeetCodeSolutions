@@ -1,0 +1,53 @@
+#include<iostream>
+#include<stack>
+#include<vector>
+using namespace std;
+// Definition for binary tree
+  struct TreeNode {
+      int val;
+      TreeNode *left;
+      TreeNode *right;
+      TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+  };  
+  vector<int> preorderTraversal(TreeNode *root) {
+	vector<int> result;
+	stack<TreeNode*> s;
+	TreeNode *p_left,*p_parent,*p_right;
+	p_parent=root;
+	int flag=1;
+      while(p_parent!=NULL && flag==1)
+        {   
+        flag=0;
+        result.push_back(p_parent->val);
+        p_left=p_parent->left;
+            if(p_parent->right!=NULL)
+            {s.push(p_parent->right);}
+        while(p_left!=NULL)
+        {   
+        result.push_back(p_left->val);
+        p_parent=p_parent->left;
+            if(p_parent->right!=NULL)
+            {s.push(p_parent->right);}
+        p_left=p_left->left;
+}   
+        if(!s.empty())
+        {flag=1;p_parent=s.top();
+        s.pop();}}
+        return result;
+}
+
+int main()
+{
+        TreeNode root1(3),root2(1),root3(2);
+        TreeNode *p1,*p2,*p3;
+        p1=&root1;
+        p2=&root2;
+        p3=&root3;
+	p1->left=p2;
+        p1->right=p3;
+        vector<int> result=preorderTraversal(p1);
+        for(int i=0;i<result.size();i++)
+        {       //cout<<i<<endl;
+        cout<<result[i]<<endl;}
+
+}
