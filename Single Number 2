@@ -1,0 +1,22 @@
+  #include<iostream>
+using namespace std;
+int singleNumber(int A[], int n) {
+  int res = A[0];
+        for (int i=1;i<n;i++){
+	cout<<"res"<<res<<endl;
+	cout<<"A[i]"<<A[i]<<endl;
+            res = res ^ A[i];
+	cout<<"res"<<res<<endl;
+	cout<<endl;
+        }
+        return res;      
+    }
+
+int main()
+{
+int a[]={1,2,4,1,2,4,3};
+cout<<"singlenumber"<<singleNumber(a,7)<<endl;
+
+}
+
+
