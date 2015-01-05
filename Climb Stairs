@@ -1,0 +1,30 @@
+#include<iostream>
+#include<vector>
+using namespace std;
+ int climbStairs(int n) {
+        if(n>2) { //cout<<"n-1="<<n-1<<"   n-2="<<n-2<<endl;
+// 	int m1=climbStairs(n-1);
+//	int m2=climbStairs(n-2);
+	return climbStairs(n-1)+climbStairs(n-2);
+	//return m1+m2;
+	}
+        else if(n==2) { return 2;}
+	else if(n==1) {return 1;}
+    }
+int climbStairs2(int n)
+{
+vector<int> space(n+1,0);
+space[1]=1;
+space[2]=2;
+for(int i=3; i<n+1; i++)
+{
+space[i]=space[i-1]+space[i-2];
+}
+return space[n];
+}
+int main()
+{
+int stairs=38;
+int n=climbStairs2(stairs);
+cout<<"n="<<n<<endl;
+}
