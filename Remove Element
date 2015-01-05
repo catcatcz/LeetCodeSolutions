@@ -1,0 +1,17 @@
+#include<iostream>
+using namespace std;
+ int removeElement(int A[], int n, int elem) {
+	int n_new=n;
+     for(int i=0;i<n;i++)
+	{
+	cout<<"i="<<i<<endl;
+	while(A[i]==elem && n_new>i) { cout<<"n_new="<<n_new<<endl;A[i]=A[n_new-1];n_new=n_new-1;}
+	}   
+	return n_new;
+    }
+int main()
+{
+int a[]={1,1,4,4,1,1};;
+int n_new=removeElement(a,6,1);
+cout<<"in the end n_new="<<n_new<<endl;
+}
