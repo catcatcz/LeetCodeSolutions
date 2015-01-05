@@ -1,0 +1,79 @@
+#include<iostream>
+using namespace std;
+struct TreeLinkNode
+{
+int val;
+TreeLinkNode *left, *right, *next;
+ TreeLinkNode(int x) : val(x), left(NULL), right(NULL), next(NULL) {}
+};
+void connect(TreeLinkNode *root)
+{
+if(root!=NULL)
+{
+root->next=NULL;
+TreeLinkNode *LineBegin_prev,*LineBegin_curr,*p_prev,*p_curr;
+TreeLinkNode *p,*p_find;
+LineBegin_prev=root;
+LineBegin_curr=(root->left==NULL?root->right:root->left);
+while(LineBegin_curr!=NULL)
+{
+p_prev=LineBegin_prev;
+p_curr=LineBegin_curr;
+//	cout<<"p_prev"<<p_prev->val<<endl;
+//	cout<<"p_curr"<<p_curr->val<<endl;
+//	cout<<"begin one line"<<endl;
+	while(p_prev!=NULL)
+	{
+	if(p_curr!=p_prev->left) {p=(p_prev->left==NULL? p_prev->right: p_prev->left);}
+	else if(p_curr==p_prev->left) {p=p_prev->right;}
+	while(p==NULL && p_prev->next!=NULL)
+	{p_prev=p_prev->next;
+	p=(p_prev->left==NULL? p_prev->right: p_prev->left);}
+	p_curr->next=p;
+	p_curr=p_curr->next;
+//	cout<<"p_curr"<<p_curr->val<<endl;
+	if(p_curr==p_prev->right){p_prev=p_prev->next;}
+	if(p_prev==NULL && p_curr!=NULL) {p_curr->next=NULL;}
+	}
+//	cout<<"finish one line"<<endl;
+	LineBegin_prev=LineBegin_curr;
+	p_find=LineBegin_prev;
+	p=(p_find->left==NULL?p_find->right:p_find->left);
+	while(p==NULL && p_find->next!=NULL)
+	{
+	p_find=p_find->next;
+	p=(p_find->left==NULL?p_find->right:p_find->left);
+	}
+	LineBegin_curr=p;
+//	cout<<"find the next line"<<endl;
+}
+}
+}
+
+void visit(TreeLinkNode *root)
+{
+cout<<"Begin visit"<<endl;
+TreeLinkNode *p;
+p=root;
+if(p==NULL) {cout<<"p is null"<<endl;}
+else if(p!=NULL)
+{cout<<"p->val="<<p->val;
+if(p->next!=NULL) {cout<<"p->next="<<p->next->val<<endl;}
+else {cout<<"p->next is null"<<endl;}
+visit(p->left);
+visit(p->right);
+}
+}
+
+
+int main()
+{
+TreeLinkNode *root=new TreeLinkNode(1);
+root->left=new TreeLinkNode(2);
+//root->right=new TreeLinkNode(3);
+root->left->left =new TreeLinkNode(4);
+root->left->right=new TreeLinkNode(5);
+
+connect(root);
+visit(root);
+}
