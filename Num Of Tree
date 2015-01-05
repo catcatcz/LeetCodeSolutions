@@ -1,0 +1,21 @@
+#include<iostream>
+#include<vector>
+using namespace std;
+   int numTrees(int n) {
+        int total=0;
+	if(n>0)
+	{
+	for(int i=0;i<n;i++)
+	{
+	if(i==0)
+	{total=total+numTrees(n-1);}
+	else if(i<n-1 && i>0)
+	{total=total+numTrees(i)+numTrees(n-i-1);}
+	}
+	}
+	return total;
+    }
+int main()
+{
+	cout<<"numTrees"<<numTrees(1)<<endl;
+}
