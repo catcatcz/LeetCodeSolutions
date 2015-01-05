@@ -1,0 +1,28 @@
+#include<iostream>
+#include<vector>
+using namespace std;
+int maxProfitPartial(vector<int> &prices, int begin, int end)
+    {
+        if(end-begin+1>1)
+        {int minval=min(prices[begin], prices[begin+1]);
+            int maxprofit=max(0,prices[begin+1]-prices[begin]);
+            for(int i=begin+2;i<end+1;i++)
+            {maxprofit=max(0,prices[i]-minval);minval=min(minval,prices[i]);}
+        return maxprofit;
+        }
+        else
+        {return 0;}
+    }
+    int maxProfit(vector<int> &prices) {
+        if(prices.size()>1)
+        {
+        int max_profit=maxProfitPartial(prices,0,prices.size()-1);
+        for(int i=1; i<prices.size()-2;i++)
+        {max_profit=max(max_profit, maxProfitPartial(prices,0,i)+maxProfitPartial(prices,i+1,prices.size()-1));}
+        return max_profit;
+        }
+        else{return 0;}
+    }
+
+int main()
+{}
