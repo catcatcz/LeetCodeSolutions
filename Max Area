@@ -1,0 +1,89 @@
+#include<iostream>
+#include<vector>
+using namespace std;
+int area(vector<int> &height, int a, int b)
+{
+    return min(height[a],height[b])*abs(b-a);
+}
+int maxArea(vector<int> &height) {
+    int begin=0;
+    int end=height.size()-1;
+    int left, right;
+    left=begin; right=end;
+    int area_now,area_max;
+    area_max=area(height, begin,end);
+	cout<<"99="<<height[99]<<endl<<"    area max"<<area_max<<endl;
+	cout<<"area[2,99]="<<area(height,2,99)<<" 99="<<height[99]<<endl;
+	cout<<"area[3,93]="<<area(height,3,93)<<" 93="<<height[93]<<endl;
+	cout<<"2="<<height[2]<<"    95="<<height[95]<<"    area[2,95]="<<area(height,2,95)<<endl;
+	cout<<"3="<<height[3]<<"    94="<<height[94]<<"    area[2,95]="<<area(height,3,94)<<endl;
+    while(left<right)
+    {
+	cout<<"before maxs"<<area_max<<"      left="<<left<<"      right="<<right<<"      begin="<<begin<<"      end="<<end<<endl;
+        if(height[begin]<height[end])
+        {
+            area_now=area(height, left+1, end);
+            if(area_now>area_max){area_max=area_now; begin=left+1;}
+            left=left+1;
+        }
+        else if(height[begin]>height[end])
+        {
+            area_now=area(height, begin, right-1);
+            if(area_now>area_max) {area_max=area_now;end=right-1;}
+            right=right-1;
+        }
+	else if(height[begin]==height[end])
+	{
+		int area1=area(height, left+1, end);
+		int area2=area(height, begin, right-1);
+		int area3=area(height, left+1, right-1);
+		int maxmax=max(area1, max(area2, area3));
+		cout<<"area1="<<area1<<"    area2="<<area2<<"    area3="<<area3<<endl;
+		if(area1==maxmax && area1>area_max) {begin=left+1;}
+		else if(area2==maxmax && area2>area_max) {end=right-1;}
+		else if(area3==maxmax && area3>area_max) {end=right-1;begin=left+1;}
+		right=right-1;
+		left=left+1;
+	}
+	cout<<"after maxs"<<area_max<<"      left="<<left<<"      right="<<right<<"      begin="<<begin<<"      end="<<end<<endl;
+    }
+    return area_max;
+}
+int maxArea2(vector<int> &height)
+{
+ int begin=0;
+    int end=height.size()-1;
+    int left, right;
+    left=begin; right=end;
+    int area_now,area_max;
+    area_max=area(height, left,right);
+    while(left<right)
+    {
+	cout<<"before maxs"<<area_max<<"      left="<<left<<"      right="<<right<<"      begin="<<begin<<"      end="<<end<<endl;
+        if(height[left]<height[right])
+        {
+            area_max=max(area(height, left+1, right),area_max);
+            left=left+1;
+        }
+        else if(height[left]>=height[right])
+        {
+            area_max=max(area_max,area(height, left, right-1));
+            right=right-1;
+        }
+	cout<<"after maxs"<<area_max<<"      left="<<left<<"      right="<<right<<"      begin="<<begin<<"      end="<<end<<endl;
+    }
+    return area_max;
+}
+int main()
+{
+vector<int> a;
+int b[100]={68,113,143,194,176,62,158,162,103,75,104,179,189,150,151,180,76,158,158,19,198,42,119,13,127,158,193,59,146,80,41,15,193,184,161,121,198,71,83,102,146,139,33,135,89,184,115,117,142,25,136,93,67,7,106,146,165,100,6,64,180,47,31,125,183,192,46,182,63,129,36,161,68,69,96,110,54,164,27,148,189,116,41,9,123,100,155,89,152,113,153,84,160,184,9,144,128,55,78,143};
+a.assign(b,b+100);
+cout<<"asize"<<a.size()<<endl;
+int area=maxArea(a);
+cout<<endl;
+int area2=maxArea2(a);
+cout<<"area ="<<area<<endl;
+cout<<"area2="<<area2<<endl;
+}
+
