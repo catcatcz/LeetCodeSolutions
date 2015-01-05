@@ -1,0 +1,83 @@
+#include<iostream>
+#include<vector>
+#include<math.h>
+using namespace std;
+//string DecimalToBinaryString(int a)
+//{
+//    string binary = "";
+//    int mask = 1;
+//    for(int i = 0; i < 31; i++)
+//    {
+//        if((mask&a) >= 1)
+//            binary = "1"+binary;
+//        else
+//            binary = "0"+binary;
+//        mask<<=1;
+//    }
+//    cout<<binary<<endl;
+//    return binary;
+//}
+
+vector<int> DecimalToBinaryVector(int a)
+{
+vector<int> Binary;
+int asize=0;
+int atemp=a;
+while(atemp>0)
+{
+atemp=atemp/2;
+asize=asize+1;
+}
+int mask=1;
+for(int i=0; i<asize; i++)
+{
+	if((mask&a)>=1)
+	{Binary.push_back(1);}
+	else
+	{Binary.push_back(0);}
+	mask<<=1;
+}
+//cout<<Binary<<endl;
+return Binary;
+}
+
+int BinaryVectorToDecimal(vector<int> b)
+{
+int x=0;
+for(int i=0; i<b.size(); i++)
+{
+x+=b[i]*pow(2,i);
+}
+return x;
+}
+
+vector<int> grayCode(int n) {
+     vector<int> result;
+     vector<vector<int> > numbers;
+	vector<int> temp;
+	temp=DecimalToBinaryVector(n);
+	for(int i=0; i<temp.size();i++){temp[i]=0;}
+	numbers.push_back(temp);
+	for(int i=0; i<temp.size(); i++)
+	{
+		for(int j=0; j<temp.size(); j++)
+		{
+		temp[j]=(temp[j]==1?0:1);
+		numbers.push_back(temp);
+		}
+	}
+    }
+
+int main()
+{
+int a=5;
+vector<int> Bin;
+Bin=DecimalToBinaryVector(a);
+for(int i=0; i<Bin.size(); i++)
+{
+cout<<"i="<<i<<"  Bin[i]="<<Bin[i]<<endl;
+}
+int a_new=0;
+a_new=BinaryVectorToDecimal(Bin);
+cout<<"a_new="<<a_new<<endl;
+}
