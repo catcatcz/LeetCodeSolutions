@@ -1,0 +1,72 @@
+#include<iostream>
+#include<vector>
+using namespace std;
+
+	bool Search_x(vector<vector<int> > &matrix, int target, int y, int x_begin, int x_end)
+	{
+	if(target<matrix[x_begin][y] || target>matrix[x_end][y]) {return false;}
+	else
+	{
+	if(x_begin<x_end)
+	{int x_mid=(x_begin+x_end)/2; return (Search_x(matrix, target, y, x_begin, x_mid) || Search_x(matrix, target, y, x_mid+1, x_end));}
+	else if(x_begin==x_end)
+	{if(target==matrix[x_begin][y]) {return true;}}
+	}}
+	bool Search_y(vector<vector<int> > &matrix, int target, int y_begin, int y_end, int x)
+	{
+	if(target<matrix[x][y_begin] || target>matrix[x][y_end]) {return false;}
+	else
+	{
+	if(y_begin<y_end)
+	{int y_mid=(y_begin+y_end)/2; return (Search_y(matrix, target, y_begin, y_mid, x) || Search_y(matrix, target, y_mid+1, y_end, x));}
+	else if(y_begin==y_end)
+	{if(target==matrix[x][y_begin]) {return true;}}
+	}}
+   bool searchMatrix_Seg(vector<vector<int> > &matrix, int target, int x_left, int x_right, int y_top, int y_bottom) {
+	
+//	    cout<<"x_left="<<x_left<<"   x_right="<<x_right<<endl;
+//	    cout<<"y_top="<<y_top<<"     y_bottom="<<y_bottom<<endl;
+        if(target< matrix[x_left][y_top] || target>matrix[x_right][y_bottom]) {return false;}
+        else
+        { 
+            if(x_left<x_right && y_top<y_bottom)
+            {
+            int x_mid=(x_left+x_right)/2;
+            int y_mid=(y_top+y_bottom)/2;
+            bool a_left_top, a_right_top, a_left_bottom, a_right_bottom;
+            a_left_top=searchMatrix_Seg(matrix, target, x_left, x_mid, y_top, y_mid);
+            a_right_top=searchMatrix_Seg(matrix, target, x_mid+1, x_right, y_top, y_mid);
+            a_left_bottom=searchMatrix_Seg(matrix, target, x_left, x_mid, y_mid+1, y_bottom);
+            a_right_bottom=searchMatrix_Seg(matrix, target, x_mid+1, x_right, y_mid+1, y_bottom);
+//	    cout<<"x_left="<<x_left<<"   x_right="<<x_right<<endl;
+//	    cout<<"y_top="<<y_top<<"     y_bottom="<<y_bottom<<endl;
+            return (a_left_top || a_right_top || a_left_bottom || a_right_bottom);
+            }
+            else if(x_left==x_right )
+            {
+//		cout<<"inside y search"<<endl;
+                return Search_y(matrix, target, y_top, y_bottom, x_left);
+            }
+            else if(y_top==y_bottom)
+            {   
+//		cout<<"inside x search"<<endl;
+                return Search_x(matrix, target, y_top, x_left, x_right);
+            }
+        }
+    }
+    bool searchMatrix(vector<vector<int> > &matrix, int target) {
+        int sizex, sizey;
+        sizey=(matrix.begin())->size();
+        sizex=matrix.size();
+        return searchMatrix_Seg(matrix, target, 0, sizex-1, 0, sizey-1);
+    }
+
+int main()
+{
+int a[2]={1,1};
+vector<int> L1(a,a+2);
+vector<vector<int> > LL;
+LL.push_back(L1);
+bool Exist=searchMatrix(LL, 1);
+cout<<"Exist="<<Exist<<endl;
+}
