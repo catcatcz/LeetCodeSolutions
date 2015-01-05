@@ -1,0 +1,48 @@
+#include<iostream>
+#include<vector>
+#include<stack>
+using namespace std;
+struct TreeNode
+{int val;
+TreeNode *left;
+TreeNode *right;
+TreeNode(int x) : val(x), left(NULL), right(NULL) {}};
+bool isLeaf(TreeNode *p)
+{
+if(p!=NULL && p->left==NULL && p->right==NULL) {return true;}
+}
+vector<int> postorderTraversal(TreeNode *root) {
+	TreeNode *p, *p_father,*p_left,*p_right;
+	stack<TreeNode *> Tree_Stack;
+	vector<int> result;
+	if(root!=NULL)
+	{
+	p_father=root;
+	Tree_Stack.push(p_father);
+	while(Tree_Stack.size()>0)
+	{
+	if(p_father->right!=NULL) {p=p_father->right;Tree_Stack.push(p);}
+	if(p_father->left!=NULL) {p=p_father->left;Tree_Stack.push(p);}
+	while(!isLeaf(p_father) && !isLeaf(p))
+	{
+	p_father=p;
+	if(p_father->right!=NULL) {p=p_father->right;Tree_Stack.push(p);}
+	if(p_father->left!=NULL) {p=p_father->left;Tree_Stack.push(p);}
+	}
+	result.push_back(p_father->val); 
+	}
+	}
+	return result;
+	}
+
+int main()
+{
+TreeNode *root=new TreeNode(2);
+root->left=new TreeNode(3);
+root->left->left=new TreeNode(1);
+vector<int> items=postorderTraversal(root);
+cout<<"item.size"<<items.size()<<endl;
+for(int i=0; i< items.size();i++)
+{cout<< items[i]<<endl;}
+
+}
