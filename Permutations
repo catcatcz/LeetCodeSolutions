@@ -1,0 +1,57 @@
+#include<iostream>
+#include<vector>
+using namespace std;
+vector<vector<int> > permute(vector<int> &num) {
+    vector<vector<int> > result;
+    vector<vector<int> >:: iterator tail;
+    vector<int>::iterator temp_b;
+if(num.size()==1 ) {result.push_back(num);}
+else if(num.size()>1) 
+{
+    vector<int> temp;
+    int element_size=1;
+    temp.push_back(num[0]);
+    result.push_back(temp);
+    int result_size=result.size();
+    temp.clear();
+    tail=result.end();
+    for(int k=1; k<num.size(); k++)
+    {
+        result_size=result.size();
+	int j=0;
+        while(j<result_size)
+	{
+        temp=result[0];
+        result.erase(result.begin());
+	int i=0;
+        while(i<=temp.size())
+        {
+	    vector<int> tt(temp);
+            tt.insert(tt.begin()+i,num[k]);
+            result.push_back(tt);
+	    tt.clear();
+            i++;
+        }
+	j++;
+    	}	
+    }
+}
+    return result;
+}
+
+int main()
+{
+int num[]={0,1,2};
+vector<int> num_vec(num,num+3);
+vector<vector<int> >  perms=permute(num_vec);
+cout<<"perm.size()="<<perms.size()<<endl;
+for(int i=0; i< perms.size(); i++)
+{
+for(int j=0; j< perms[0].size(); j++)
+{
+cout<<"i="<<i<<"j="<<j<<"   "<<perms[i][j]<<endl;
+}
+cout<<endl;
+}
+}
+
