@@ -1,0 +1,53 @@
+#include<iostream>
+#include<vector>
+using namespace std;
+ struct ListNode {
+      int val;
+      ListNode *next;
+      ListNode(int x) : val(x), next(NULL) {}
+  };
+
+ void reorderList(ListNode *head) {
+    ListNode *p_iterator,*p_prev;
+	ListNode *p_begin, *p_end;
+	if(head!=NULL && head->next!=NULL) 
+	{
+	ListNode *p_mid;
+	p_mid=head->next;
+	p_iterator=head;
+	while(p_iterator->next!=NULL)
+	{p_prev=p_iterator; p_iterator=p_iterator->next;}
+	p_prev->next=NULL;
+	p_end=  new ListNode(p_iterator->val);
+	head->next=p_end;
+	if(p_mid!=NULL && p_mid->next!=NULL)
+	{reorderList(p_mid);}
+	p_end->next=p_mid;
+	}
+    }
+
+
+int main()
+{
+int myint[]={1,2,3,4};
+ListNode *head=new ListNode(myint[0]);
+ListNode *p;
+p=head;
+for(int i=1; i<4; i++)
+{p->next=new ListNode(myint[i]);p=p->next;}
+p=head;
+for(int i=0; i<4; i++)
+{
+cout<<"p="<<p->val<<endl;
+p=p->next;
+}
+cout<<"before order"<<endl;
+reorderList(head);
+cout<<"after order"<<endl;
+p=head;
+while(p!=NULL)
+{cout<<"p="<<p->val<<endl;
+p=p->next;
+}
+
+}
