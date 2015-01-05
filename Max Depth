@@ -1,0 +1,32 @@
+#include<iostream>
+
+ // Definition for binary tree
+ struct TreeNode {
+      int val;
+      TreeNode *left;
+      TreeNode *right;
+      TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+  };
+
+ int maxDepth(TreeNode *root) {
+	int left_depth;
+	int right_depth;
+     if(root==NULL)
+	{return 0;}
+     else
+	{
+	if(root->left==NULL && root->right==NULL)
+	{return 1;}
+	else if(root->left!=NULL && root->right==NULL)
+	{return maxDepth(root->right);}
+	else if(root->left==NULL && root->right!=NULL)
+	{return maxDepth(root->left);}
+	else if(root->left!=NULL && root->right!=NULL)
+	{left_depth=maxDepth(root->left);
+	right_depth=maxDepth(root->right);
+	return (left_depth>right_depth? left_depth: right_depth);
+	}
+	}
+    }
+int main()
+{} 
