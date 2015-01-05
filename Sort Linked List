@@ -1,0 +1,110 @@
+#include<iostream>
+using namespace std;
+ struct ListNode {
+      int val;
+      ListNode *next;
+      ListNode(int x) : val(x), next(NULL) {}
+ };
+
+void BreakList(ListNode *head,ListNode *p1,ListNode *p2)
+{
+cout<<"inside break"<<endl;
+ListNode *p_slow, *p_fast;
+p_slow=head;
+p_fast=head;
+while(p_fast->next!=NULL)
+{
+p_slow=p_slow->next;
+p_fast=p_fast->next->next;
+}
+p1=head;
+p2=p_slow;
+cout<<"p1="<<p1->val<<endl;
+cout<<"p2="<<p2->val<<endl;
+}
+
+void BreakList_2(ListNode *head, ListNode **p1, ListNode **p2)
+{
+int length=0;
+int i;
+ListNode *p, *p_prev;
+for(p=head; p!=NULL ; p=p->next)
+{length=length+1;}
+p=head;
+p_prev=head;
+for(i=0; i<length/2 ; i++)
+{p=p->next;}
+for(i=0; i<length/2-1; i++)
+{p_prev=p_prev->next;}
+p_prev->next=NULL;
+*p1=head;
+*p2=p;
+}
+
+void MergeList(ListNode *p1, ListNode *p2, ListNode **Result)
+{
+ListNode *p1_now,*p2_now,*it,*p;
+p1_now=p1;
+p2_now=p2;
+p=NULL;
+//cout<<"inside merge"<<endl;
+while(p1_now!=NULL || p2_now!=NULL)
+{
+if(p1_now!=NULL && p2_now!=NULL)
+{
+	if(p1_now->val<p2_now->val) 
+	{
+		if(p==NULL) 
+		{p=new ListNode(p1_now->val);it=p;cout<<"p->val"<<p->val<<endl;} 
+		else if(p!=NULL)
+		{it->next=p1_now;it=it->next;cout<<"p1_now"<<p1_now->val<<endl;} 
+		p1_now=p1_now->next;
+	}
+	else 
+	{
+		if(p==NULL)
+		{p=new ListNode(p2_now->val); it=p;}
+		else if(p!=NULL)
+		{it->next=p2_now;it=it->next;} 
+		p2_now=p2_now->next;
+	}
+}
+else if(p1_now!=NULL && p2_now==NULL)
+	{it->next=p1_now;p1_now=NULL;}
+else if(p1_now==NULL && p2_now!=NULL)
+	{cout<<"it->val="<<it->val<<endl; it->next=p2_now;p2_now=NULL;}
+}
+*Result=p;
+}
+
+int main()
+{
+ListNode *head=new ListNode(1);
+head->next=new ListNode(2);
+head->next->next=new ListNode(3);
+head->next->next->next=new ListNode(4);
+ListNode *it;
+ListNode *p1, *p2;
+p1=NULL;
+p2=NULL;
+if(p1==NULL) {cout<<"p1=NULL"<<endl;}
+if(p2==NULL) {cout<<"p2=NULL"<<endl;}
+BreakList_2(head, &p1, &p2);
+cout<<"fnish break"<<endl;
+if(p1==NULL) {cout<<"p1=NULL"<<endl;}
+if(p2==NULL) {cout<<"p2=NULL"<<endl;}
+for(it=p1; it!=NULL; it=it->next)
+{
+cout<<"p1:it->val="<<it->val<<endl;
+}
+for(it=p2; it!=NULL; it=it->next)
+{
+cout<<"p2:it->val="<<it->val<<endl;
+}
+ListNode *result;
+MergeList(p1,p2,&result);
+for(it=result; it!=NULL; it=it->next)
+{
+cout<<"it->val"<<it->val<<endl;
+}
+}
