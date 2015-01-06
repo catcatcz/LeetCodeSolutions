@@ -1,40 +1,21 @@
-#include<iostream>
-using namespace std;
-
-// * Definition for binary tree
- struct TreeNode {
-      int val;
-      TreeNode *left;
-      TreeNode *right;
-      TreeNode(int x) : val(x), left(NULL), right(NULL) {}
-  };
-  bool isSameTree(TreeNode *p, TreeNode *q) {
-	bool is_left, is_right;
-     if(p->val!=q->val) 
-	{
-	return false;
-	}  
-	else if(p->val==q->val)
-	{
-	if(p->left !=NULL && q->left !=NULL)
-	{
-	is_left=isSameTree(p->left,q->left);
-	}
-	else if(p->left ==NULL && q->left ==NULL)
-	{
-	is_left=true;
-	}
-	else
-	{is_left=false;}
-	if(p->right !=NULL && q->right !=NULL)
-	{is_right=isSameTree(p->right,q->right);}
-	else if(p->right==NULL && q->right==NULL)
-	{is_right=true;}
-	else
-	{is_right=false;}
-	return (is_left && is_right);
-	}
+/**
+ * Definition for binary tree
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    bool isSameTree(TreeNode *p, TreeNode *q) {
+        if(p==NULL && q==NULL) {return true;}
+        else if(p==NULL && q!=NULL) {return false;}
+        else if(p!=NULL && q==NULL) {return false;}
+        else if(p!=NULL && q!=NULL)
+        {
+            return (p->val==q->val && isSameTree(p->left,q->left) && isSameTree(p->right, q->right));
+        }
     }
-
-int main()
-{}
+};
