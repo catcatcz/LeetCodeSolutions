@@ -1,0 +1,14 @@
+class Solution {
+public:
+  int titleToNumber(string s) {
+        int len=s.length();
+        int line_num=0;
+        for(int i=0; i<len; i++)
+        {   
+         
+            line_num=line_num+int(s[i]-64)*pow(26,len-i-1);
+        }   
+        return line_num;
+    }   
+
+};
