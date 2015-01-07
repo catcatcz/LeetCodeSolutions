@@ -1,55 +1,34 @@
-#include<iostream>
-#include<vector>
-#include<stack>
-using namespace std;
-struct TreeNode {
-   int val;
-      TreeNode *left;
-      TreeNode *right;
-      TreeNode(int x) : val(x), left(NULL), right(NULL) {}
-  };
-vector<int> inorderTraversal(TreeNode *root) {
-        stack<TreeNode *> store;
-        TreeNode *p,*p_prev;
-        vector<int> result;
+/**
+ * Definition for binary tree
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+       vector<int> inorderTraversal(TreeNode *root) {
+        vector<int> inorder_vector;
+        stack<TreeNode*> inorder_stack;
         if(root!=NULL)
-        {
-            if(root->left==NULL && root->right==NULL) {result.push_back(root->val); return result;}
-            else if(root->left==NULL && root->right!=NULL)
-            {result.push_back(root->val); p_prev=p;p=root->right;}
-            else if(root->left!=NULL && root->right==NULL)
-            {p_prev=p;p=root->left; store.push(root);}
-            else if(root->left!=NULL && root->right!=NULL)
-            {p_prev=p;p=root->left; store.push(root->right);store.push(root);}
-            while(p!=NULL)
-            {
-                if(p->left!=NULL && p->right!=NULL)
-		{p=p->left; store.push(p->right); store.push(p);}
-                else if(p->left==NULL && p->right!=NULL){result.push_back(p->val); p=p->right;}
-                else if(p->left!=NULL && p->right==NULL){p=p->left;store.push(p);}
-                else if(p->left==NULL && p->right==NULL)
-                {
-                    result.push_back(p->val);
-		    cout<<"p->val="<<p->val<<endl;
-                    p=store.top();
-                    if(store.size()>0)
-                    {cout<<"store.size()="<<store.size()<<endl;store.pop();cout<<"store.size()"<<store.size()<<endl;}
-                    else
-                    {p=NULL;}
-                }
-            }
-	return result;
-        }
-    }
-
-int main()
-{
-TreeNode *root=new TreeNode(1);
-root->left=new TreeNode(2);
-vector<int> aa;
-aa=inorderTraversal(root);
-for(int i=0;i<aa.size(); i++)
-{
-cout<<"i="<<i<<"  aa[i]="<<aa[i]<<endl;
-}
-}
+        {   
+                TreeNode *t_now=root;
+                while(t_now || !inorder_stack.empty())
+                {if(t_now!=NULL)
+                {inorder_stack.push(t_now);t_now=t_now->left;}
+                else if(t_now==NULL)
+                {   
+                if(!inorder_stack.empty()) 
+                {   
+                t_now=inorder_stack.top();
+                inorder_vector.push_back(t_now->val);
+                inorder_stack.pop();
+                t_now=t_now->right;
+                }   
+                }}  
+        }   
+        return inorder_vector;
+       }   
+};
