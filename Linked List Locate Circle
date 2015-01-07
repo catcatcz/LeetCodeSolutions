@@ -1,50 +1,29 @@
 #include<iostream>
 using namespace std;
 
-// * Definition for singly-linked list.
-  struct ListNode {
-      int val;
-      ListNode *next;
-      ListNode(int x) : val(x), next(NULL) {}
-  };
-    ListNode *detectCycle(ListNode *head) {
-	ListNode *p_slow, *p_fast;
-	p_slow=head;
-	p_fast=head;
-	if(head==NULL || head->next!=NULL) {return NULL;}
-	else
-	{
-	int D=0;
-	while(p_fast->next!=NULL && p_slow!=p_fast)
-	{
-	p_slow=p_slow->next;
-	p_fast=p_fast->next->next;
-	D=D+1;
-	}
-	if(p_fast->next==NULL) {return NULL;}
-	else if(p_slow==p_fast) 
-	{ListNode *p1, *p2;
-	p1=head;
-	p2=p_fast;
-	while(p1!=p2)
-	{p1=p1->next;p2=p2->next;}
-	return p1;} 
-	}
-}
-
-int main()
-{
-	ListNode* head=new ListNode(1);
-	head->next=new ListNode(2);
-	ListNode *p;
-	p=head;
-	while(p!=NULL)
-	{
-	cout<<"val"<<(*p).val<<endl;
-	cout<<"val="<<(p->val)<<endl;
-	p=p->next;
-	}
-	if(detectCycle(head) !=NULL) {return detectCycle(head)->val;}
-	else {cout<<"nocycle"<<endl;}
-}
-
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    bool hasCycle(ListNode *head) {
+        if(head==NULL || head->next==NULL) {return false;}
+        else
+        {
+        ListNode *p_2,*p_1;
+        p_1=head;p_2=head;
+        while(p_2->next!=NULL && p_2->next->next!=NULL)
+        {
+            p_1=p_1->next;
+            p_2=p_2->next->next;
+            if(p_1==p_2) {return true;}
+        }
+        return false;
+        }
+    }
+};
