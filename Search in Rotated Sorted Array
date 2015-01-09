@@ -1,0 +1,43 @@
+class Solution {
+public:
+           int searchMin(int A[], int n)
+        {   
+        int begin, end, min_loc;
+        begin=0; end=n-1; min_loc=n/2;
+        while(begin+1<end)
+        {   
+        if(A[min_loc]< A[begin] && A[min_loc]< A[end]) 
+        {end=min_loc; min_loc=(begin+end)/2;}
+        else if(A[min_loc]> A[begin] && A[min_loc] >A[end])
+        {begin=min_loc; min_loc=(begin+end)/2;}
+        else if(A[min_loc]> A[begin] && A[min_loc] < A[end])
+        {return begin;}
+        }   
+        return end;
+        }   
+        int searchSorted(int A[], int n, int begin, int end, int target)
+        {   
+                if(target<A[begin]) {return -1;}
+                if(target>A[end]) {return -1;}
+                if(target==A[begin]) {return begin;}
+                if(target==A[end]) {return end;}
+                int mid=(begin+end)/2;
+                int left=searchSorted(A, n, begin+1, mid, target);
+                int right=searchSorted(A,n,mid, end-1, target);
+                if(left!=-1) {return left;}
+                if(right!=-1) {return right;}
+                return -1; 
+        }   
+    int search(int A[], int n, int target) {
+        int min_loc=searchMin(A,n);
+        if(min_loc==0) {return searchSorted(A,n,0,n-1,target);}
+        else if(min_loc>0)
+        {int left=searchSorted(A,n,0,min_loc-1, target);
+        int right=searchSorted(A,n,min_loc, n-1, target);
+        if(left!=-1) {return left;}
+        if(right!=-1) {return right;}
+        return -1; 
+        }   
+    }   
+
+};
