@@ -1,0 +1,40 @@
+class Solution {
+public:
+     int searchMin(int A[], int n)
+        {   
+                int begin=0; int end=n-1;
+                if(A[begin]<=A[end]) {return begin;}
+                int min_loc;
+                while(begin+1<end)
+                {   
+                        min_loc=(begin+end)/2;
+                        if(A[min_loc]<=A[end] && A[begin] >= A[min_loc])
+                        {end=min_loc;}
+                        else if(A[min_loc]>=A[end] && A[begin]<=A[min_loc])
+                        {begin=min_loc;}
+                        else if(A[min_loc]<=A[end] && A[min_loc]<=A[begin])
+                        {return begin;} 
+                }   
+                return end;
+        }   
+
+        bool search0_(int A[], int n, int begin, int end, int target)
+        {   
+                if(begin+1>=end) {return (A[begin]==target || A[end]==target);}
+                else
+                {   
+                        int mid=(begin+end)/2;
+                        return (search0_(A,n,begin,mid,target) ||search0_(A,n,mid,end, target));
+                }   
+        }   
+    bool search(int A[], int n, int target) {
+                int begin=0, end=n-1;
+                int min_loc=searchMin(A,n);
+                if(min_loc==0) {return search0_(A,n,0,end,target); }
+                else
+                {   
+                        return (search0_(A,n,0,min_loc,target) ||search0_(A,n,min_loc,end,target));
+                }   
+    }   
+
+};
