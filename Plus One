@@ -1,0 +1,17 @@
+class Solution {
+public:
+      vector<int> plusOne(vector<int> &digits) {
+        int Digit_Size=digits.size();
+        vector<int> digits_new(digits);
+        digits_new.insert(digits_new.begin(),0);
+        digits_new[Digit_Size]+=1;
+        for(int i=Digit_Size; i>-1; i--)
+        {   
+             digits_new[i-1]=digits_new[i-1]+digits_new[i]/10;
+                digits_new[i]=digits_new[i]%10;
+        }   
+        if(digits_new[0]==0) digits_new.erase(digits_new.begin());
+        return digits_new;
+    }   
+
+};
