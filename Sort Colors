@@ -1,0 +1,25 @@
+class Solution {
+public:
+   
+    void sortColors(int A[], int n) {
+        map<int, int> counts;
+        for(int i=0; i<n; i++)
+        {   
+                if(counts.count(A[i])==0) 
+                {counts[A[i]]=1;}
+                else
+                {counts[A[i]]=counts[A[i]]+1;}
+        }   
+        map<int, int>::iterator it; 
+        int tot=0;
+        for(it=counts.begin(); it!=counts.end(); it++)
+        {   
+                for(int i=0; i< it->second; i++)
+                {   
+                A[tot+i]=it->first;
+                }   
+                tot+=it->second;
+        }   
+    }   
+
+};
