@@ -1,0 +1,43 @@
+class Solution {
+public:
+     int find(int A[], int m, int tar)
+        {   
+        if(tar<=A[0]) {return -1;}
+        if(tar>A[m-1]) {return m;} 
+        int begin, end, mid;
+        begin=0; end=m-1; mid=(begin+end)/2;
+        while(begin+1<end)
+        {   
+                if(tar<=A[end] && tar>=A[mid]) {begin=mid; mid=(begin+end)/2;}
+                else if(tar<=A[mid] && tar>=A[begin]) {end=mid; mid=(begin+end)/2;}
+        }   
+        return end;
+        }   
+        void insert(int A[], int m, int loc, int tar)
+        {   
+        if(loc==-1)
+        {   
+                for(int i=m; i> 0; i--) {A[i]=A[i-1];}
+                A[0]=tar;
+        }   
+        else if(loc==m)
+        {       A[m]=tar;}
+        else if(loc<m && loc>-1)
+        {   
+                for(int i=m; i> loc; i--) {A[i]=A[i-1];}
+                A[loc]=tar;
+        }   
+    
+
+        }   
+    void merge(int A[], int m, int B[], int n) {
+        int size_A=m;
+        for(int ib=0; ib< n; ib++)
+        {   
+                int loc=find(A, size_A, B[ib]);
+                insert(A, size_A, loc, B[ib]);
+                size_A=size_A+1;
+        }   
+    }   
+
+};
