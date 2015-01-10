@@ -1,0 +1,65 @@
+/**
+ * Definition for binary tree
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+           vector<vector<int> > GetPaths(TreeNode *root)
+        {
+                vector<vector<int> > a;
+                if(root==NULL) {return a;}
+                if(root->left==NULL && root->right==NULL) {vector<int> x(1,root->val); a.push_back(x); return a;}
+                if(root->left!=NULL && root->right==NULL)
+                {
+                        vector<vector<int> > gleft=GetPaths(root->left);
+                        for(int i=0; i< gleft.size(); i++)
+                        {       vector<int> x=gleft[i];
+                                x.push_back(root->val);
+                                a.push_back(x);}
+                        return a;}
+                if(root->left==NULL && root->right!=NULL)
+                {
+                        vector<vector<int> > gright=GetPaths(root->right);
+                        for(int i=0; i< gright.size(); i++)
+                        {       vector<int> x=gright[i];
+                                x.push_back(root->val);
+                                a.push_back(x);}
+                        return a;}
+                if(root->left!=NULL && root->right!=NULL)
+                {
+                         vector<vector<int> > gleft=GetPaths(root->left);
+                         vector<vector<int> > gright=GetPaths(root->right);
+                        for(int i=0; i< gleft.size(); i++)
+                        {       vector<int> x=gleft[i];
+                                x.push_back(root->val);
+                                a.push_back(x);}
+                        for(int i=0; i< gright.size(); i++)
+                        {       vector<int> x=gright[i];
+                                x.push_back(root->val);
+                                a.push_back(x);}
+                        return a;}
+
+                        }
+    int sumNumbers(TreeNode *root) {
+        if(root==NULL) {return 0;}
+        else
+        {
+                int sum=0;
+                vector<vector<int> > p=GetPaths(root);
+                for(int i=0; i< p.size(); i++)
+                {
+                        for(int j=0; j< p[i].size(); j++)
+                        {
+                        sum+=p[i][j]*pow(10,j);
+                        }
+                }
+        return sum;
+        }
+    }
+
+};
