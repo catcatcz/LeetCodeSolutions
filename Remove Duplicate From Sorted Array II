@@ -1,0 +1,21 @@
+class Solution {
+public:
+    int removeDuplicates(int A[], int n) {
+    map<int, int> counts;
+    for(int i=0; i<n; i++)
+    {
+            if(counts.count(A[i])==0) {counts[A[i]]=1;}
+            else if(counts.count(A[i])>0) {counts[A[i]]=2;}
+    }
+    int j=0;
+    for(map<int,int>::iterator it=counts.begin(); it!=counts.end(); it++)
+    {
+            for(int i=0; i<it->second;i++)
+            {
+                A[j]=it->first;
+                j++;
+            }
+    }
+   return j;
+    }
+};
