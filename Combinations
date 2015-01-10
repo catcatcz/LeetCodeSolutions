@@ -1,0 +1,18 @@
+class Solution {
+public:
+    vector<vector<int> > combine(int n, int k) {
+        vector<vector<int> > result;
+        if(n==0 || k==0) {return result;} 
+        if(k==1) {vector<int> a(1,0); for(int i=0; i<n; i++) {a[0]=i+1; result.push_back(a);} return result;}
+        if(k==n) {vector<int> a(n,0); for(int i=0; i<n; i++) {a[i]=i+1;} result.push_back(a); return result;}
+        vector<vector<int> > r1,r2;
+        r1=combine(n-1,k);
+        r2=combine(n-1,k-1);
+        for(int i=0; i< r2.size(); i++)
+        {r2[i].push_back(n);}
+        result.insert(result.begin(),r1.begin(), r1.end());
+        result.insert(result.begin(),r2.begin(), r2.end());
+        return result;
+    }   
+
+};
