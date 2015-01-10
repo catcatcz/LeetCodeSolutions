@@ -1,0 +1,11 @@
+class Solution {
+public:
+    int removeDuplicates(int A[], int n) {
+        set<int> A_set;
+        for(int i=0; i<n ; i++) {A_set.insert(A[i]);}
+        int j=0;
+        for(set<int>::iterator it=A_set.begin(); it!=A_set.end(); it++)
+        {A[j]=(*it); j++;}
+        return A_set.size();
+    }
+};
