@@ -1,0 +1,73 @@
+class PointT{
+public:
+int loc;
+int val;
+PointT(int loc_, int val_) {loc=loc_; val=val_;}
+};
+class Solution {
+public:
+        vector<PointT> GetVector(int A[], int n)
+        {vector<PointT> result;
+        for(int i=0; i<n; i++)
+        {result.push_back(PointT(i,A[i]));}
+        return result;}
+        vector<PointT> GetConvexCover(vector<PointT> Maximas)
+        {
+        vector<PointT> result;
+        vector<PointT> maxi2(Maximas);
+        bool IsConvex=false;
+        int ntrim=0;
+        int size_old, size_new;
+        size_old=maxi2.size();
+        size_new=0;
+        while(size_old!=size_new)
+        {
+        for(int i=1; i< maxi2.size()-1; i++)
+        {
+                bool s1, s2, s3;
+                s1=(maxi2[i].val< maxi2[i-1].val && maxi2[i].val< maxi2[i+1].val);
+                s2=(maxi2[i].val< maxi2[i-1].val && maxi2[i].val==maxi2[i+1].val);
+                s3=(maxi2[i].val==maxi2[i-1].val && maxi2[i].val< maxi2[i+1].val);
+                if(!(s1 || s2 || s3))
+                {IsConvex=false; result.push_back(maxi2[i]);}
+        }
+        result.insert(result.begin(), maxi2[0]);
+        result.push_back(maxi2[maxi2.size()-1]);
+        size_old= maxi2.size();
+        size_new=result.size();
+        //cout<<"trim="<<ntrim<<endl;
+        ntrim++;
+        maxi2=result;
+        result.clear();
+        }
+      //  cout<<"ConvexCover size="<<maxi2.size()<<endl;
+       // for(int i=0; i< maxi2.size(); i++)
+    //    {
+      //          cout<<"i="<<i<<" loc="<<maxi2[i].loc<<" val="<<maxi2[i].val<<endl;
+    //    }
+        return maxi2;
+        }
+    int trap(int A[], int n) {
+            if(n<2) {return 0;}
+        vector<PointT> Maximas=GetVector(A,n);
+        vector<PointT> ConvexCover=GetConvexCover(Maximas);
+        int sum_area=0;
+       // cout<<"ConvexCover.size="<<ConvexCover.size()<<endl;
+        for(int i=0; i< ConvexCover.size()-1; i++)
+        {
+                sum_area+=min(ConvexCover[i].val, ConvexCover[i+1].val)*(ConvexCover[i+1].loc-ConvexCover[i].loc-1);
+                int delta=min(ConvexCover[i].val, ConvexCover[i+1].val)*(ConvexCover[i+1].loc-ConvexCover[i].loc-1);
+                cout<<"delta="<<delta<<endl;
+        }
+       // cout<<"sum_area="<<sum_area<<endl;
+        for(int i=0; i< n; i++)
+        {
+                sum_area-=A[i];
+        }
+        for(int i=0; i< ConvexCover.size(); i++)
+        {
+                sum_area+=ConvexCover[i].val;
+        }
+        return sum_area;
+    }
+};
