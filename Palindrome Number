@@ -1,0 +1,30 @@
+class Solution {
+public:
+        int CountDigits(int x)
+        {
+        int z=x, digits=0;
+        while(z>0)
+        {z=z/10; digits++;}
+        return digits;
+        }   
+    bool isPalindrome0(int x, int &digits)
+        {   
+        if(digits==1) {return true;}
+        if(digits==2) 
+        { int x1=x/10; int x2=x-x/10*10; return (x1==x2); }
+         int last_digit=x-x/10*10;
+         int first_digit=x/pow(10, digits-1);
+         int remain=x;
+        remain-=first_digit*pow(10,digits-1);
+        remain=remain/10;
+        digits-=2;
+         return ((last_digit==first_digit)  && isPalindrome0(remain, digits));
+        }   
+    bool isPalindrome(int x) {
+        if(x<0) {return false;}
+        if(x/10==0) {return true;}
+        int digits=CountDigits(x);
+        return isPalindrome0(x, digits);
+    }   
+
+};
