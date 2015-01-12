@@ -1,0 +1,29 @@
+class Solution {
+public:
+       int longestConsecutive(vector<int> &num) {
+        if(num.size()>0)
+        {   
+        map<int,int> num_map;
+        for(int i=0; i< num.size(); i++)
+        { num_map[num[i]]=1;} 
+        cout<<"finish setting up map"<<endl;
+        int ap=0, length=0, length_max=0;
+        int key;
+        while(num_map.size()>0)
+        {   
+        key=num_map.begin()->first;
+        num_map.erase(key);
+        ap++;
+//      cout<<"key="<<key<<endl;
+        int key_up=key+1; int key_down=key-1;
+        while(num_map.count(key_up)==1) {ap++; num_map.erase(key_up); key_up++;}
+        while(num_map.count(key_down)==1) {ap++; num_map.erase(key_down); key_down--;}
+        length=ap; ap=0; 
+        if(length_max< length) {length_max=length;}
+        }   
+        return length_max;}
+        else
+        {return 0;} 
+    }   
+
+};
