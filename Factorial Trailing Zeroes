@@ -1,0 +1,24 @@
+class Solution {
+public:
+  int trailingZeroes(int n) {
+        if(n==0) {return 0;} 
+        else if(n>0)
+        {   
+                int dig2=0;
+                int x=n;
+                while(x>0)
+                {   
+                x=x/2; dig2+=x;
+                }   
+                int dig5=0;
+                x=n;
+                while(x>0)
+                {   
+                x=x/5; dig5+=x;
+                }   
+                int y=min(dig2, dig5);
+        return y;
+        }   
+    }   
+
+};
