@@ -1,0 +1,83 @@
+class Solution {
+private:
+        vector<vector<int> > Dict;
+public:
+        void InitDict(vector<vector<int> > &obstacleGrid)
+        {
+        int Max_x=obstacleGrid.size();
+        int Max_y=obstacleGrid[0].size();
+        vector<int> Line(Max_y,-1);
+        for(int i=0; i< Max_x; i++)
+        {Dict.push_back(Line);}
+//      vector<vector<int> > dic(Max_y,Line);
+//      Dict=dic;
+        }
+        int uniquePathsWithObstaclesFromBegin(vector<vector<int> > &obstacleGrid, int x_begin, int y_begin)
+        {
+        int Max_x=obstacleGrid.size()-1;
+        int Max_y=obstacleGrid[0].size()-1;
+        if( (x_begin==Max_x && y_begin==Max_y))
+        {
+                if(obstacleGrid[x_begin][y_begin]==0)
+                {
+                Dict[x_begin][y_begin]=1;
+                return 1;}
+                else {
+                Dict[x_begin][y_begin]=0;
+                return 0;}
+        }
+        else if(x_begin==Max_x && y_begin<Max_y)
+        {
+                if(obstacleGrid[x_begin][y_begin]==1)
+                {Dict[x_begin][y_begin]=0;
+                return 0;}
+                else
+                {
+                Dict[x_begin][y_begin+1]=(Dict[x_begin][y_begin+1]==-1?uniquePathsWithObstaclesFromBegin(obstacleGrid, x_begin, y_begin+1):Dict[x_begin][y_begin+1]);
+                int down=Dict[x_begin][y_begin+1];
+                return down;}
+        }
+        else if(x_begin<Max_x && y_begin==Max_y)
+        {
+                if(obstacleGrid[x_begin][y_begin]==1)
+                {Dict[x_begin][y_begin]=0;
+                return 0;}
+                else
+                {
+                Dict[x_begin+1][y_begin]=(Dict[x_begin+1][y_begin]==-1?uniquePathsWithObstaclesFromBegin(obstacleGrid, x_begin+1, y_begin):Dict[x_begin+1][y_begin]);
+                int right=Dict[x_begin+1][y_begin];
+                return right;}
+        }
+        else if(x_begin<Max_x && y_begin<Max_y)
+        {
+                if(obstacleGrid[x_begin][y_begin]==1) {
+                Dict[x_begin][y_begin]=0;
+                return 0;}
+                else
+                {
+                Dict[x_begin+1][y_begin]=(Dict[x_begin+1][y_begin]==-1?uniquePathsWithObstaclesFromBegin(obstacleGrid, x_begin+1, y_begin): Dict[x_begin+1][y_begin]);
+                Dict[x_begin][y_begin+1]=(Dict[x_begin][y_begin+1]==-1?uniquePathsWithObstaclesFromBegin(obstacleGrid, x_begin, y_begin+1): Dict[x_begin][y_begin+1]);
+                int down=Dict[x_begin][y_begin+1];
+                int right=Dict[x_begin+1][y_begin];
+                return down+right;}
+        }
+
+
+        }
+    int uniquePathsWithObstacles(vector<vector<int> > &obstacleGrid) {
+
+        int Max_x=obstacleGrid.size();
+        int Max_y=obstacleGrid[0].size();
+        if(Max_x ==0 && Max_y ==0)
+        {
+                return 0;
+        }
+        else
+        {
+                InitDict(obstacleGrid);
+                return uniquePathsWithObstaclesFromBegin(obstacleGrid,0,0);
+        }
+
+    }
+
+};
