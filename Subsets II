@@ -1,0 +1,30 @@
+class Solution {
+public:
+   vector<vector<int> > subsetsWithDup(vector<int> &S) {
+        sort(S.begin(), S.end());
+        vector<vector<int> > tot;
+        if(S.size()==0) {vector<int> x; tot.push_back(x); return tot;}
+        else if(S.size()==1) {vector<int> x; tot.push_back(x); x.push_back(S[0]); tot.push_back(x); return tot;}
+        else{
+        vector<vector<int> > totm1;
+        vector<int> temp(S.begin(), S.end()-1);
+//      Printvector(temp);
+        totm1=subsetsWithDup(temp);
+        for(int i=0; i< totm1.size(); i++)
+        {
+        vector<int> a(totm1[i]);tot.push_back(a);
+        a.push_back(S[S.size()-1]); tot.push_back(a);
+//      Printvector(a);
+        }
+//      Printsubsets(tot);
+        set<vector<int> > Compact;
+        for(int i=0; i< tot.size(); i++)
+        {Compact.insert(tot[i]);}
+        vector<vector<int> > tot_Compact;
+        for(set<vector<int> >::iterator it=Compact.begin(); it!=Compact.end(); it++)
+        {tot_Compact.push_back(*it);}
+
+
+        return tot_Compact;}
+    }   
+};
