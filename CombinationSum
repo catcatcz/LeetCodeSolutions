@@ -1,0 +1,48 @@
+class Solution {
+public:
+    vector<vector<int> > combinationSum(vector<int> &candidates, int target) {
+        sort(candidates.begin(), candidates.end());
+        queue<vector<int> > CA_Q;
+        queue<int> CA_Sum_Q;
+        vector<vector<int> > result;
+        int CA_Size=candidates.size();
+        for(int i=0; i<CA_Size; i++) 
+        {   
+                int Q_Size=CA_Q.size();
+                for(int j =0; j< Q_Size; j++)
+                {   
+                        int sum=CA_Sum_Q.front();
+                        CA_Sum_Q.pop();
+                        vector<int> vec_temp=CA_Q.front();
+                        CA_Q.pop();
+                        CA_Sum_Q.push(sum);
+                        CA_Q.push(vec_temp);
+                        int sum_after=candidates[i]+sum;
+                        while(sum_after<target)
+                        {   
+                        vec_temp.push_back(candidates[i]);
+                        CA_Q.push(vec_temp);
+                        CA_Sum_Q.push(sum_after);
+                        sum_after=sum_after+candidates[i];
+                        }   
+                        if(sum_after==target)
+                        {   
+                        vec_temp.push_back(candidates[i]);
+                        result.push_back(vec_temp);}
+                }   
+                int sum_after=candidates[i];
+                vector<int> ca; 
+                while(sum_after<target)
+                {   
+                ca.push_back(candidates[i]);
+                CA_Q.push(ca);
+                CA_Sum_Q.push(sum_after);
+                sum_after=sum_after+candidates[i];
+        //      cout<<"sum_after="<<sum_after<<endl;
+                }   
+                if(sum_after==target)
+                {ca.push_back(candidates[i]); result.push_back(ca);}
+        }   
+        return result;
+    }   
+};
