@@ -1,0 +1,17 @@
+class Solution {
+public:
+    int hammingWeight(uint32_t n) {
+       //cout<<"n="<<n<<endl;
+        int n_one=0;
+        uint32_t x=n;
+        uint32_t x0=0;
+        while(x)
+        {   
+        x0=x;
+        x=x/2;
+        n_one+=(x0-2*x);
+        }   
+        return n_one;
+
+    }
+};
