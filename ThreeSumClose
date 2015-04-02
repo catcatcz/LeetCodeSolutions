@@ -1,0 +1,58 @@
+class Solution {
+public:
+        int find_close(vector<int> &num, int begin, int end, int target)
+        {   
+                int left, right,mid;
+                left=begin; right=end;
+                if(begin==end)
+                {return num[begin];}
+                if(target>=num[end])    
+                { return num[end];}
+                else if(target<=num[begin])
+                {return num[begin];}
+                else 
+                {   
+                        if(begin+1==end) 
+                        {   
+                        if(target-num[begin]< num[end]-target)
+                        {return  num[begin];}
+                        else
+                        {return num[end];}
+                        }   
+                        mid=(begin+end)/2; 
+                        if(num[mid]==target) {return target;}
+                        else if(num[mid]>target)
+                        {return find_close(num,begin, mid, target);}
+                        else
+                        {return find_close(num,mid,end,target);}
+                }   
+        }   
+    int threeSumClosest(vector<int> &num, int target) {
+        sort(num.begin() ,num.end());
+        int diffbest,diffnow;
+        int temp,ss, minss;
+        bool found=false;
+        for(int i=0; i< num.size()-2; i++)
+        {   
+        for(int j=i+1; j< num.size()-1; j++)
+        {   
+                temp=target-num[i]-num[j];
+                int candi;
+                candi=find_close(num,j+1,num.size()-1,temp);
+                ss=candi+num[i]+num[j];
+                cout<<"num i="<<num[i]<<"  num[j]="<<num[j]<<" temp="<<temp<<"  candi="<<candi<<"  ss="<<ss<<" minss="<<minss<<"  target="<<target<<endl;
+                diffnow=temp-candi;
+                if(diffnow==0)
+                {return target;}
+                if(found==false){diffbest=diffnow;found=true;}
+                else
+                {diffbest=min(diffbest, abs(diffnow));}
+                if(i==0 && j==1) {minss=ss;}
+                else if(abs(ss-target)<abs(minss-target))
+                {minss=ss;}
+        }   
+        }    
+        return minss;
+    }   
+};
+
