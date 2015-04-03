@@ -1,0 +1,45 @@
+class Solution {
+public:
+    int minimumTotal(vector<vector<int> > &triangle) {
+        int numLevel=triangle.size();
+        vector<int> minvals_now,minvals_new;
+        if(numLevel>1)
+        {
+        for(int i=numLevel-1; i>0; i--)
+        {   
+//              cout<<"in level "<<i<<"   lengh of level is "<<triangle[i].size()<<endl;
+                if(i==numLevel-1)
+                {   
+                        for(int j=0; j< i+1; j++)
+                        {   
+//                      cout<<"i="<<i<<"j="<<j<<endl;
+                        minvals_now.push_back(triangle[i][j]);
+                        }   
+                }   
+                else
+                {   
+                        minvals_now.clear();
+                        minvals_now=minvals_new;
+                }   
+                int nowsize=minvals_now.size();
+//                cout<<"nowsize="<<nowsize<<endl;
+                minvals_new.clear();
+//                cout<<"clear new"<<endl;
+                for(int j=0; j< nowsize-1; j++)
+                {   
+//                      cout<<"i="<<i<<" j="<<j<<endl;
+                        int minele=min(minvals_now[j],minvals_now[j+1]);
+                        minvals_new.push_back(minele+triangle[i-1][j]);
+                }   
+//      cout<<"size of minvals_new="<<minvals_new.size()<<endl;
+        }   
+
+//      cout<<"size of minvals_new="<<minvals_new.size()<<endl;
+        return minvals_new[0];
+        }
+        else if(numLevel==1)
+        {return triangle[0][0];}
+        else
+        {return 0;}
+    }   
+};
