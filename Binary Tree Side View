@@ -1,0 +1,36 @@
+/**
+ * Definition for binary tree
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    vector<int> rightSideView(TreeNode *root) {
+        queue<TreeNode*> PresentLayer;
+        vector<int> ret;
+        if(root!=NULL)
+        {   
+                PresentLayer.push(root);
+                ret.push_back(root->val);
+                int PLsize=PresentLayer.size();
+                while(PLsize>0)
+                {   
+                for(int i=0;i< PLsize; i++)
+                {   
+                TreeNode *p=PresentLayer.front();
+                PresentLayer.pop();
+                if(p->left!=NULL) {PresentLayer.push(p->left);}
+                if(p->right!=NULL) {PresentLayer.push(p->right);}
+                }   
+                PLsize=PresentLayer.size();
+                if(PLsize>0){ret.push_back(PresentLayer.back()->val);}
+                //cout<<"PL size="<<PLsize<<" push "<<PresentLayer.back()->val<<endl;
+                }   
+        }   
+        return ret; 
+    }   
+};
