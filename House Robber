@@ -1,0 +1,36 @@
+class Solution {
+public:
+    int rob(vector<int> &num) {
+        if(num.size()>0)
+        {   
+        if(num.size()>2)
+        {
+        vector<int> dict(num.size(),0);
+        dict[num.size()-1]=num[num.size()-1];
+        dict[num.size()-2]=max(num[num.size()-1], num[num.size()-2]);
+        for(int i=num.size()-3; i>-1; i--)
+        {   
+        dict[i]=max(num[i]+dict[i+2], dict[i+1]);
+//      cout<<"i="<<dict[i]<<endl;
+        }    
+//      for(int i=0; i<num.size(); i++)
+//      {
+//      cout<<"dict"<<i<<"="<<dict[i]<<endl;
+//      }
+        return dict[0];
+        }
+        else if(num.size()==2)
+        {
+                return max(num[1],num[0]);
+        }
+        else if(num.size()==1)
+        {
+                return num[0];
+        }
+
+
+        }   
+        else
+        {return 0;} 
+    }   
+};
