@@ -1,0 +1,46 @@
+/**
+ * Definition for binary tree
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    vector<vector<int> > zigzagLevelOrder(TreeNode *root) {
+        queue<TreeNode*> LevelQ;
+        vector<int>  temp;
+        vector<vector<int> >  ret;
+        if(root!=NULL)
+        {
+        int levelindex=1;
+        LevelQ.push(root);
+        while(LevelQ.size()>0)
+        {
+                int Qsize=LevelQ.size();
+                temp.clear();
+                for(int i=0; i<Qsize;i++)
+                {
+                        TreeNode *t;
+                        t=LevelQ.front();
+                        if(levelindex%2==1)
+                        {temp.push_back(t->val);}
+                        else
+                        {temp.insert(temp.begin(), t->val);}
+                        LevelQ.pop();
+                        if(t->left!=NULL)
+                        {LevelQ.push(t->left);}
+                        if(t->right!=NULL)
+                        {LevelQ.push(t->right);}
+                }
+                levelindex+=1;
+                ret.push_back(temp);
+        }
+        return ret;
+        }
+        else
+        {return ret;}
+    }
+};
