@@ -1,0 +1,36 @@
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* removeElements(ListNode* head, int val) {
+        if(head!=NULL)
+        {   
+                ListNode *pm=new ListNode(-1);
+                pm->next=head;
+                ListNode *pp,*p;
+                pp=pm;
+                p=pm->next;
+                while(p!=NULL)
+                {   
+//              cout<<"p->val"<<p->val<<endl;
+//              cout<<"pm->next->val"<<pm->next->val<<endl;
+                        if(p->val==val)
+                        {   
+ //                       cout<<"found"<<endl;
+                        pp->next=p->next;p=p->next;
+                        }   
+                        else
+                        {pp=pp->next;p=p->next;}
+                }   
+                return pm->next;
+        }   
+        else
+        {       return NULL;}
+    }   
+};
