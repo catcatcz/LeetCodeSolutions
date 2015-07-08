@@ -1,0 +1,38 @@
+class Solution {
+public:
+          int getDigitsSum(int n)
+        {   
+        int a,b,sum;
+        sum=0;
+        a=n;
+        while(a>=10)
+        {   
+        b=a-a/10*10;
+        a=a/10;
+        sum+=b*b;
+        }   
+        sum+=a*a;
+        return sum;
+        }   
+    bool isHappy(int n) {
+        set<int>  Datas;
+        bool flag=false;
+        int result=getDigitsSum(n);
+        Datas.insert(n);
+        while(result!=1 && flag==false)
+        {   
+        int setsize=Datas.size();
+        Datas.insert(result);
+        int newsetsize=Datas.size();
+        if(setsize==newsetsize)
+        {flag=true;}
+        else if(setsize!=newsetsize)
+        {result=getDigitsSum(result);}
+        }   
+        if(result==1)
+        {return true;}
+        else if(result!=1 && flag==true)
+        {return false;}
+    }   
+
+};
