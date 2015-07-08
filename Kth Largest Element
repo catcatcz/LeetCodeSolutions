@@ -1,0 +1,88 @@
+class Solution {
+public:
+            void quickSort(vector<int> &a, int begin, int end)
+        {   
+        if(begin==end)
+        {}  
+        else if(begin+1==end)
+        {if(a[begin]>a[end]) {int temp=a[begin]; a[begin]=a[end]; a[end]=temp;}}
+        else
+        {   
+        int mid=(begin+end)/2;
+        quickSort(a, begin, mid);
+        quickSort(a, mid+1, end);
+        int i=begin;
+        int j=mid+1;
+        vector<int> temp;
+        while(i<=mid && j<=end)
+        {   
+        if(a[i]<=a[j]) {temp.push_back(a[i]); i++;}
+        else {temp.push_back(a[j]); j++;}
+        }   
+        if(i==mid+1)
+        {for(int p=j; p<end+1; p++) {temp.push_back(a[p]);}}
+        else if(j==end+1)
+        {for(int p=i; p<mid+1; p++) {temp.push_back(a[p]);}}
+        for(int k=begin; k<=end; k++)
+        {a[k]=temp[k-begin];}
+        }   
+        }   
+        void findAndInsert(vector<int> &a, int tar)
+        {   
+        int asize=a.size();
+        if(asize==1)
+        {if(tar>=a[0]) {a[0]=tar;}}
+        else if(asize>1)
+        {   
+                if(tar>=a[asize-1])
+                {a.push_back(tar); a.erase(a.begin());}
+                else if(tar>=a[0] && tar<a[asize-1])
+                {   
+                        vector<int>::iterator loc=a.begin();
+                        for(int i=0; i< asize-1; i++)
+                        {   
+                        if((a[i]<=tar && a[i+1]>tar))
+                        {a.insert(loc+i+1,tar);a.erase(a.begin());}
+                        }   
+                }   
+        }   
+        }   
+
+    int findKthLargest(vector<int>& nums, int k) {
+        if(k>1)
+        {   
+        quickSort(nums,0,k-1);
+        //cout<<"finish quick sort"<<endl;
+        vector<int> largeK(nums.begin(), nums.begin()+k);
+//        printvector(largeK);
+        for(int i=k; i< nums.size(); i++)
+        {   
+        findAndInsert(largeK,nums[i]);
+//      cout<<"LargeK="<<largeK[0]<<endl;
+//        printvector(largeK);
+//        cout<<endl;
+        }   
+        return largeK[0];
+        }   
+        else if(k==1)
+        {   
+        int tar=nums[0];
+        for(int i=1; i< nums.size(); i++)
+        {   
+        if(nums[i]>tar) {tar=nums[i];}
+        }   
+        return tar;
+        }   
+    }   
+        void printvector(vector<int> x)
+        {   
+        cout<<"x size="<<x.size()<<endl;
+        for(int i=0; i< x.size(); i++)
+        {cout<<x[i]<<endl;}
+        }   
+
+
+    
+
+
+};
