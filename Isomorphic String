@@ -1,0 +1,30 @@
+class Solution {
+public:
+      bool isIsomorphic(string s, string t) {
+        map<char, char> mymap1,mymap2;
+        for(int i=0; i< s.size(); i++)
+        {   
+        if(mymap1.find(s[i])==mymap1.end())
+        {   
+                mymap1[s[i]]=t[i];
+        }   
+        else if(mymap1.find(s[i])!=mymap1.end())
+        {   
+                if(mymap1[s[i]]!=t[i])
+                {return false;}
+        }   
+        if(mymap2.find(t[i])==mymap2.end())    
+        {    
+                mymap2[t[i]]=s[i];
+        }   
+        else if(mymap2.find(t[i])!=mymap2.end())
+        {    
+                if(mymap2[t[i]]!=s[i])
+                {return false;}
+        }   
+        }   
+        return true;
+    }   
+
+
+};
