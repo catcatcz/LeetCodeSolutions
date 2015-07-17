@@ -1,0 +1,30 @@
+class Queue {
+private:
+        stack<int> s1,s2;
+public:
+    // Push element x to the back of queue.
+    void push(int x) {
+        while(!s1.empty())
+        {int a=s1.top(); s1.pop(); s2.push(a);}
+        s2.push(x);
+        while(!s2.empty())
+        {int a=s2.top();s2.pop();s1.push(a);}
+    }   
+
+    // Removes the element from in front of queue.
+    void pop(void) {
+        s1.pop();
+    }   
+
+    // Get the front element.
+    int peek(void) {
+        return s1.top();
+    }   
+
+    // Return whether the queue is empty.
+    bool empty(void) {
+        return s1.empty();
+    }   
+
+
+};
