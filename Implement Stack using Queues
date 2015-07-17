@@ -1,0 +1,31 @@
+class Stack {
+private:
+        queue<int> q1; 
+public:
+    // Push element x onto stack.
+    void push(int x) {
+        q1.push(x);
+        for(int i=0; i< q1.size()-1; i++)
+        {   
+                int a=q1.front();
+                q1.pop();
+                q1.push(a);
+        }   
+    }   
+
+    // Removes the element on top of the stack.
+    void pop() {
+        q1.pop();
+    }   
+
+    // Get the top element.
+    int top() {
+        return q1.front();
+    }   
+
+    // Return whether the stack is empty.
+    bool empty() {
+        return q1.empty();
+    }   
+
+};
