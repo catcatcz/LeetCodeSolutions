@@ -1,0 +1,32 @@
+class Solution {
+public:
+       int evalRPN(vector<string>& tokens) {
+        stack<int>  ss_num;
+        stack<char> ss_op;
+        int i=0; 
+        while(i<tokens.size())
+        {   
+                string x=tokens[i];
+                int numb;
+                if(x!="+" && x!="-" && x!="*" && x!="/")
+                {   
+                numb=0;
+                istringstream ( x ) >> numb;
+                ss_num.push(numb);
+                }   
+                else
+                {   
+                int num1=ss_num.top(); ss_num.pop();
+                int num2=ss_num.top(); ss_num.pop();
+                if(x=="+")      {ss_num.push(num1+num2);}
+                else if(x=="-") {ss_num.push(-num1+num2);}
+                else if(x=="*") {ss_num.push(num1*num2);}
+                else if(x=="/") {ss_num.push(num2/num1);}
+                }   
+                i++;
+        }   
+        return ss_num.top();
+    }   
+
+
+};
