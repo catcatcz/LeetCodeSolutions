@@ -1,0 +1,30 @@
+class Solution {
+    public:
+    int canCompleteCircuit(vector<int>& gas, vector<int>& cost) {
+        int sum=0; int tot=0;
+        for(int i=0; i< gas.size(); i++)
+        {tot+=gas[i]; tot-=cost[i];}
+        if(tot<0) {return -1;}
+        else
+        {   
+                int l=0; int r=0; sum=0;
+                while(gas[l]-cost[l]<0) {l++;}
+                sum=gas[l]-cost[l];
+                while(l< gas.size())
+                {   
+                //      cout<<"l="<<l<<" r="<<l<<" sum="<<sum<<endl;
+                        r=l+1;
+                        while(r<gas.size() && sum>=0)
+                        { sum+=gas[r]-cost[r]; r++;}
+                //      cout<<"r="<<r<<endl;
+                        if(r==gas.size()) {return l;} 
+                        else
+                        {l=r; sum=gas[r]-cost[r];}    
+                }   
+                return gas.size()-1;
+        }   
+    }   
+
+
+
+};
