@@ -1,0 +1,55 @@
+class Solution {
+public:
+         bool searchMatrixBigger(vector<vector<int> >& matrix, int target, int x_b, int x_e, int y_b, int y_e)
+        {   
+                if(target==matrix[x_b][y_b] || target==matrix[x_b][y_e] || target==matrix[x_e][y_b] || target==matrix[x_e][y_e])  {return true;}
+                else if(target< matrix[x_b][y_b]   || target> matrix[x_e][y_e])  {return false;}
+                else
+                {   
+                        int xmid,ymid;
+                        if(x_b==x_e && y_b==y_e) {return target==matrix[x_b][y_b];}
+                        else if(x_b==x_e && y_b< y_e)
+                        {   
+                                ymid=(y_b+y_e)/2; 
+                                if(target==matrix[x_b][ymid]) {return true;}
+                                else if(target< matrix[x_b][ymid] && target> matrix[x_b][y_b])  {return searchMatrixBigger(matrix, target, x_b,x_e, y_b, ymid);}
+                                else {return searchMatrixBigger(matrix, target, x_b, x_e, ymid+1, y_b);}
+                        }   
+                        else if(x_b< x_e  && y_b==y_e)
+                        {   
+                                xmid=(x_b+x_e)/2;
+                                if(target==matrix[xmid][y_e]) {return true;}
+                                else if(target< matrix[xmid][y_b] && target> matrix[x_b][y_b])   {return searchMatrixBigger(matrix, target, x_b, xmid, y_b, y_e);}
+                                else {return searchMatrixBigger(matrix, target, xmid+1, x_e,y_b, y_e );} 
+                        }   
+                        else
+                        {   
+                                bool F11, F12, F21, F22, G11, G12, G21, G22; xmid=(x_b+x_e)/2; ymid=(y_b+y_e)/2;
+                                F11=(target<= matrix[xmid][ymid]) ;
+                                F12=(target<= matrix[x_e][ymid]  && target>=matrix[xmid+1][y_b]);
+                                F21=(target<= matrix[xmid][y_e]  && target>=matrix[x_b][ymid+1]);
+                                F22=(target>= matrix[xmid+1][ymid+1]);
+                                if(F11==true) {G11=searchMatrixBigger(matrix, target, x_b, xmid, y_b, ymid);} 
+                                else {G11=false;}
+                                if(F12==true)  {G12=searchMatrixBigger(matrix, target, xmid+1,x_e, y_b, ymid);}
+                                else {G12=false;}
+                                if(F21==true)  {G21=searchMatrixBigger(matrix, target, x_b, xmid, ymid+1, y_e);}
+                                else {G21=false;}
+                                if(F22==true)  {G22=searchMatrixBigger(matrix,target, xmid+1, x_e, ymid+1, y_e);}
+                                else {G22=false;}
+
+                                return ( G11 || G12 || G21 || G22);
+                        }   
+                }   
+        }   
+   bool searchMatrix(vector<vector<int> >& matrix, int target) {
+        if(matrix.size()>0 && matrix[0].size()>0)
+        {   
+        return searchMatrixBigger(matrix, target, 0, matrix.size()-1, 0, matrix[0].size()-1);
+        }   
+        else
+        {return false;}
+    }   
+
+
+};
