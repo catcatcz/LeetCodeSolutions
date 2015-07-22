@@ -1,0 +1,114 @@
+class TrieNode {
+public:
+        string key;
+        bool live;
+    // Initialize your data structure here.
+    TrieNode() {live=false;}
+    TrieNode(string k) {key=k; live=false;}
+        ~TrieNode();
+};
+
+class Trie {
+public:
+    Trie() {
+        root = new TrieNode();
+    }   
+    Trie(string k)
+        {root=new TrieNode(k);}
+    // Inserts a word into the trie.
+    void insert(string word) {
+        string v=root->key;
+        if(word.size()==v.size())
+        {   
+                if(word==v) {root->live=true;}
+        }   
+        else if(word.size()>v.size())
+        {   
+                if(v.size()>0)
+                {   
+                string sub(word,0,v.size());
+                if(sub==v)
+                {   
+                        string subb(word,0,v.size()+1);
+                        map<string,Trie>::iterator it=dict.find(subb);
+                        if(it!=dict.end())
+                        {   
+                                it->second.insert(word);
+                        }   
+                        else
+                        {   
+                                dict[subb]=Trie(subb);
+                                dict[subb].insert(word);
+                        }   
+                }   
+                }   
+                else
+                {   
+                char a=word[0]; string b; stringstream ss; ss<<a; ss>>b;
+                map<string,Trie>::iterator it=dict.find(b);
+                if(it!=dict.end())
+                {it->second.insert(word);}
+                else
+                {dict[b]=Trie(b); dict[b].insert(word);}
+                }   
+        }   
+    }   
+
+    // Returns if the word is in the trie.
+    bool search(string word) {
+        string v=root->key;
+        if(word.size()<v.size()) {return false;}
+        else if(word.size()==v.size())
+        { if(word==v && root->live==true) {return true;}
+                else {return false;}}
+        else
+        {   
+                string sub(word, 0, v.size());
+                if(sub==v)
+                {   
+                string subb(word,0,v.size()+1);
+                map<string,Trie>::iterator it=dict.find(subb);
+                if(it==dict.end()) {return false;}
+                else
+                {   
+                return dict[subb].search(word);
+                }   
+                }   
+                else{return false;}
+        }   
+    
+    }   
+
+    // Returns if there is any word in the trie
+    // that starts with the given prefix.
+     bool startsWith(string word) {
+        string v=root->key;
+        if(word.size()<v.size()) {return false;}
+        else if(word.size()==v.size())
+        { if(word==v) {return true;}
+                else {return false;}}
+        else
+        {
+                string sub(word, 0, v.size());
+                if(sub==v)
+                {
+                string subb(word,0,v.size()+1);
+                map<string,Trie>::iterator it=dict.find(subb);
+                if(it==dict.end()) {return false;}
+                else
+                {
+                return dict[subb].startsWith(word);
+                }
+                }
+                else{return false;}
+        }
+
+
+
+    }
+
+
+private:
+    TrieNode* root;
+        map<string,Trie> dict;
+};
