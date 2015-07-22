@@ -1,0 +1,59 @@
+class Solution {
+public:
+  vector<vector<int> > twoSum(vector<int>& nums, int tar, int begin, int end)
+        {   
+                vector<vector<int> > ret;
+                if(begin<end)
+                {   
+                int l, r;
+                l=begin; r=end;
+                while(l<r && l<end && r>begin)
+                {   
+//                      cout<<"l="<<l<<" r="<<r<<endl;
+                        if(nums[l]+nums[r]==tar)
+                        {   
+                                int a[]={nums[l], nums[r]};
+                                vector<int> aa(a,a+2);
+                                if(ret.size()==0 || aa!=ret[ret.size()-1]) {ret.push_back(aa);}
+                                l++;
+                        }   
+                        else if(nums[l]+nums[r]<tar)
+                        { l++;}
+                        else if(nums[l]+nums[r]>tar)
+                        {r--;}
+                }   
+                }   
+                return ret;
+        }   
+    vector<vector<int> > fourSum(vector<int>& nums, int target) {
+        sort(nums.begin(), nums.end());
+        set<vector<int> > xx;
+//      cout<<"num.size="<<nums.size()<<endl;
+        vector<vector<int> > ret;
+        if(nums.size()>=4)
+        {   
+                for(int i=0; i< nums.size()-3; i++)
+                {   
+                        for(int j=i+1; j< nums.size()-2; j++)
+                        {   
+                        int tar=target-nums[i]-nums[j];
+                        vector<vector<int> >  u=twoSum(nums,tar,j+1,nums.size()-1);
+                                for(int k=0; k< u.size(); k++)
+                                {u[k].insert(u[k].begin(), nums[j]);
+                                 u[k].insert(u[k].begin(), nums[i]);}
+                        //ret.insert(ret.end(), u.begin(), u.end());
+                                for(int k=0; k< u.size(); k++)
+                                {
+                                        int size0=xx.size(); xx.insert(u[k]); int size1=xx.size();
+                                        if(size0<size1) {ret.push_back(u[k]);}
+                                }
+                        
+                        
+                        }   
+                }   
+        }   
+        return ret;
+
+    }   
+
+};
