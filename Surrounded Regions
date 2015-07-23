@@ -1,0 +1,73 @@
+class Solution {
+public:
+    void solve(vector<vector<char> >& board) {
+     if(board.size()>2 && board[0].size()>2)
+        {   
+                int Lx=board.size(); int Ly=board[0].size();
+                set<vector<int> > ZERO_points;
+                queue<vector<int> > ACTIVE_points;
+                for(int i=0;i<Lx; i++)
+                { vector<int> pos(2,0);
+                if(board[i][0]=='O') 
+                {pos[0]=i; pos[1]=0;
+                ZERO_points.insert(pos); ACTIVE_points.push(pos); }
+                if(board[i][Ly-1]=='O')
+                {pos[0]=i; pos[1]=Ly-1;
+                ZERO_points.insert(pos); ACTIVE_points.push(pos); }
+                }   
+                for(int j=1; j<Ly-1; j++ )
+                { vector<int> pos(2,0);
+                if(board[0][j]=='O')
+                {pos[0]=0; pos[1]=j;
+                ZERO_points.insert(pos); ACTIVE_points.push(pos);}
+                if(board[Lx-1][j]=='O')
+                {pos[0]=Lx-1; pos[1]=j;
+                ZERO_points.insert(pos); ACTIVE_points.push(pos);}
+                }   
+    
+                int asize=ACTIVE_points.size();
+                 if(asize==0)
+                {for(int i=0; i< Lx; i++){for(int j=0; j<Ly; j++){board[i][j]='X';}}    }  
+                while(asize>0)
+                {   
+                        for(int i=0; i< asize; i++)
+                        {   
+                        vector<int> temp(2,0); temp=ACTIVE_points.front(); ACTIVE_points.pop(); 
+                        vector<int> neib(2,0);
+                        if(temp[0]>0  && board[temp[0]-1][temp[1]]=='O')  
+                        { neib[0]=temp[0]-1; neib[1]=temp[1]; 
+                                int s0=ZERO_points.size(); ZERO_points.insert(neib); int s1=ZERO_points.size(); 
+                                if(s0<s1) {ACTIVE_points.push(neib);}
+                        }   
+                        if(temp[0]<Lx-1 && board[temp[0]+1][temp[1]]=='O')
+                        {neib[0]=temp[0]+1; neib[1]=temp[1];
+                                int s0=ZERO_points.size(); ZERO_points.insert(neib); int s1=ZERO_points.size(); 
+                                if(s0<s1) {ACTIVE_points.push(neib);}
+                        }   
+                        if(temp[1]>0 && board[temp[0]][temp[1]-1]=='O')
+                        { neib[0]=temp[0]; neib[1]=temp[1]-1;
+                                int s0=ZERO_points.size(); ZERO_points.insert(neib); int s1=ZERO_points.size(); 
+                                if(s0<s1) {ACTIVE_points.push(neib);}
+                        }   
+                        if(temp[1]<Ly-1 && board[temp[0]][temp[1]+1]=='O')
+                        {  neib[0]=temp[0]; neib[1]=temp[1]+1;
+                                int s0=ZERO_points.size(); ZERO_points.insert(neib); int s1=ZERO_points.size(); 
+                                if(s0<s1) {ACTIVE_points.push(neib);}
+                        }   
+                        }   
+                        asize=ACTIVE_points.size();
+                }   
+                if(ZERO_points.size()>0)
+                {   
+                        for(int i=0; i< Lx; i++)
+                        {for(int j=0; j<Ly; j++)
+                        {board[i][j]='X';}}
+                        for(set<vector<int> >::iterator it=ZERO_points.begin(); it!=ZERO_points.end(); it++)
+                        {   
+                                vector<int> temp(2,0); temp=(*it);
+                                board[temp[0]][temp[1]]='O';
+                        }   
+                }   
+        }   
+    }   
+};
