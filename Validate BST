@@ -1,0 +1,54 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+      int GetMin(TreeNode* root)
+        {   
+                if(root==NULL) {return -10000;}
+                else if(root->left==NULL)
+                {return root->val;}
+                else
+                {return GetMin(root->left);}
+        }   
+        int GetMax(TreeNode* root)
+        {   
+                if(root==NULL) {return 100000;}
+                else if(root->right==NULL) {return root->val;}
+                else
+                {return GetMax(root->right);}
+        }   
+    bool isValidBST(TreeNode* root) {
+        if(root==NULL) {return true;}
+        else if(root->left==NULL && root->right==NULL) {return true;}
+        else if(root->left==NULL && root->right!=NULL)
+        {   
+                bool right_valid=isValidBST(root->right);
+                int rightmin=GetMin(root->right);
+                if(right_valid && root->val< rightmin) {return true;}
+                else {return false;}
+        }   
+        else if(root->left!=NULL && root->right==NULL)
+        {   
+                bool left_valid =isValidBST(root->left);
+                int leftmax=GetMax(root->left);
+                if(left_valid && root->val> leftmax) {return true;}
+                else {return false;}
+        }   
+        else
+        {   
+                bool left_valid =isValidBST(root->left);
+                bool right_valid=isValidBST(root->right);
+                int leftmax=GetMax(root->left); int rightmin=GetMin(root->right);
+                if(left_valid && right_valid && root->val > leftmax && root->val < rightmin){return true;}
+                else {return false;}
+        }   
+    }   
+
+};
