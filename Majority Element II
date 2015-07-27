@@ -1,0 +1,54 @@
+class Solution {
+public:
+    vector<int> majorityElement(vector<int>& nums) {
+        vector<int> ret;
+        if(nums.size()<=1) {return nums;}
+        else if(nums.size()==2) 
+        {if(nums[0]!=nums[1]) {return nums;} else {ret.push_back(nums[0]); return ret;} }
+        else if(nums.size()==3)
+        {int a=nums[0]; int b=nums[1]; int c=nums[2];
+                if(a==b) {ret.push_back(a); return ret;}
+                else if(a==c) {ret.push_back(a); return ret;}
+                else if(b==c) {ret.push_back(b); return ret;}
+                else {return ret;}
+        }   
+        else
+        {   
+                int a=nums[0]; double Acount=1; int b=nums[1]; double Bcount=1; int c; int i=1;
+                while(nums[i]==a)
+                {Acount++;i++; b=nums[i];}
+//              cout<<"a="<<a<<" Acount="<<Acount<<" b="<<b<<" Bcount="<<Bcount<<endl;
+                while(i< nums.size()-1)
+                {   
+                        i++;
+                        GetMaj2(a,b, nums[i], Acount, Bcount);
+//              cout<<"a="<<a<<" Acount="<<Acount<<" b="<<b<<" Bcount="<<Bcount<<endl;
+                }   
+//              cout<<"a="<<a<<" Acount="<<Acount<<" b="<<b<<" Bcount="<<Bcount<<endl;
+                int Acc=0; int Bcc=0;
+                for(int i=0; i< nums.size(); i++)
+                {   
+                        if(nums[i]==a) {Acc++;}
+                        else if(nums[i]==b) {Bcc++;}
+                }   
+                int n=nums.size();
+                if(Acc>n/3) {ret.push_back(a);}
+                if(Bcc>n/3) {ret.push_back(b);}
+                return ret;
+        }   
+    }   
+         void GetMaj2(int &a, int &b, int c, double &Acount, double &Bcount)
+        {   
+                if(a==c) {Acount+=1;}
+                else if(b==c) {Bcount+=1;}
+                else if(a!=c && b!=c)
+                {   
+                        if(Acount==1 ) {a=c; Acount=1;}
+                        else if(Acount>1){Acount-=1.0/2;}
+                        if(Bcount==1 && a!=c)  {b=c; Bcount=1;}
+                        else if(Bcount>1){Bcount-=1.0/2;}
+                }   
+        }   
+
+
+};
