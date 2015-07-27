@@ -1,0 +1,36 @@
+class Solution {
+public:
+    vector<vector<int> > combinationSum3(int k, int n) {
+        //return combinationSum_withStart(2,2,14);
+        return combinationSum_withStart(1,k,n);
+    }   
+        vector<vector<int> > combinationSum_withStart(int start, int k, int n)
+        {   
+                vector<vector<int> > ret; 
+                if(k==1) {vector<int> x(1,n); ret.push_back(x); return ret;}
+                else
+                {   
+                        int f=0; 
+                        int mintot=(start+1+start+1+k-2)*(k-1)/2;
+                        while(mintot<=n-start-f && start+f+1+k-2<=9 )
+                        {   
+                                if(n-start-f<= (k-1)*9)
+                                {   
+                                vector< vector<int> > temp=combinationSum_withStart(start+f+1,k-1,n-start-f);
+                                for(int i=0; i< temp.size(); i++)
+                                {   
+                                        vector<int> zz=temp[i]; zz.insert(zz.begin(), start+f);
+                                        ret.push_back(zz);
+                                }   
+                                }   
+                                f++;
+                                mintot=(start+f+1+start+f+1+k-2)*(k-1)/2;
+                        }   
+                        return ret;
+                }   
+        }   
+
+
+
+
+};
