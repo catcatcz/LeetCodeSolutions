@@ -1,0 +1,89 @@
+class pos{
+public: 
+        int x, y;    
+        pos(int xx, int yy) {x=xx; y=yy;}
+};
+
+class Solution {
+public:
+    bool exist(vector<vector<char> >& board, string word) {
+        queue<pos> p;
+        for(int i=0; i< board.size(); i++)
+        {for(int j=0; j< board[0].size(); j++)
+        {if(board[i][j]==word[0]) {p.push(pos(i,j));}}}
+        cout<<"p.size="<<p.size()<<endl;
+        if(p.size()==0) {return false;}
+        else
+        {   
+                if(word.size()==1 && p.size()>0) {return true;}
+                else if(word.size()>1)
+                {   
+                        vector<pos> oc; 
+                        bool find=false;
+                        while(!p.empty())
+                        {   
+                        //cout<<"p.size="<<p.size()<<endl;
+                        pos t=p.front(); p.pop();
+                        //cout<<"p.size="<<p.size()<<endl;
+                        oc.clear(); oc.push_back(t);
+                        string sub;
+                        for(int i=1; i<word.size(); i++) {sub.push_back(word[i]);} 
+//                      cout<<"copy string sub"<<endl;
+                        find=exist_posList(board, sub, oc);
+                //      cout<<"find="<<find<<" p.empty()"<<p.empty()<<endl;
+                        if(find==true) {return true;}
+                        }   
+                        return false;
+                }   
+                else {return false;}
+        }   
+    }   
+
+        bool exist_posList(vector<vector<char> >& board, string word, vector<pos> Occupied)
+        {   
+        //cout<<"word.size="<<word.size()<<endl;
+                if(word.size()==1) 
+                {   
+                        pos lastp=Occupied[Occupied.size()-1];
+                        if(lastp.y-1>=0 )
+                        {pos up(lastp.x, lastp.y-1); if(board[up.x][up.y]==word[0] && findpos(Occupied, up)==false) {return true;}}
+                        if(lastp.y+1< board[0].size())
+                        {pos down(lastp.x, lastp.y+1); if(board[down.x][down.y]==word[0] && findpos(Occupied, down)==false) {return true;}}
+                        if(lastp.x-1>=0)
+                        {pos left(lastp.x-1, lastp.y); if(board[left.x][left.y]==word[0] && findpos(Occupied, left)==false) {return true;}}
+                        if(lastp.x+1< board.size())
+                        {pos right(lastp.x+1, lastp.y); if(board[right.x][right.y]==word[0] && findpos(Occupied, right)==false) {return true;}}
+                        return false;
+                }    
+                else if(word.size()>1)
+                {   
+                        pos lastp=Occupied[Occupied.size()-1];
+//                      cout<<"Occupied.size()="<<Occupied.size()<<endl;        
+//                      cout<<"lastp"<<lastp.x<<lastp.y<<endl;
+                        bool uppath=false; bool downpath=false; bool leftpath=false; bool rightpath=false;
+                        string sub;
+                        for(int i=1; i<word.size(); i++) {sub.push_back(word[i]);} //cout<<"finish copy string"<<endl;
+                        if(lastp.y-1>=0 )
+                        {pos up(lastp.x, lastp.y-1); if(board[up.x][up.y]==word[0] && findpos(Occupied, up)==false) { vector<pos> temp=Occupied; temp.push_back(up); uppath=exist_posList(board,sub, temp ); if(uppath==true) {return true;}}}
+                        if(lastp.y+1< board[0].size())
+                        {pos down(lastp.x, lastp.y+1); if(board[down.x][down.y]==word[0] && findpos(Occupied, down)==false) {vector<pos> temp=Occupied; temp.push_back(down); downpath=exist_posList(board,sub, temp ); if(downpath==true) {return true;}}}
+                        if(lastp.x-1>=0)
+                        {pos left(lastp.x-1, lastp.y); if(board[left.x][left.y]==word[0] && findpos(Occupied, left)==false) {vector<pos> temp=Occupied; temp.push_back(left); leftpath=exist_posList(board,sub, temp ); if(leftpath==true) {return true;}}}
+                        if(lastp.x+1< board.size())
+                        {pos right(lastp.x+1, lastp.y); if(board[right.x][right.y]==word[0] && findpos(Occupied, right)==false) { vector<pos> temp=Occupied; temp.push_back(right); rightpath=exist_posList(board,sub, temp ); if(rightpath==true) {return true;} }}
+                        return false;
+                }   
+                else
+                {return false;}
+        }   
+        bool findpos(vector<pos> pv, pos p)
+        {   
+                for(int i=0; i< pv.size(); i++)
+                {   
+                if(pv[i].x==p.x && pv[i].y==p.y) {return true;}
+                }   
+                return false;
+        }   
+
+
+};
