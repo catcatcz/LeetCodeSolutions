@@ -1,0 +1,50 @@
+class Solution {
+public:
+     int rob_begin(vector<int> &nums)
+        {   
+                int n=nums.size();
+                vector<int> a(n, 0); 
+                vector<vector<int> > dict(n, a); 
+                for(int i=0; i< n; i++)
+                {   
+                        dict[i][i]=nums[i];
+                }   
+                for(int i=0; i< n-1; i++)
+                {   
+                        dict[i][(i+1)]=max(nums[i],nums[(i+1)]);
+                }   
+                cout<<"finish first 2"<<endl;
+                for(int dist=2; dist< n-1; dist++ )
+                {   
+                        for(int i=0; i< n-1-dist; i++)
+                        {   
+                                dict[i][i+dist]=max(dict[i][i+dist-2]+nums[i+dist], dict[i][i+dist-1]);
+                                cout<<"dict"<<"i="<<i<<"j"<<i+dist<<dict[i][i+dist]<<endl;
+                        }   
+                }   
+//              cout<<"finish dict"<<endl;
+                if(dict[1][n-2]>=dict[2][n-2]+nums[0] && dict[1][n-2]>= dict[1][n-3]+nums[n-1]) {return dict[1][n-2];}
+                else {return max(dict[2][n-2]+nums[0], dict[1][n-3]+nums[n-1]);}
+//              else if(dict[2][n-3]+ max(nums[n-1], nums[0]) >=dict[2][n-2]+nums[0] && dict[2][n-3]+max(nums[n-1],nums[0])>= dict[1][n-3]+nums[n-1])
+//              {return dict[2][n-3]+ max(nums[n-1], nums[0]);}
+//              else
+//              { return max(dict[2][n-2]+nums[0] , dict[1][n-3]+nums[n-1]);}
+
+        }   
+    int rob(vector<int>& nums) {
+                if(nums.size()==0) {return 0;} 
+                else if(nums.size()==1) {return nums[0];} 
+                else if(nums.size()==2) {return max(nums[0], nums[1]);}
+                else if(nums.size()==3) {return max(max(nums[0], nums[1]), nums[2]);}
+                else if(nums.size()==4) {return max(nums[0]+nums[2], nums[1]+nums[3]);}
+                else
+                {   
+                        return  rob_begin(nums);
+                }   
+    }   
+
+
+
+
+
+};
