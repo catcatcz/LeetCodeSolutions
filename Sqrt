@@ -1,0 +1,24 @@
+class Solution {
+public:
+        int mySqrt(int x) {
+        if(x==0) {return 0;} 
+        unsigned int b=x; 
+        if(x>100)
+        {   
+        unsigned int a0=x/100; unsigned int b0=x-a0*100;
+        unsigned int x1=mySqrt(a0);
+        unsigned int x2=x1+1;
+        for(unsigned int i=x1*10; i<x2*10+1; i++ )
+        {   
+                if(i*i<=x && (i+1)*(i+1)>x) {return i;} 
+        }   
+        }   
+        else
+        {   
+                for(unsigned int i=0; i< 11; i++)
+                {if(i*i<=x && (i+1)*(i+1)>x) {return i;}}
+        }   
+    }   
+
+
+};
