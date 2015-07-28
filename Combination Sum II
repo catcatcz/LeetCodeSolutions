@@ -1,0 +1,54 @@
+class Solution {
+public:
+   vector<vector<int> > combinationSum2_begin(vector<int>& candidates, int begin, int target) {
+        vector<vector<int> > ret;
+        set<vector<int> >  countdup;
+        {   
+                int f1=candidates[begin];
+                if(f1> target) {return ret;}
+                else if(f1==target) 
+                {vector<int> z(1,f1); ret.push_back(z); return ret;}
+                else if(f1< target && begin!=candidates.size()-1)
+                {   
+                        vector<vector<int> > u1, u2; 
+                        //vector<int> c2(candidates.size()-1, 0);
+                        u1=combinationSum2_begin(candidates, begin+1, target-f1);
+                        u2=combinationSum2_begin(candidates, begin+1, target);
+                        for(int i=0; i< u1.size(); i++)
+                        {   
+                                vector<int> z=u1[i]; z.insert(z.begin(), f1);
+                                int size0=countdup.size() ; countdup.insert(z); int size1=countdup.size();
+                                if(size1>size0){ret.push_back(z);}
+                        }   
+                        for(int i=0; i< u2.size(); i++)
+                        {   
+                                int size0=countdup.size() ; countdup.insert(u2[i]); int size1=countdup.size();
+                                if(size1>size0){ret.push_back(u2[i]);}
+                        }   
+                        countdup.clear();
+                        return ret;
+                }   
+                else if(f1< target && begin==candidates.size()-1)
+                {return ret;}
+        }   
+    }   
+
+
+        vector<vector<int> > combinationSum2(vector<int>& candidates, int target)
+        {   
+                sort(candidates.begin(), candidates.end());
+                return combinationSum2_begin(candidates, 0, target);
+        }   
+        void v_v_output(vector<vector<int> > v)
+        {   
+                for(int i=0; i< v.size(); i++)
+                {   
+                for(int j=0; j< v[i].size(); j++)
+                {   
+                        cout<<v[i][j]<<"  ";
+                }   
+                cout<<endl;
+                }   
+        }   
+
+};
