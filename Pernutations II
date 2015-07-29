@@ -1,0 +1,31 @@
+class Solution {
+public:
+    vector<vector<int> > permuteUnique(vector<int>& nums) {
+        vector<vector<int> > ret;
+        if(nums.size()==0) {return ret;}
+        set<vector<int> > qq, qq2;
+        vector<int> a(1,nums[0]);
+        qq.insert(a);
+        if(nums.size()==1) {ret.push_back(a); return ret;}
+        for(int i=1; i< nums.size(); i++)
+        {   
+                for(set<vector<int> >:: iterator it=qq.begin(); it!=qq.end(); it++)
+                {   
+                        vector<int> temp=*it;
+                        vector<int> temp2;
+                        for(int j=0; j< temp.size(); j++)
+                        {   
+                                temp2=temp; temp2.insert(temp2.begin()+j, nums[i]); qq2.insert(temp2);
+                        }   
+                        temp2=temp; temp2.insert(temp2.end(), nums[i]); qq2.insert(temp2);
+                }    
+                qq=qq2; qq2.clear();
+        }   
+        for(set<vector<int> >:: iterator it=qq.begin(); it!=qq.end(); it++)
+        {   
+                ret.push_back(*it);
+        }   
+        return ret;
+    }   
+
+};
