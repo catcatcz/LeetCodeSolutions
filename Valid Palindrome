@@ -1,0 +1,35 @@
+class Solution {
+public:
+       bool isPalindrome(string s) {
+//              return isPalin(s, 0, s.size()-1);
+        int i=0; 
+        while(i< s.size())
+        {   
+//              cout<<"i="<<i<<" ssize="<<s.size()<<endl;
+                if(s[i]<='z' && s[i]>='a') {i++;}
+                else if(s[i]<='Z' && s[i]>='A') {s[i]+=32;i++;}
+                else if(s[i]<='9' && s[i]>='0') {i++;}
+                else
+                {   
+//                      cout<<"before erase "<<s<<endl;
+                         s.erase(s.begin()+i);
+//                      cout<<"after erase "<<s<<endl;
+                }   
+        }   
+//      cout<<s<<endl;
+        int ll=0, rr=s.size()-1; 
+        while(ll<rr)
+        {   
+                if(ll+1==rr) {return s[ll]==s[rr];}
+                else if(ll==rr) {return true;}
+                else
+                {    
+                        if(s[ll]==s[rr]) {ll++; rr--;}
+                        else {return false;}
+                }   
+        }   
+        return true;
+    }   
+
+
+};
