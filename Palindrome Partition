@@ -1,0 +1,74 @@
+class Solution {
+public:
+      bool isPalin(string s, int begin, int end)
+        {   
+                if(begin==end) {return true;}
+                else if(begin+1==end) {return s[begin]==s[end];}
+                else if(begin+1< end)
+                {   
+                        if(s[begin]!=s[end]) {return false;}
+                        else {return isPalin(s, begin+1, end-1);}
+                }   
+        }   
+        string MakeString(string a, int begin, int end)
+        {   
+                string ret;
+                if(begin==end) {ret.push_back(a[begin]);}
+                else
+                {   
+                for(int i=begin; i< end+1; i++) {ret.push_back(a[i]);}
+                }   
+                return ret;
+        }   
+    vector<vector<string> > partition(string s) {
+        vector<vector<string> > ret;
+        queue<vector<string> > qq; 
+        queue<int> index_qq;
+        string a = MakeString(s, 0, 0); 
+        vector<string> x(1,a);
+        qq.push(x);
+        index_qq.push(1);
+        if(s.size()==1) {ret.push_back(x); return ret;}
+        for(int i=1; i< s.size(); i++)
+        {   
+                a.push_back(s[i]); 
+                if(isPalin(a, 0, a.size()-1) && i< s.size()-1) {x=vector<string> (1,a); qq.push(x); index_qq.push(i+1); }
+                else if(isPalin(a, 0, a.size()-1) && i==s.size()-1) { x=vector<string> (1,a); ret.push_back(x);}
+        }   
+        while(qq.size()>0)
+        {   
+                vector<string> temp= qq.front(); qq.pop(); vector<string> tt=temp;
+                int index_temp= index_qq.front(); index_qq.pop(); int endloc= index_temp;
+                if(index_temp==s.size()-1) 
+                { a.clear(); a=MakeString(s,s.size()-1, s.size()-1); temp.push_back(a); ret.push_back(temp);}
+                else
+                {   
+                  a.clear(); a=MakeString(s, index_temp, endloc);  tt=temp; tt.push_back(a); qq.push(tt); index_qq.push(endloc+1); endloc++;
+                  while(endloc< s.size())
+                  {   
+                        a.push_back(s[endloc]); 
+                        if(isPalin(a, 0, a.size()-1) && endloc< s.size()-1)
+                        { tt=temp; tt.push_back(a); qq.push(tt); index_qq.push(endloc+1);}
+                        else if(isPalin(a,0, a.size()-1) && endloc==s.size()-1)
+                        { tt=temp; tt.push_back(a); ret.push_back(tt);}
+                        endloc++;
+                  }   
+                }   
+        }   
+        return ret;
+
+
+        }   
+        template <typename T>
+        void v_v_output(vector<vector<T> > x)
+        {   
+                for(int i=0; i< x.size(); i++)
+                {   
+                        for(int j=0; j< x[i].size(); j++)
+                        {   
+                                cout<<x[i][j]<<" ";
+                        }   
+                        cout<<endl;
+                }   
+        }   
+};
