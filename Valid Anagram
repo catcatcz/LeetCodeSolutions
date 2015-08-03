@@ -1,0 +1,26 @@
+class Solution {
+public:
+     bool isAnagram(string s, string t) {
+        if(s.size()==0 && t.size()==0) {return true;}
+        if(s.size()!=t.size()) {return false;}
+        else
+        {   
+        map<char, int> ms, mt; 
+        for(int i=0; i< s.size(); i++)
+        {   
+        if(ms.find(s[i])==ms.end()) {ms[s[i]]=1;}
+        else {ms[s[i]]++;}
+        if(mt.find(t[i])==mt.end()) {mt[t[i]]=1;}
+        else {mt[t[i]]++;}
+        }   
+        if(ms.size()!=mt.size()) {return false;}
+        for(map<char, int>::iterator it= ms.begin(); it!=ms.end(); it++)
+        {   
+                char a=(*it).first;
+                if(ms[a]!=mt[a]) {return false;}
+        }   
+        return true;
+        }   
+    }   
+
+};
