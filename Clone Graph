@@ -1,0 +1,62 @@
+/**
+ * Definition for undirected graph.
+ * struct UndirectedGraphNode {
+ *     int label;
+ *     vector<UndirectedGraphNode *> neighbors;
+ *     UndirectedGraphNode(int x) : label(x) {};
+ * };
+ */
+class Solution {
+public:
+    UndirectedGraphNode *cloneGraph(UndirectedGraphNode *node) {
+        UndirectedGraphNode *ret;
+        if(node==NULL) {return node;}
+        else if(node->neighbors.size()==0)
+        {   
+                ret=new UndirectedGraphNode(node->label); return ret;
+        }   
+        else
+        {   
+                queue<UndirectedGraphNode*> frontier;
+                set<UndirectedGraphNode*> visited;
+                frontier.push(node); visited.insert(node); 
+                while(frontier.size()>0)
+                {   
+                UndirectedGraphNode *tt= frontier.front(); frontier.pop(); 
+                for(int i=0; i< tt->neighbors.size(); i++)
+                {   
+                        if(visited.find(tt->neighbors[i])==visited.end())
+                        {   
+                                visited.insert(tt->neighbors[i]); frontier.push(tt->neighbors[i]);
+                        }   
+                }   
+                }   
+ //               cout<<"finish visited"<<endl;
+                vector<UndirectedGraphNode*> vv; 
+                map<UndirectedGraphNode*, int> mm; 
+                int index=0; int nodeloc=0;
+                for(set<UndirectedGraphNode*>::iterator it= visited.begin(); it!=visited.end(); it++)
+                {   
+                    if(*it==node) {nodeloc= index;}
+                UndirectedGraphNode *z= new UndirectedGraphNode((*it)->label); vv.push_back(z); mm[*it]= index; index++;
+                
+                }   
+//                cout<<"finish vv, mm"<<endl;
+                index =0; 
+                for(set<UndirectedGraphNode*>::iterator it= visited.begin(); it!=visited.end(); it++)
+                {   
+  //                      cout<<"index="<<index<<" it->neighbor.size()="<<(*it)->neighbors.size()<<endl;
+                        for(int i=0; i< (*it)->neighbors.size(); i++)
+                        {   
+  //                      cout<<"i="<<i<<" it->neighbor.size()="<<(*it)->neighbors.size()<<endl;
+                        int j = mm[(*it)->neighbors[i]];
+   //                     cout<<"j="<<j<<endl;
+                        vv[index]->neighbors.push_back(vv[j]);
+                        }   
+                        index++;
+                }   
+ //               cout<<"finish link vv"<<endl;
+                return vv[nodeloc];
+        }   
+    }   
+};
