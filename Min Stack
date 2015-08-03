@@ -1,0 +1,28 @@
+class MinStack {
+public:
+        stack<int> minele;
+        stack <int> ss; 
+    void push(int x) {
+        if(ss.size()==0)
+        {minele.push(x); ss.push(x);}
+        else if(ss.size()>0)
+        {   
+        if(x< minele.top()) {minele.push(x); }
+        else {minele.push(minele.top());}
+        ss.push(x);
+        }   
+    }   
+
+    void pop() {
+        ss.pop();
+        minele.pop();
+    }   
+
+    int top() {
+        return ss.top();
+    }   
+
+    int getMin() {
+        return minele.top();
+    }   
+};
