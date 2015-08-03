@@ -1,0 +1,33 @@
+class Solution {
+public:
+      vector<int> maxSlidingWindow(vector<int>& nums, int k) {
+        vector<int> maxx;
+        if(nums.size()>0)
+        {   
+        for(int i=0; i< nums.size()-k+1; i++)
+        {   
+        vector<int> temp_k(nums.begin()+i, nums.begin()+k+i);
+//      sort(temp_k.begin(), temp_k.end());
+        int tt = GetMax(temp_k);
+        maxx.push_back(tt);
+        }   
+        return maxx;
+        }   
+        }   
+        template <typename T>
+        void v_output(vector<T> a)
+        {   
+                for(int i=0; i< a.size(); i++)
+                {cout<<a[i]<<" ";}
+                cout<<endl;
+        }   
+        int GetMax(vector<int> aa) 
+        {   
+        int ret= aa[0];
+        for(int i=1; i< aa.size(); i++) {ret=max(ret, aa[i]);}
+        return ret;
+        }   
+
+
+
+};
