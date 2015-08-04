@@ -1,0 +1,64 @@
+class pos{
+public:
+        int x; int y;
+        pos(int xx, int yy) {x=xx; y=yy;}
+};
+class Solution {
+public:
+    vector<vector<string> > solveNQueens(int n) {
+        queue<vector<pos> > qq; 
+        vector<vector<pos> > vvp;
+        vector<vector<string> > vvs;
+        if(n==0) {return vvs;}
+        else if(n==1) {string s="Q"; vector<string> a(1, s); vvs.push_back(a); return vvs;}
+        for(int i=0 ; i< n; i++)
+        {   
+                vector<pos> xx; 
+                pos p = pos(i, 0); xx.push_back(p); qq.push(xx);
+        }   
+        for(int y=1; y< n ; y++)
+        {   
+        int qsize=qq.size();
+        for(int qt=0; qt< qsize; qt++)
+        {   
+        vector<pos> xx= qq.front(); qq.pop();
+        bool pass_x; bool pass_diag;
+        for(int x=0; x< n; x++)
+        {   
+                pass_x=true; pass_diag=true;
+                for(int id=0; id < xx.size(); id++)
+                {   
+//                      cout<<"x="<<x<<"y="<<y<<endl;
+//                      cout<<"xx[id].x="<<xx[id].x<<" xx[id].y="<<xx[id].y<<endl;
+                        if(xx[id].x == x) {pass_x=false; break;}
+                        if( abs(xx[id].x-x) == abs(xx[id].y -y) ) {pass_diag=false; break;}
+                }   
+                if(pass_x && pass_diag && y< n-1)
+                {   
+                vector<pos> tt= xx; pos pp= pos(x, y); tt.push_back(pp); qq.push(tt);
+                }   
+                else if(pass_x && pass_diag && y==n-1)
+                {   
+                vector<pos> tt= xx; pos pp= pos(x, y); tt.push_back(pp); vvp.push_back(tt);
+                }   
+        }   
+        }   
+        qsize=qq.size();
+        //int st; cin>>st;
+        //if(y<n-1 && qq.size()==0) {return vvs;}
+        }   
+    
+        string blank(n, '.');
+        vector<string> sol(n, blank);
+        for(int i=0; i< vvp.size(); i++)
+        {   
+                vector<string> temp = sol;
+                for(int j =0; j< vvp[i].size(); j++)
+                {   
+                        temp[vvp[i][j].x][vvp[i][j].y]='Q';
+                }   
+                vvs.push_back(temp);
+        }   
+        return vvs;
+    }   
+};
