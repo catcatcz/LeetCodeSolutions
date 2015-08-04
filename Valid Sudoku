@@ -1,0 +1,75 @@
+class arrow{
+public:
+        int x; int y;
+        arrow(int xx, int yy) {x=xx; y=yy;}
+        void pos_shift(arrow a)  {x+=a.x; y+=a.y;}
+};
+class Solution {
+public:
+        bool isValidSudoku(vector<vector<char> >& board) {
+        set<char> ss; 
+        //check x
+        bool pass_x= true;
+        for(int i=0; i< 9; i++)
+        {   
+                ss.clear();
+                for(int j=0; j< 9; j++)
+                {   
+                        if(ss.find(board[i][j]) ==ss.end() && board[i][j]!='.')
+                        {ss.insert(board[i][j]);}
+                        else if(ss.find(board[i][j]) !=ss.end() && board[i][j]!='.')
+                        {return false;}
+                        else {}
+                }   
+        }   
+        //check y
+        bool pass_y=true;
+        for(int j=0; j< 9; j++)
+        {   
+                ss.clear();
+                for(int i=0; i<9; i++)
+                {   
+                        if(ss.find(board[i][j]) ==ss.end() && board[i][j]!='.')
+                        {ss.insert(board[i][j]);}
+                        else if(ss.find(board[i][j]) !=ss.end() && board[i][j]!='.')
+                        {return false;}
+                        else
+                        {}  
+                }   
+        }   
+        //check cubic
+        bool pass_cubic=true;
+        vector<arrow> dirs;
+        dirs.push_back(arrow(1,0)); 
+        dirs.push_back(arrow(-1,0));
+        dirs.push_back(arrow(0,1)); 
+        dirs.push_back(arrow(0,-1));
+        dirs.push_back(arrow(1,1)); 
+        dirs.push_back(arrow(-1,-1));
+        dirs.push_back(arrow(-1,1)); 
+        dirs.push_back(arrow(1,-1));
+    
+        for(int i=1; i< 8; i+=3)
+        {   
+                for(int j = 1; j< 8; j+=3)
+                {   
+                ss.clear();
+                arrow center = arrow(i, j); 
+                if(ss.find(board[i][j])  ==ss.end() && board[i][j] !='.') {ss.insert(board[i][j]);}
+                else if(ss.find(board[i][j])  !=ss.end() && board[i][j] !='.') {return false;}
+                else {}
+                for(int k=0; k <dirs.size(); k++)
+                {   
+                        arrow temp= center; temp.pos_shift(dirs[k]);
+                        if(ss.find(board[temp.x][temp.y]) == ss.end() && board[temp.x][temp.y] !='.') {ss.insert(board[temp.x][temp.y]);}
+                        else if(ss.find(board[temp.x][temp.y]) != ss.end() && board[temp.x][temp.y] !='.') {return false;}
+                        else {}
+                }   
+
+                }   
+        }   
+
+        return true;
+    }   
+};
+
