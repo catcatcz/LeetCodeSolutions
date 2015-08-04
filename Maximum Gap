@@ -1,0 +1,52 @@
+class Solution {
+public:
+   void Get(vector<int> nums, int &maxx, int &minn, int &maxgap)
+        {   
+                if(nums.size()==0) {maxx=0; minn=0; maxgap=0;}
+                else if(nums.size()==1) {maxx= nums[0]; minn=nums[0]; maxgap =0;}
+                else if(nums.size()>1)
+                {   
+                maxx=nums[0]; minn=nums[0];
+                for(int i=0; i< nums.size(); i++)
+                {   
+                        maxx= max(maxx, nums[i]); minn= min(minn, nums[i]);
+                }   
+                maxgap= maximumGap(nums);
+                }   
+        }   
+    int maximumGap(vector<int>& nums) {
+        if(nums.size()<2) {return 0;}
+        if(nums.size()==2) {return (nums[0]> nums[1]? nums[0]-nums[1]: nums[1]-nums[0]);}
+        int pivot= nums[0];
+        vector<int> z1, z2; 
+        for(int i=1; i< nums.size(); i++)
+        {   
+                if(nums[i]< pivot) {z1.push_back(nums[i]);}
+                else {z2.push_back(nums[i]);}
+        }   
+        int max1, max2, min1, min2, maxgap1, maxgap2;
+        Get(z1, max1, min1, maxgap1);
+        Get(z2, max2, min2, maxgap2);
+           if(z1.size() >0 && z2.size()>0)
+        {   
+        int g1= pivot - max1;
+        int g2= min2- pivot;
+        return max(max(g1, g2), max(maxgap1, maxgap2));
+        }   
+        else if(z1.size()==0 && z2.size()>0)
+        {   
+        return max(min2-pivot, maxgap2);
+        }   
+        else if(z1.size()>0 && z2.size()==0)
+        {   
+        return max(pivot-max1, maxgap1);
+        }   
+        else
+        {   
+        return 0;
+        }   
+         
+
+    }   
+
+};
