@@ -1,0 +1,64 @@
+class Solution {
+public:
+  bool canFinish(int numCourses, vector<pair<int, int> >& prerequisites) {
+        if(numCourses<2) {return true;}
+        if(prerequisites.size()<2) {return true;}
+        set<int> u;
+       vector< set<int> >  source(numCourses, u), drain(numCourses, u); 
+        queue<int> source_id, drain_id;
+        for(int i=0; i< prerequisites.size(); i++)
+        {   
+        pair<int, int> zz= prerequisites[i];
+        source[zz.first].insert(zz.second);
+        drain[zz.second].insert(zz.first);
+        }   
+        cout<<"finish set"<<endl;
+        for(int i=0; i< numCourses; i++)
+        {   
+        if(source[i].size()!=0 && drain[i].size()==0) {source_id.push(i); }
+        if(source[i].size()==0 && drain[i].size()!=0) {drain_id.push(i); }
+        //if(source[i].size()==0 && drain[i].size()==0) {return false;}
+        }   
+        cout<<"finish source id drain id"<<" source_id.size()="<<source_id.size()<<" drain_id.size()="<<drain_id.size()<<endl;
+        bool getsource= (source_id.size()>0), getdrain=(drain_id.size()>0);
+        cout<<"getsouce="<<getsource<<"  getdrain="<<getdrain<<endl;
+        if(getsource==false || getdrain==false) {return false;}
+        while(getsource && getdrain)
+        {   
+        while(source_id.size()>0)
+        {   
+                int ss= source_id.front(); source_id.pop(); 
+                cout<<"ss="<<ss<<endl;
+                for(set<int>::iterator it= source[ss].begin(); it!=source[ss].end(); it++)
+                {   
+                        drain[*it].erase(ss);
+                }   
+                source[ss].clear();
+        }    
+        while(drain_id.size()>0)
+        {   
+                int dd= drain_id.front(); drain_id.pop();
+                cout<<"dd="<<dd<<endl;
+                for(set<int>::iterator it=drain[dd].begin();it!=drain[dd].end(); it++)
+                {   
+                        source[*it].erase(dd);
+                }   
+                drain[dd].clear();
+        }   
+        for(int i=0; i< numCourses; i++)
+        {   
+        if(source[i].size() !=0 && drain[i].size()==0) {source_id.push(i); cout<<"source "<<i<<endl;}
+        if(source[i].size() ==0 && drain[i].size()!=0) {drain_id.push(i);  cout<<"drain "<<i<<endl;}
+        }   
+        getsource = (source_id.size()>0); getdrain=( drain_id.size()>0);
+        cout<<"getsouce="<<getsource<<"  getdrain="<<getdrain<<endl;
+    
+        }   
+        for(int i=0; i< numCourses; i++)
+        {   
+        if(source[i].size()>0 && drain[i].size()>0) {return false;}
+        }   
+        return true;
+    }   
+
+};
