@@ -1,0 +1,25 @@
+class Solution {
+public:
+   int countPrimes(int n) {
+        vector<bool> xx(n+1, true);
+        xx[1] =false;
+        xx[2]= true;
+
+        int i=2; int j;
+        while(i<= sqrt(n))
+        {   
+        j=2;
+        while(i*j < n)
+        {   
+                xx[i*j]=false;j++;
+        }   
+        i++;
+        }   
+
+        int tot=0;
+        for(int k=1; k<n; k++)
+        {if(xx[k] == true) {tot++;}}
+        return tot;
+    }   
+
+};
