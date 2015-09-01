@@ -1,0 +1,28 @@
+class Solution {
+public:
+         int GetRidof(int tar, int prime)
+        {   
+                int b= tar;
+                while(b/prime*prime == b)
+                {b=b/prime;}
+                return b;
+        }   
+    bool isUgly(int num) {
+        if(num == 1)
+        {return true;}
+        else if(num == 0)
+        {return false;}
+        else
+        {   
+                int bb=num;
+                int cc = GetRidof(bb,2);
+                int dd = GetRidof(cc,3);
+                int ee = GetRidof(dd,5);
+                if(ee !=1)
+                {return false;}
+                else
+                {return true;}
+        }   
+    }   
+
+};
