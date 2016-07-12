@@ -1,0 +1,46 @@
+class LRUCache{
+public:
+    LRUCache(int capacity) {
+        _capacity = capacity;
+    }   
+    size_t size(){return m.size();}   
+    int get(int key) {
+        std::unordered_map<int,int>::iterator it = m.find(key);
+        std::list<int >::iterator itv;
+        int result;
+        if(it != m.end()) 
+        {result = m[key];//itv = std::find(v.begin(), v.end(),key);
+        itv = v.begin(); while(*itv !=key) {itv++;}
+                if(itv != v.end())
+                {   
+                        v.erase(itv);
+                        v.insert(v.begin(), key);
+                }   
+        }   
+        else{result = -1;}
+        return result;
+    }   
+    
+    void set(int key, int value) {
+        std::unordered_map<int,int>::iterator it = m.find(key);
+        std::list<int >::iterator itv;
+        if(it != m.end())
+        {   
+        //int result = get(key);(*(v.begin())) = key;
+        itv = v.begin(); while(*itv != key) {itv++;}
+        v.erase(itv);v.insert(v.begin(),key);
+        m[key] = value; 
+        }   
+        else
+        {   
+        m[key] = value;v.insert(v.begin(),key);
+        if(m.size()> _capacity)
+        {int ptail= *(v.rbegin()); m.erase(ptail) ;v.pop_back(); }
+        }   
+    }   
+
+private:
+    std::list<int> v;
+    std::unordered_map<int, int> m;
+    size_t _capacity;
+};
