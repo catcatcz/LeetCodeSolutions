@@ -1,0 +1,42 @@
+#include<iostream>
+#include<vector>
+#include<stdio.h>
+#include<math.h>
+using namespace std;
+const int devi = 1337;
+class Solution {
+public:
+    int superPow(int a, vector<int>& b) {
+        //1337= 7*191
+        if(a == 1) {return 1;} 
+        else if(a == 0) {return 0;} 
+        else
+        {   
+                int c1= a%devi; int ci=1; int totb=0;
+                vector<int> expTable= ExpTable(a, b.size());
+                for(int ib=0; ib < b.size(); ib++)
+                {   
+                        for(int i=0; i< b[ib]; i++)
+                        {   
+                                ci = (ci * expTable[ib])%devi;
+                        }   
+                }   
+                return ci; 
+        }   
+    }   
+        vector<int> ExpTable(int a, int bsize)
+        {   
+                vector<int> table(bsize,1);
+                table[0] = a%devi;
+                for(int i=1; i< bsize; i++)
+                {   
+                for(int j=0; j<10; j++)
+                {   
+                        table[i] *= table[i-1];
+                        table[i] = table[i]%devi;
+                }   
+                }   
+                reverse(table.begin(),table.end());
+        return table;
+        }   
+};
