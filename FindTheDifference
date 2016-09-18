@@ -1,0 +1,15 @@
+class Solution {
+public:
+    char findTheDifference(string s, string t) {
+        map<char,int> mletter_s, mletter_t;
+        for(int i=0; i< 26; i++)
+        {mletter_s[97+i] = 0;mletter_t[97+i] = 0;} 
+        for(int i=0; i< s.size(); i++)
+        {mletter_s[s[i]]+=1;}
+        for(int i=0; i< t.size(); i++)
+        {mletter_t[t[i]]+=1;}
+        for(int i=0; i< 26; i++)
+        {if(mletter_s[97+i] != mletter_t[97+i]) {return (97+i);}}
+        return 'a';
+    }   
+};
