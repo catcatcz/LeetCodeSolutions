@@ -1,0 +1,29 @@
+class Solution {
+public:
+    int firstUniqChar(string s) {
+        map<char,int> allcharcount;
+        map<char,int> uniqcharloc;
+        for(int i=0; i< s.size(); i++)
+        {   
+                if(allcharcount.find(s[i]) == allcharcount.end())    
+                {   
+                        allcharcount[s[i]] = 1;
+                        uniqcharloc[s[i]] = i;
+                }   
+                else
+                {   
+                        allcharcount[s[i]] +=1;
+                        uniqcharloc.erase(s[i]);
+                }   
+        }   
+        int locmin = s.size();
+        for(map<char,int>::iterator mit= uniqcharloc.begin(); mit!=uniqcharloc.end(); mit++)
+        {   
+                int locnow = mit->second;
+                if(locnow < locmin)
+                {locmin = locnow;}
+        }   
+        if(locmin == s.size()) {return -1;}
+        else {return locmin;}
+    }   
+};
