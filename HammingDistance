@@ -1,0 +1,35 @@
+class Solution {
+public:
+    int hammingDistance(int x, int y) {
+        int x0, y0; 
+        x0=x; y0=y;
+        int dist=0; 
+        while(x0>0 && y0>0) 
+        {   
+            int res_x = x0-x0/2*2; 
+            int res_y = y0-y0/2*2;
+            if(res_x != res_y) {dist++;}
+            x0=x0/2; y0=y0/2;
+        }   
+        if(x0 == 0 && y0 == 0) {return dist;}
+        else if(x0==0 && y0!=0){
+            while(y0 > 0)  
+            {   
+                int res_y = y0-y0/2*2;
+                if(res_y != 0) {dist++;}
+                y0=y0/2;
+            }   
+            return dist;
+        }   
+        else {
+            while( x0 > 0)
+            {   
+                int res_x = x0- x0/2*2;
+                if(res_x != 0) {dist++;}
+                x0 = x0/2;
+            }   
+            return dist;
+        }   
+    
+    }   
+}
