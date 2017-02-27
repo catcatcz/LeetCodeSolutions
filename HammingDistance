@@ -32,4 +32,17 @@ public:
         }   
     
     }   
+       int hammingDistance2(int x,int y) {
+        //int diff = x > y ? x-y: y-x;
+        int diff = x ^ y;
+        int dist = 0;
+        while(diff > 0)
+        {   
+            int res = diff - diff/2*2;
+            if(res != 0) {dist++;}
+            diff = diff/2;
+        }
+        return dist;
+    }
+
 }
