@@ -38,8 +38,8 @@ public:
         int dist = 0;
         while(diff > 0)
         {   
-            int res = diff - diff/2*2;
-            if(res != 0) {dist++;}
+            //int res = diff - diff/2*2;
+            if(diff != diff/2*2) {dist++;}
             diff = diff/2;
         }
         return dist;
