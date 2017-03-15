@@ -1,0 +1,32 @@
+static const char line1[] = {'Q','W','E','R','T','Y','U','I','O','P'};
+static const char line2[] = {'A','S','D','F','G','H','J','K','L'};
+static const char line3[] = {'Z','X','C','V','B','N','M'};
+static const set<char> line1_set(line1,line1+sizeof(line1)/sizeof(char));
+static const set<char> line2_set(line2,line2+sizeof(line2)/sizeof(char));
+static const set<char> line3_set(line3,line3+sizeof(line3)/sizeof(char));
+
+class Solution {
+public:
+    bool isSubset(string A, const set<char> B){ 
+    for(int i=0; i< A.size(); i++){
+        //cout<<"A[i]"<<A[i]<<endl;
+        //for(set<char>::iterator it = B.begin(); it!=B.end(); it++)
+        //{cout<<*it<<endl;}
+        if(B.find(toupper(A[i])) == B.end())
+        {//cout<<"cannot find"<<endl; 
+        return false;}
+    }   
+    return true;
+    }   
+    vector<string> findWords(vector<string>& words) {
+       vector<string> ret;
+       for(unsigned int i=0; i< words.size(); i++)
+       {   
+           if(isSubset(words[i], line1_set)  || isSubset(words[i], line2_set) || isSubset(words[i], line3_set))
+           {   
+               ret.push_back(words[i]);
+           }   
+       }   
+       return ret;
+    }   
+};
