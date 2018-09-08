@@ -1,0 +1,33 @@
+
+class Solution {
+public:
+    int findCircleNum(vector<vector<int> >& M) {
+        int circle_num =0;
+        queue<int> check_order;
+        check_order.push(0);
+        set<int> unchecked;
+        for(size_t i=0; i< M.size(); i++){
+            unchecked.insert(i);
+        }
+        while(unchecked.size() > 0){
+            while(!check_order.empty()){
+                int id = check_order.front();
+                check_order.pop();
+                set<int>::iterator it;
+                for(it = unchecked.begin(); it!= unchecked.end(); ++it) {
+                    int id_uncheck = *it;
+                    if(id_uncheck != id && M[id][id_uncheck] == 1) {
+                        check_order.push(id_uncheck);
+                    }
+                }
+                unchecked.erase(id);
+                //cout<<"unchecked.size"<<unchecked.size()<<endl;
+            }
+            check_order.push(*(unchecked.begin()));
+            circle_num +=1;
+        }
+
+        return circle_num;
+    }
+
+};
