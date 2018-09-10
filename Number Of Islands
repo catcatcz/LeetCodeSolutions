@@ -1,0 +1,42 @@
+class Solution {
+   public:
+    int numIslands(vector<vector<char> >& grid) {
+    map<int, set<pair<int ,int> >  > islands;
+    set<pair<int, int> > un_visited;
+    for(size_t i=0; i< grid.size(); i++) {
+        for(size_t j=0; j< grid[0].size(); j++) {
+            if(grid[i][j] == '1') {un_visited.insert(make_pair(i,j));}
+        }   
+    }   
+    int ids=0;
+    while(!un_visited.empty()){
+        pair<int, int> cur = *un_visited.begin();
+        un_visited.erase(cur);
+        int x = cur.first; int y = cur.second;
+        pair<int, int> left = make_pair(x-1, y); 
+        pair<int, int> down = make_pair(x, y-1);
+        
+        set<int> mapids_set; vector<int> mapids;
+        for(map<int, set<pair<int, int> > >::iterator it = islands.begin(); it!= islands.end(); ++it){
+               if(x > 0 && it->second.find(left) != it->second.end()) { mapids_set.insert(it->first);}
+               if(y > 0 && it->second.find(down) != it->second.end()) { mapids_set.insert(it->first);}  
+        }   
+        for(set<int>::iterator it = mapids_set.begin(); it!= mapids_set.end(); ++it) {
+            mapids.push_back(*it);
+        }   
+        if(mapids.size() == 0) {
+            set<pair<int, int> > temp; temp.insert(cur); islands[ids] = temp; ids++;
+        }   
+        else if(mapids.size() == 1) {
+            islands[mapids[0]].insert(cur);
+        }   
+        else {
+            for(size_t i=1; i< mapids.size(); i++) {
+                islands[mapids[0]].insert(islands[mapids[i]].begin(), islands[mapids[i]].end());
+                islands.erase(mapids[i]);
+            }   
+            islands[mapids[0]].insert(cur);
+        }   
+        }   
+    return islands.size();
+    }   
