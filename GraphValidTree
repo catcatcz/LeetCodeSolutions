@@ -1,0 +1,36 @@
+#include <iostream>
+#include <vector>
+#include <map>
+#include <set>
+using namespace std;
+class Solution {
+public:
+     int findSet(vector<int>& roots, int i){ 
+        if(roots[i] == i) {return i;} //cout<<"i="<<i<<" roots[i]="<<roots[i]<<endl;
+        roots[i] = findSet(roots, roots[i]);//cout<<"i="<<i<<" roots[i]="<<roots[i]<<endl;
+        return roots[i];
+    }   
+
+    bool validTree(int n, vector<pair<int, int> >& edges) {
+        vector<int> roots(n,0);
+        int count = n;
+        for(size_t i=0;i<n;i++) {roots[i] = i;} 
+        for(size_t i=0; i< edges.size(); i++) {
+            int root1= findSet(roots, edges[i].first);
+            int root2= findSet(roots, edges[i].second);
+            if(root1 != root2) {roots[root1] = roots[root2];}
+            //for(size_t k=0; k< n; k++){cout<<roots[k]<<" ";}cout<<endl;
+            //cout<<"root1="<<root1<<"root2="<<root2<<endl;
+            if(root1 == root2 ) {return false;}
+            count--;
+        }   
+    
+        if(count > 1) {return false;}
+        return true;
+    }   
+
+};
+int main()
+{
+    return 1;
+}
