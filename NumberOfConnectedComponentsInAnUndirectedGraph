@@ -12,39 +12,26 @@ public:
         if(edges.size() ==0) {return n;} 
         //actual code
         if(n ==0) {return 1;} 
-        map<int, int> NodeToComponent;
-        //map<int, set<int> > ComponentToSet;
-        for(int i=0; i< n; i++) {
-            NodeToComponent[i] = i;
-            //set<int> temp; temp.insert(i); ComponentToSet[i] = temp;
-        }   
+        vector<int> roots(n,0);
+        for(size_t i=0; i< n; i++){roots[i]=i;}
+        int count =n; 
         for(int i=0; i< edges.size(); i++){
             int f1 = edges[i].first;
             int f2 = edges[i].second;
-            int f1_setID = NodeToComponent[f1];
-            int f2_setID = NodeToComponent[f2];
-            if (f1_setID == f2_setID) {continue;}
-            else // merge two sets into f1's set
-            {   
-            //set<int> s1 = ComponentToSet[f1_setID];
-            //set<int> s2 = ComponentToSet[f2_setID];
-            //for(set<int>::iterator it= s2.begin(); it!= s2.end(); ++it) {
-            //    ComponentToSet[f1_setID].insert(*it);
-            //} 
-            //ComponentToSet.erase(f2_setID);
-            for(map<int, int>::iterator it= NodeToComponent.begin(); it!= NodeToComponent.end(); ++it){
-                if(it->second == f2_setID){
-                    it->second = f1_setID;
-                }   
-            }   
+            int root1 = findSet(roots, f1);
+            int root2 = findSet(roots, f2);
+            if(root1 != root2) {
+                roots[root1] = roots[root2];
+                count--;
             }   
         }   
-        set<int> ids;
-        for(map<int, int>::iterator it= NodeToComponent.begin(); it!= NodeToComponent.end(); ++it) {
-            ids.insert(it->second);
-        }   
-        return ids.size();
-        //return ComponentToSet.size();
+        return count;
+    }   
+    int findSet(vector<int>& roots, int i) {
+        if(roots[i] == i) {return i;} 
+        roots[i] = findSet(roots, roots[i]);
+        return roots[i];
     }   
     
 };
+
