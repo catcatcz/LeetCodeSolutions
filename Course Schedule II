@@ -1,0 +1,38 @@
+  vector<int> findOrder(int numCourses, vector<pair<int, int> >& prerequisites) {
+        vector<int> ret;
+        if(numCourses==0) {return ret;}
+        if(numCourses == 1) {ret.push_back(0); return ret;}
+        vector<int> temp(numCourses, 0); 
+        vector<vector<int> > mat(numCourses, temp);
+        vector<int> in_count(numCourses, 0); 
+        for(size_t i=0; i< prerequisites.size(); i++){
+            int begin = prerequisites[i].first;
+            int end = prerequisites[i].second;
+            mat[begin][end] = 1;
+            in_count[end]++;
+        }   
+        set<int> residue; 
+        for(size_t i=0; i< numCourses; i++) {residue.insert(i);}
+        bool canReduce= true;
+        while(canReduce && residue.size()> 0) {
+            set<int> to_reduce;
+            for(set<int>::iterator it= residue.begin(); it!= residue.end(); ++it){
+                if(in_count[*it] == 0) {ret.insert(ret.begin(),*it); to_reduce.insert(*it);}
+            }   
+            
+            if(to_reduce.size()== 0) {canReduce= false;}
+            for(set<int>::iterator it= to_reduce.begin(); it!= to_reduce.end(); ++it){
+                residue.erase(*it);
+                for(set<int>::iterator itp = residue.begin(); itp != residue.end(); ++itp){
+                    if(mat[*it][*itp]== 1) {in_count[*itp]--;}
+                }   
+                
+            }
+            
+        }   
+
+        if(residue.size()==0){return ret;}
+        else if(residue.size()==1) {ret.insert(ret.begin(),*residue.begin());}
+        else{ret.clear();}
+        return ret;
+    }   
