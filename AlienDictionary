@@ -1,0 +1,61 @@
+class Solution {
+public:
+   string alienOrder(vector<string>& words) {
+        string ret;
+        vector<int> ret_vec;
+        set<int> ret_char;
+        set<pair<int, int> > relation;
+        for(size_t i=0; i< words.size(); i++){
+            for(size_t j=0; j< words[i].size(); j++){
+                ret_char.insert(words[i][j]);
+            }   
+        }   
+        map<int, size_t> count_bigger;
+        for(set<int>::iterator it=ret_char.begin(); it!=ret_char.end(); ++it){
+            count_bigger[*it] =0; 
+        }   
+
+        for(size_t i=0; i< words.size(); i++){
+            for(size_t j= i+1; j< words.size(); j++){
+                int itermax = min(words[i].size(), words[j].size());
+                for(size_t col=0; col < itermax; col++ ){
+                    if(words[i][col] == words[j][col]) {continue;}
+                    else {
+                        pair<int, int> temp = make_pair(words[i][col], words[j][col]);
+                        pair<int, int> temp_inv = make_pair(words[j][col], words[i][col]);
+                        if(relation.find(temp_inv) != relation.end()) {ret.clear(); return ret;}
+                        if(relation.find(temp)== relation.end()){count_bigger[words[j][col]]++;}
+                        relation.insert(temp);
+                        
+                        break;
+                    }   
+                }   
+            }   
+        }   
+
+    
+       bool canReduce= true;
+       while(canReduce && ret_char.size() > 0){ 
+            canReduce = false; int key=-1000;
+            for(set<int>::iterator it= ret_char.begin(); it!= ret_char.end(); ++it){
+                if(count_bigger[*it] == 0) {
+                    canReduce = true; key= *it;ret_vec.push_back(key);
+                    for(set<int>::iterator its = ret_char.begin(); its!= ret_char.end(); ++its){
+                        pair<int, int> temp = make_pair(*it, *its);
+                        //for(map<int,size_t>::iterator pp= count_bigger.begin(); pp!= count_bigger.end(); ++pp){cout<<(char)pp->first<<"->"<<pp->second<<",";}
+                        if(relation.find(temp) != relation.end()) { count_bigger[*its]--;}
+                        //for(map<int,size_t>::iterator pp= count_bigger.begin(); pp!= count_bigger.end(); ++pp){cout<<(char)pp->first<<"->"<<pp->second<<",";}
+                        //cout<<endl;
+                    }
+                    //cout<<"key "<<(char)key<<endl;
+                    break;
+                }   
+            } 
+            if(canReduce) {ret_char.erase(key);}
+        }   
+           
+        ret = string(ret_vec.begin(), ret_vec.end());
+
+        return ret;    
+   }
+};
