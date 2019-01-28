@@ -1,0 +1,48 @@
+class Solution {
+public:
+    int shoppingOffers(vector<int>& price, vector<vector<int> >& special, vector<int>& needs) {
+        map<vector<int>, int > price_dict;
+        queue<vector<int> > price_queue;
+        vector<int> temp(price.size(), 0); 
+        price_queue.push(temp);
+        price_dict[vector<int>(price.size(), 0)] = 0;
+        while(price_queue.size() > 0) {
+            vector<int> config_cur = price_queue.front(); price_queue.pop();
+            bool use_special = false;
+            for(size_t i=0; i< special.size(); i++) {
+                vector<int> config_next = vector<int>(price.size(), 0); 
+                bool config_next_valid = true;
+                int bare_price_increase = 0;
+                for(size_t j=0; j< price.size(); j++) {
+                    config_next[j] = config_cur[j] + special[i][j];
+                    if(config_next[j] > needs[j]) {config_next_valid = false; break;}
+                    bare_price_increase += price[j] * special[i][j];
+                }   
+                int price_next = special[i][price.size()] + price_dict[config_cur];
+                int price_next_bare = bare_price_increase + price_dict[config_cur];
+                if(config_next_valid == true) {
+                    if(price_dict.find(config_next) == price_dict.end()) {price_dict[config_next] = min(price_next, price_next_bare);}
+                    else{
+                        price_dict[config_next] = min(price_next_bare,min(price_next, price_dict[config_next]));
+                    }   
+                    price_queue.push(config_next);
+                    use_special = true;
+                }   
+            }   
+            if(use_special == false) {
+                int price_next = price_dict[config_cur]; 
+                for(size_t i=0; i< needs.size(); i++){
+                    price_next += price[i] * (needs[i] - config_cur[i] );
+                }   
+                if(price_dict.find(needs) == price_dict.end()) {
+                price_dict[needs] = price_next; }
+                else {
+                price_dict[needs] = min(price_next, price_dict[needs]);
+                }   
+            }   
+        }    
+   
+        return price_dict[needs];    
+    }   
+    
+};
