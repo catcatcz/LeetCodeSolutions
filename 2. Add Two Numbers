@@ -1,87 +1,31 @@
- #include<iostream>
- #include<new>
-using namespace std;
-	struct ListNode {
- 	int val;
- 	 ListNode *next;
- 	 ListNode(int x) : val(x), next(NULL) {}
-	 };
-
-	 ListNode *addTwoNumbers(ListNode *l1, ListNode *l2) {
-        ListNode *p1,*p2,*ptot;
-	ListNode *pnow,*ppre;
-        p1=l1;
-        p2=l2;
-	ptot=new ListNode(0);
-	pnow=ptot;
-	while(p1 !=NULL || p2!=NULL)
-	{
-        while(p1!=NULL && p2!=NULL)
-        {
-            pnow->val=pnow->val+p1->val+p2->val;
-            pnow->next=new ListNode(pnow->val/10);
-            pnow->val=pnow->val-pnow->val/10*10;
-		ppre=pnow;
-            pnow=pnow->next;
-		p1=p1->next;
-		p2=p2->next;
-	}
-	if(p1==NULL && p2 !=NULL)
-	{ while(p2!=NULL)
-	{pnow->val=pnow->val+p2->val;
-	pnow->next=new ListNode(0);
-	ppre=pnow;
-	  pnow=pnow->next;p2=p2->next;}}
-	else if(p1!=NULL && p2==NULL)
-	{ while(p1!=NULL)
-	{
-	cout<<"p1 "<<p1->val<<endl;
-	pnow->val=pnow->val+p1->val;
-	cout<<"pnow"<<pnow->val<<endl;
-	pnow->next=new ListNode(0);
-	ppre=pnow;
-	 pnow=pnow->next;p1=p1->next;
-	}}
-	}
- 	if(pnow->val==0)
-        {
-        ppre->next=NULL;
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* addTwoNumbers(ListNode* l1, ListNode* l2, int carry = 0) {
+        if (l1 == nullptr && l2 == nullptr) {
+            if (carry != 0)
+                return new ListNode(carry);
+            return nullptr;
         }
-        return ptot;
-      
-	}
-
-	int main()
-	{
-	int a1[]={1,8};
-	int a2[]={0};
-	int size1=2;
-	int size2=1;
-	ListNode *l1,*l2;
-	ListNode p0(0);
-	ListNode *p1,*p2;
-	l1=new ListNode(a1[0]);
-	p1=l1;
-	l2=new ListNode(a2[0]);
-	p2=l2;
-	for(int i=1;i<size1;i++)
-	{
-	p1->next=new ListNode(a1[i]);
-	p1=p1->next;
-	} 
-	for(int i=1;i<size2;i++)
-	{
-	cout<<"a2  "<<a2[i]<<endl;
-	cout<<"p2  "<<p2->val<<endl;
-	p2->next=new ListNode(a2[i]);
-	p2=p2->next;
-	} 
-	ListNode *ltot=addTwoNumbers(l1,l2);
-	ListNode *p=ltot;
-	while(p !=NULL)
-	{
-	cout<<"p  "<<p->val<<endl;
-	p=p->next;
-	}
-	}
-
+        int sum =carry;
+        if (l1 != nullptr) {
+            sum += l1->val;
+            l1 = l1->next;
+        }
+        if (l2 != nullptr) {
+            sum += l2->val;
+            l2 = l2->next;
+        }
+        
+        ListNode* sumNode = new ListNode(sum % 10);
+        sumNode->next = addTwoNumbers(l1, l2, sum / 10);
+        return sumNode;
+    }
+};
