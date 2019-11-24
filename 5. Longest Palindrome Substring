@@ -1,89 +1,42 @@
-class palin_even{
-public: 
-        int center1, center2;
-        int extend;
-        palin_even(int c1, int c2, int e) {center1=c1;center2=c2; extend=e;}
-//      palin_even(palin_even  x) {center1=x.center1; center2=x.center2; extend=x.extend;}
-};
-class palin_odd{
-public:
-        int center;
-        int extend;
-        palin_odd(int c, int e) {center=c; extend=e;}
-//      palin_odd(palin_odd x) {center=x.center; extend=x.extend;}
-};
 class Solution {
 public:
-  string longestPalindrome(string s) {
-        if(s.size() <2) {return s;}
-        queue<palin_even> even;
-        queue<palin_odd> odd;
-        for(int i=0; i< s.size(); i++)
-        { palin_odd po=palin_odd(i,0); odd.push(po);}
-        for(int i=0; i< s.size()-1; i++)
-        {   
-                if(s[i]==s[i+1])
-                {palin_even pe=palin_even(i,i+1,0); even.push(pe);}
-        }   
-        int max_even=0; palin_even pe_max(0,0,0);
-        if(even.size()>0) {max_even=2;pe_max=even.front();}
-        int max_odd=1;palin_odd po_max(0,0); 
-        while(even.size()>0)
-        {   
-                palin_even pe=even.front(); even.pop();
-                //max_even=max(max_even, 2*pe.extend+2);
-                if(max_even<= 2*pe.extend+2)
-                {pe_max=pe; max_even=2*pe.extend+2;}
-                pe.extend++;
-                int left_bc =pe.center1-pe.extend;
-                int right_bc=pe.center2+pe.extend;
-                if(left_bc>=0 && right_bc< s.size())
-                {   
-                        if(s[left_bc]==s[right_bc]) {even.push(pe);}
-                }   
-        }   
-        while(odd.size()>0)
-        {   
-                palin_odd po= odd.front(); odd.pop();
-                //max_odd=max(max_odd, 2*po.extend+1);
-                if(max_odd<= 2*po.extend+1)
-                {po_max=po; max_odd=2*po.extend+1;}
-                po.extend++;
-                int left_bc =po.center-po.extend;
-                int right_bc=po.center+po.extend;
-                //cout<<"leftbc="<<left_bc<<" right_bc="<<right_bc<<endl;
-                if(left_bc>=0 && right_bc<s.size())
-                {   
-                        if(s[left_bc]==s[right_bc]) {odd.push(po);}
-                }   
-        }   
-        //cout<<"max_even"<<max_even<<" max_odd"<<max_odd<<endl;
-
-        if(max_even>max_odd) 
-        {   
-                int left_bc =pe_max.center1-pe_max.extend;
-                int right_bc=pe_max.center2+pe_max.extend;
-                string u;
-                for(int i=left_bc; i< right_bc+1; i++)
-                {   
-                        u.push_back(s[i]);
-                }   
-                return u;
-        }   
-        else
-        {   
-        //      cout<<"max is odd"<<endl;
-                int left_bc =po_max.center-po_max.extend;
-                int right_bc=po_max.center+po_max.extend;
-                string u;
-        //      cout<<"find="<<left_bc<<right_bc<<endl;
-                for(int i=left_bc; i< right_bc+1; i++)
-                {   
-                        u.push_back(s[i]);
-                }   
-                return u;
-        }   
-    }   
-
+    string longestPalindrome(string s) {
+        if(s.size()<2) {return s;}
+        vector<vector<pair<int, int> > > lpss(s.size(), vector<pair<int, int>>(s.size(),make_pair(0,0)));
+        vector<vector<bool> > isP(s.size(), vector<bool>(s.size(), false));
+        
+        for(size_t i=0; i< s.size(); i++) {
+            lpss[i][i] = make_pair(i,i);isP[i][i] = true;
+            if(i+1 >= s.size()) {continue;}
+            if(s[i] == s[i+1]){
+                lpss[i][i+1] = make_pair(i,i+1);
+                isP[i][i+1] = true;
+            }
+            else{
+                lpss[i][i+1] = make_pair(i,i); 
+                isP[i][i+1] = false;
+            }
+        }
+        
+        for(size_t delta=2; delta< s.size(); delta++){
+            for(size_t i=0; i< s.size()-delta; i++){
+                isP[i][i+delta] = ((s[i] == s[i+delta]) && isP[i+1][i+delta-1]);
+                if(isP[i][i+delta]) {
+                    lpss[i][i+delta] = make_pair(i, i+delta);
+                }
+                else{
+                    pair<int, int> range1 = lpss[i][i+delta-1];
+                    pair<int, int> range2 = lpss[i+1][i+delta];
+                    if(range1.second - range1.first > range2.second- range2.first){
+                        lpss[i][i+delta] = range1;
+                    }
+                    else{
+                        lpss[i][i+delta] = range2;
+                    }
+                }
+            }
+        }
+        pair<int, int> range = lpss[0][s.size()-1];
+        return s.substr(range.first, range.second-range.first+1);
+    }
 };
-
