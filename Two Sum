@@ -10,7 +10,7 @@ public:
         for(size_t i=0; i< numbers.size(); i++){
             if (countmap.find(numbers[i]) == countmap.end()){ vector<int> u(1, i); countmap[numbers[i]] =u; }
             else{
-                countmap[numbers[i]].push_back(i);
+                if(countmap[numbers[i]].size()==1){countmap[numbers[i]].push_back(i);}
             }
         }
         for(size_t i=0; i< numbers.size(); i++){
