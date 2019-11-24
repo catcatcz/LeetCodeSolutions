@@ -1,0 +1,32 @@
+#include <vector>  
+#include <algorithm> 
+#include <map>
+class Solution {
+public:
+    
+    vector<int> twoSum(vector<int> &numbers, int target) {
+        vector<int> ret(2,0);
+        map<int, vector<int> > countmap;
+        for(size_t i=0; i< numbers.size(); i++){
+            if (countmap.find(numbers[i]) == countmap.end()){ vector<int> u(1, i); countmap[numbers[i]] =u; }
+            else{
+                countmap[numbers[i]].push_back(i);
+            }
+        }
+        for(size_t i=0; i< numbers.size(); i++){
+            if(countmap.find(target - numbers[i]) != countmap.end()){
+               if(target-numbers[i] != numbers[i]){
+                   ret[0] = i; ret[1] = countmap[target-numbers[i]][0];
+                   return ret;
+               }
+                else{
+                    if(countmap[numbers[i]].size() > 1){
+                        ret[0] =i; ret[1] = countmap[numbers[i]][1];
+                        return ret;
+                    }
+                }
+            }
+        }
+        return ret;
+    }
+};
