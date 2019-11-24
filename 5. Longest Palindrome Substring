@@ -15,6 +15,7 @@ public:
 class Solution {
 public:
   string longestPalindrome(string s) {
+        if(s.size() <2) {return s;}
         queue<palin_even> even;
         queue<palin_odd> odd;
         for(int i=0; i< s.size(); i++)
