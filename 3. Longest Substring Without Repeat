@@ -1,25 +1,33 @@
 class Solution {
 public:
       int lengthOfLongestSubstring(string s) {
-        int len=1;
-        if(s.size()<2) {return s.size();}
-        set<char> ss; 
-        queue<char> qq; 
-        for(int i=0; i< s.size(); i++)
-        {   
-                if(ss.find(s[i])== ss.end())
-                {ss.insert(s[i]); qq.push(s[i]); if(i==s.size()-1) {len= (ss.size()>len? ss.size():len);}}
-                else
-                {
-                    len= (ss.size()> len? ss.size(): len);
-                while(ss.find(s[i])!= ss.end())
-                {   
-                char temp= qq.front(); qq.pop(); ss.erase(temp);
-                } 
-                ss.insert(s[i]); qq.push(s[i]); if(i==s.size()-1) {len=(ss.size()>len? ss.size():len);}
-                }   
-        }   
-        return (ss.size()>len? ss.size():len);
+          if(s.size()<2){return s.size();}
+          int length_of_lss=1;
+          int curlength=1;
+          map<char,int> curchars; curchars[s[0]]=0;
+          int ibegin=0;
+          int iend=1;
+          
+          while(ibegin < s.size() and iend< s.size()){
+              if(curchars.find(s[iend]) == curchars.end()){
+                  curlength++;
+                  curchars[s[iend]] = iend;
+                  if(curlength > length_of_lss) {length_of_lss=curlength;} 
+              }
+              else{
+                  
+                  int erase_end = curchars[s[iend]];
+                  for(int i=ibegin; i< erase_end+1; i++) {curchars.erase(s[i]);}
+                                  
+                  curlength=curchars.size()+1;
+                  curchars[s[iend]] = iend;
+                
+                  ibegin = erase_end +1;
+                       
+              }
+              iend++;
+          }
+          return length_of_lss;
     }   
 
 
