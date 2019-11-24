@@ -1,32 +1,40 @@
 class Solution {
 public:
     string longestPalindrome(string s) {
-        if(s.size() < 2) {return s;}
+        if(s.size() <2) {return s;}
+        stack<pair<int, int>> stack_even;
+        stack<pair<int, int>> stack_odd;
         pair<int, int> best_even=make_pair(1,0);
-        pair<int, int> best_odd=make_pair(0,0);
-        queue<pair<int, int>> candidates;
-        for(int i=0; i< s.size(); i++){candidates.push(make_pair(i,i));}
+        pair<int, int> best_odd = make_pair(0,0);
+        for(int i=0; i< s.size(); i++){stack_odd.push(make_pair(i,i));}
         for(int i=0; i< s.size()-1; i++){
-            if(s[i]==s[i+1]){candidates.push(make_pair(i,i+1)); best_even=make_pair(i,i+1);}
-        }
-        
-        while(!candidates.empty()){
-            pair<int, int> range = candidates.front();
-            candidates.pop();
-            if(range.first-1 >= 0 && range.second+1< s.size() && s[range.first-1] == s[range.second+1]){
-                pair<int, int> newrange = make_pair(range.first-1, range.second+1);
-                if((range.second - range.first )%2==0 && newrange.second - newrange.first > best_odd.second - best_odd.first){
-                    best_odd = newrange;
-                }
-                if((range.second-range.first)%2==1 && newrange.second-newrange.first> best_even.second- best_even.first){
-                    best_even = newrange;
-                }
-                candidates.push(newrange);
+if(s[i] == s[i+1]){stack_even.push(make_pair(i,i+1));best_even = make_pair(i,i+1);}}
+        while(!stack_even.empty() || !stack_odd.empty()){
+        best_even = stack_even.empty()? best_even: stack_even.top();
+        best_odd = stack_odd.empty()? best_odd:stack_odd.top();
+        while(!stack_even.empty() ){
+            pair<int, int> cur = stack_even.top();
+            stack_even.pop();
+            if(cur.first-1 >=0 && cur.second+1 < s.size() && s[cur.first-1] == s[cur.second+1]){
+                cur = make_pair(cur.first-1, cur.second+1);
+                stack_even.push(cur);
+                if(cur.second - cur.first > best_even.second - best_even.first){best_even = cur;}
             }
         }
-        pair<int, int> best = (best_odd.second - best_odd.first > best_even.second-best_even.first)? best_odd: best_even;
-        //cout<<"best even"<<best_even.first<<","<<best_even.second<<endl;
-        //cout<<"best odd"<<best_odd.first<<","<<best_odd.second<<endl;
-        return s.substr(best.first, best.second - best.first+1);
+        if(best_even.first ==0 && best_even.second == s.size()-1) {break;}
+        while(!stack_odd.empty() )
+        {
+            pair<int, int> cur = stack_odd.top();
+            stack_odd.pop();
+            if(cur.first-1 >=0 && cur.second+1 < s.size() && s[cur.first-1] == s[cur.second+1]){
+                cur = make_pair(cur.first-1, cur.second+1);
+                stack_odd.push(cur);
+                if(cur.second - cur.first > best_odd.second - best_odd.first){best_odd= cur;}
+            }
+        }
+        if(best_odd.first ==0 && best_odd.second == s.size()-1) {break;}
+        }
+        pair<int, int> best = best_even.second - best_even.first > best_odd.second - best_odd.first? best_even: best_odd;
+        return s.substr(best.first, best.second-best.first+1);
     }
 };
