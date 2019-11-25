@@ -1,0 +1,36 @@
+#include<iostream>
+#include<vector>
+#include<algorithm>
+using namespace std;
+class Solution {
+public:
+int area(vector<int> &height, int a, int b)
+{
+    return min(height[a],height[b])*abs(b-a);
+}
+int maxArea(vector<int> &height) {
+   int begin=0;
+    int end=height.size()-1;
+    int left, right;
+    left=begin; right=end;
+    int area_now,area_max;
+    area_max=area(height, begin,end);
+    while(left<right)
+    {   
+        if(height[left]<height[right])
+        {   
+            area_now=area(height, left+1, right);
+            if(area_now>area_max){area_max=area_now; begin=left+1;}
+            left=left+1;
+        }   
+        else if(height[left]>=height[right])
+        {   
+            area_now=area(height, left, right-1);
+            if(area_now>area_max) {area_max=area_now;end=right-1;}
+            right=right-1;
+        }   
+    }   
+    return area_max;
+
+}
+};
