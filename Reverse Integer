@@ -3,23 +3,23 @@ public:
     int reverse(int x) {
         int sign=1;
         if(x<0) {sign=-1;}
-        vector<string> sx;
+        vector<int> sx;
         int r = 0;
         while(x>0 || x<0){
             r = x%10;int ar = r>0? r:-r;
             x=x/10;
-            sx.push_back(to_string(ar));
+            sx.push_back(ar);
         }
         //for(auto it: sx){cout<<it;}
         int begin =0;
         for(int i=0; i< sx.size(); i++){
-            int sd = stoi(sx[i]);
+            int sd = sx[i];
             if(sd !=0) {begin=i; break;}
         }
         int ret = 0;
         for(int i=begin; i< sx.size(); i++){
-            int sd = stoi(sx[i]);
-            cout<<"sd="<<sd<<endl;;
+            int sd = sx[i];
+            //cout<<"sd="<<sd<<endl;;
             if(sign <0) {
                 if(ret < INT_MIN/10) {return 0;}
                 ret = ret*10-sd; 
