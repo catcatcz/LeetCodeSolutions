@@ -7,13 +7,14 @@ public:
        int i=1;
         while(i< nums.size()){
             if(i==1 or nums[i-1] != nums[i-2]){
-            vector<vector<int> >ret_temp = twoSum(nums, i, nums.size()-1, -nums[i-1] );
+            set<vector<int> >ret_temp = twoSum(nums, i, nums.size()-1, -nums[i-1] );
             for(auto it: ret_temp){
                 vector<int> s(1, nums[i-1]);
                 s.push_back(it[0]);
                 s.push_back(it[1]);
                 ret_set.insert(s);
             }
+                ret_temp.clear();
             }
             i++;
         }
@@ -22,24 +23,24 @@ public:
        }
        return ret;
    }
-    vector<vector<int> > twoSum(vector<int>& nums, int begin, int end, int target){
-        //cout<<"inside two sum"<<endl;
+    set<vector<int> > twoSum(vector<int>& nums, int begin, int end, int target){
         int n1 = begin; int n2 = end;
-        vector<vector<int>> ret;
+        set<vector<int>> ret_set;
+        
         while(n1>= begin && n2<=end && n1<n2){
-            //cout<<"nums[n1]="<<nums[n1]<<", nums[n2]="<<nums[n2]<<";target="<<target<<endl;
-            if(nums[n1] + nums[n2] == target){
-                ret.push_back(vector<int>{nums[n1], nums[n2]});
-                n1++;n2--;
-            }
-            else if(nums[n1] + nums[n2] < target){
+            if(nums[n1] + nums[n2] < target){
                 n1++;
             }
-            else {
+            else if(nums[n1] + nums[n2] > target){
                 n2--;
             }
+            else{
+                ret_set.insert(vector<int>{nums[n1], nums[n2]});
+                n1++;n2--;
+            }
         }
-        return ret;
+       
+        return ret_set;
     }
 
 };
