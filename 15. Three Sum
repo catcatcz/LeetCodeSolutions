@@ -9,10 +9,7 @@ public:
             if(i==1 or nums[i-1] != nums[i-2]){
             set<vector<int> >ret_temp = twoSum(nums, i, nums.size()-1, -nums[i-1] );
             for(auto it: ret_temp){
-                vector<int> s(1, nums[i-1]);
-                s.push_back(it[0]);
-                s.push_back(it[1]);
-                ret_set.insert(s);
+                ret_set.insert(it);
             }
                 ret_temp.clear();
             }
@@ -35,7 +32,7 @@ public:
                 n2--;
             }
             else{
-                ret_set.insert(vector<int>{nums[n1], nums[n2]});
+                ret_set.insert(vector<int>{nums[n1], nums[n2], -target});
                 n1++;n2--;
             }
         }
