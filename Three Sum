@@ -2,66 +2,44 @@ class Solution {
 public:
    vector<vector<int> > threeSum(vector<int>& nums) {
         sort(nums.begin(), nums.end());
-        int pivot=0;
-        vector<vector<int> >  ret;
-        if(nums.size()<3) {return ret;}
-        if(nums[0]>0) {return ret;}
-        if(nums[nums.size()-1]<0) {return ret;}
-        for(int i=1; i< nums.size()-1; i++)
-        {   
-                if(nums[i-1]<=0 && nums[i+1] >0) {pivot = i; break;}
-        }   
-          if(nums[pivot] ==0)
-        {   
-                if(nums[pivot-1]==0 && nums[pivot-2] == 0) {int a[]={0,0,0}; vector<int> vv(a, a+3); ret.push_back(vv);}
-        }  
-        for(int i=0; i<= pivot; i++)
-        {   
-                int neg = nums[i]; int tar = -neg;
-                int ll = pivot +1; int rr = nums.size()-1;
-                bool pre=(nums[i]==nums[i-1] && i>0);
-                if(!pre)
-                {   
-                while(ll <rr)
-                {   
-                        if(nums[ll]+nums[rr] ==tar) 
-                        {   
-                                int a[]={neg, nums[ll], nums[rr]}; vector<int> vv(a, a+3); ret.push_back(vv);
-                                int lll= ll+1; int rrr=rr-1;
-                                while(nums[lll] == nums[ll] && lll < rr) {lll++;} ll= lll;
-                                while(nums[rrr] == nums[rr] && rrr > ll) {rrr--;} rr= rrr;
-                        }   
-                        else if(nums[ll] + nums[rr] > tar) {rr--;}
-                        else if(nums[ll] + nums[rr] < tar) {ll++;}
-                        else {}
-                }   
-                }   
-        }    
-
-        for(int i =pivot+1; i < nums.size(); i++)
-        {   
-                int pos= nums[i] ; int tar = -pos;
-                int ll = 0; int rr = pivot;
-                bool pre=(nums[i]==nums[i-1] && i> pivot+1);
-                if(!pre)
-                {   
-                while(ll <rr)
-                {   
-                        if(nums[ll]+nums[rr] ==tar) 
-                        {   
-                                int a[]={nums[ll], nums[rr], pos}; vector<int> vv(a, a+3); ret.push_back(vv);
-                                int lll= ll+1; int rrr=rr-1;
-                                while(nums[lll] == nums[ll] && lll < rr) {lll++;} ll= lll;
-                                while(nums[rrr] == nums[rr] && rrr > ll) {rrr--;} rr= rrr;
-                        }   
-                        else if(nums[ll] + nums[rr] > tar) {rr--;}
-                        else if(nums[ll] + nums[rr] < tar) {ll++;}
-                        else {}
-                }   
-                }   
-        }   
-
+        vector<vector<int>> ret;
+        set<vector<int>> ret_set;
+       int i=1;
+        while(i< nums.size()){
+            if(i==1 or nums[i-1] != nums[i-2]){
+            vector<vector<int> >ret_temp = twoSum(nums, i, nums.size()-1, -nums[i-1] );
+            for(auto it: ret_temp){
+                vector<int> s(1, nums[i-1]);
+                s.push_back(it[0]);
+                s.push_back(it[1]);
+                ret_set.insert(s);
+            }
+            }
+            i++;
+        }
+       for(auto it: ret_set){
+           ret.push_back(it);
+       }
+       return ret;
+   }
+    vector<vector<int> > twoSum(vector<int>& nums, int begin, int end, int target){
+        //cout<<"inside two sum"<<endl;
+        int n1 = begin; int n2 = end;
+        vector<vector<int>> ret;
+        while(n1>= begin && n2<=end && n1<n2){
+            //cout<<"nums[n1]="<<nums[n1]<<", nums[n2]="<<nums[n2]<<";target="<<target<<endl;
+            if(nums[n1] + nums[n2] == target){
+                ret.push_back(vector<int>{nums[n1], nums[n2]});
+                n1++;n2--;
+            }
+            else if(nums[n1] + nums[n2] < target){
+                n1++;
+            }
+            else {
+                n2--;
+            }
+        }
         return ret;
-    }   
+    }
 
 };
