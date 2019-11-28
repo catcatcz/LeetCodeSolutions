@@ -28,7 +28,7 @@ public:
     vector<vector<int> > fourSum(vector<int>& nums, int target) {
         sort(nums.begin(), nums.end());
         set<vector<int> > xx;
-//      cout<<"num.size="<<nums.size()<<endl;
+
         vector<vector<int> > ret;
         if(nums.size()>=4)
         {   
