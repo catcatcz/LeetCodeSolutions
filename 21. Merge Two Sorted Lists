@@ -9,6 +9,7 @@
 class Solution {
 public:
     ListNode* mergeKLists(vector<ListNode*>& lists) {
+        int nonnullcount = 0;
         ListNode* ret= new ListNode(10);
         ListNode* p=ret;
         int curval = 10000;
@@ -16,6 +17,7 @@ public:
         vector<ListNode*> tag(lists.size(), nullptr);
         for(int i=0; i< lists.size(); i++){
             tag[i] = lists[i];
+            if(tag[i]) {nonnullcount++;}
         }
         while(end == false){
             end = true;
@@ -32,8 +34,19 @@ public:
                     tag[i] = tag[i]->next;
                 }
             }
+            nonnullcount=0;
             for(int i=0; i< lists.size(); i++){
                 end = (tag[i] == nullptr && end);
+                if(tag[i]) {nonnullcount++;}
+            }
+            if(nonnullcount ==1){
+                for(int i=0; i< lists.size(); i++){
+                    if(tag[i] != nullptr){
+                        p->next = tag[i];
+                        break;
+                    }
+                }
+                end = true;
             }
             curval=10000;
         }
