@@ -1,0 +1,31 @@
+class Solution {
+public:
+    vector<string> generateParenthesis(int n) {
+         if(n == 0) {return vector<string>(0);}
+        if(n == 1) {return vector<string>(1, "()");}
+        set<string> ret;
+        // compute reducible solution
+        for(int i=1; i< n/2+1; i++){
+            vector<string> solution_i = generateParenthesis(i);
+            vector<string> solution_conju_i = generateParenthesis(n-i);
+            for(const auto& ita:  solution_i){
+            for(const auto& itb:  solution_conju_i){
+                ret.insert( ita+itb);
+                if(ita + itb != itb+ita) { ret.insert(itb+ita);}
+            }   
+            }   
+        }   
+        // compute irriducible solution
+        vector<string> s = generateParenthesis(n-1);
+        for(const auto& it:s){
+            ret.insert("("+it+")");
+        }   
+        vector<string> out;
+        for(const auto& it: ret){
+            out.push_back(it);
+        }   
+    
+        return out;
+ 
+    }
+};
