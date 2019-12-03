@@ -1,5 +1,4 @@
-#include<iostream>
-#include<climits>
+
 class Solution {
 public:
     int divide(int dividend, int divisor) {
@@ -16,7 +15,3 @@ public:
         }   
     }   
 };
-int main()
-{
-Solution sol;
-}
