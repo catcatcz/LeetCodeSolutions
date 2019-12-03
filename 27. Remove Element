@@ -1,0 +1,18 @@
+class Solution {
+public:
+    int removeElement(vector<int>& nums, int val) {
+        int p=0;
+       while(nums.size()>0){
+           if(p< nums.size() && nums[p] == val){
+               nums.erase(nums.begin()+p);
+           }
+           else if(p< nums.size() && nums[p]!=val){
+               p++;
+           }
+           else{
+               break;
+           }
+       } 
+        return nums.size();
+    }
+};
