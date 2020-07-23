@@ -1,65 +1,30 @@
 class Solution {
 public:
-    bool isRectangleCover(vector<vector<int> >& rectangles) {
-        int x_left = rectangles[0][0];
-        int x_right = rectangles[0][2];
-        int y_bottom = rectangles[0][1];
-        int y_top = rectangles[0][3];
-        int tot_area = 0;
-      
-        map<vector<int>, int > corner_property_sum;
-        for(int i=0; i< rectangles.size(); i++)
-        {   
-                x_left = min(x_left, rectangles[i][0]);
-                x_right = max(x_right, rectangles[i][2]);
-                y_bottom = min(y_bottom, rectangles[i][1]);
-                y_top = max(y_top, rectangles[i][3]);
-                tot_area = tot_area + (rectangles[i][2] - rectangles[i][0])*(rectangles[i][3]- rectangles[i][1]);
-                
-                vector<int> temp(2,0);
-                // left bottom corner
-                temp[0] = rectangles[i][0]; temp[1] = rectangles[i][1];
-                //if(corner_property_sum.find(temp) == corner_property_sum.end())
-                //{corner_property_sum[temp] = 1;} 
-                //else
-                {(corner_property_sum[temp])++; }//if(corner_property_sum[temp] > 4) {return false;}
-                // right top corner
-                temp[0] = rectangles[i][2]; temp[1] = rectangles[i][3];
-                //if(corner_property_sum.find(temp) == corner_property_sum.end())
-                //{corner_property_sum[temp] = 1; }
-                //else
-                {(corner_property_sum[temp])++; }//if(corner_property_sum[temp] > 4) {return false;}
-                // right bottom corner
-                temp[0] = rectangles[i][2]; temp[1] = rectangles[i][1];
-                //if(corner_property_sum.find(temp) == corner_property_sum.end())
-                //{corner_property_sum[temp] = 1;}
-                //else
-                {(corner_property_sum[temp])++; }//if(corner_property_sum[temp] > 4) {return false;}}
-                // left top corner
-                temp[0] = rectangles[i][0]; temp[1] = rectangles[i][3];
-                //if(corner_property_sum.find(temp) == corner_property_sum.end())
-                //{corner_property_sum[temp] = 1;}
-                //else
-                {(corner_property_sum[temp])++; }//if(corner_property_sum[temp] > 4) {return false;}}
-        }
-        int max_area = (x_right-x_left)*(y_top-y_bottom);
-        if(max_area != tot_area)
-        {return false;}
-        for(map<vector<int>, int >::iterator itmap = corner_property_sum.begin(); itmap!=corner_property_sum.end(); itmap++)
-        {
-                vector<int> point = itmap->first; int property = itmap->second;
-                if(point[0] == x_left && point[1] == y_bottom && property != 1)
-                {return false;}
-                else if(point[0] == x_left && point[1] == y_top && property != 1)
-                {return false;}
-                else if(point[0] == x_right && point[1] == y_top && property != 1)
-                {return false;}
-                else if(point[0] == x_right && point[1] == y_bottom && property != 1)
-                {return false;}
-                else if(((point[0] > x_left &&  point[0]< x_right) || ( point[1] > y_bottom && point[1] < y_top)) && property/2*2 != property)
-                {return false;}
-        }
-        return true;
+    bool isRectangleCover(vector<vector<int>>& rectangles) {
+        int xini= numeric_limits<int>::max();int yini = xini;
+        int xend= numeric_limits<int>::min();int yend = xend;
+        for(const auto&bbox: rectangles){
+            xini = min(xini, bbox[0]);
+            yini = min(yini, bbox[1]);
+            xend = max(xend, bbox[2]);
+            yend = max(yend, bbox[3]);
+        }   
+        int ny = yend - yini; int nx = xend - xini; 
+        vector<vector<int>> matrix(nx, vector<int>(ny, 0));
+        for(const auto& bbox: rectangles){
+            for(int ix=bbox[0]-xini; ix< bbox[2]-xini; ix++){
+                for(int iy=bbox[1]-yini; iy< bbox[3]-yini; iy++){
+                    matrix[ix][iy] +=1;
+                    if(matrix[ix][iy] > 1) {return false;}
+                }   
+            }   
+        }   
         
-    }
+        for(int ix=0; ix< nx; ix++){
+            for(int iy=0; iy< ny; iy++){
+                if(matrix[ix][iy] == 0) {cout<<ix<<","<<iy<<endl;return false;}
+            }   
+        }   
+        return true;
+    }   
 };
