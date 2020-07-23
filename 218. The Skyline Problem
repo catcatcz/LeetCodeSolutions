@@ -1,0 +1,42 @@
+bool myfunction(const pair<int, int>& a, const pair<int, int>& b) {
+    if(a.first != b.first){
+  return a.first < b.first;}
+    else{
+        return a.second < b.second;
+    }
+}
+
+class Solution {
+public:
+    vector<vector<int> > getSkyline(vector<vector<int> >& buildings) {
+        vector<vector<int> > ret;
+        vector<pair<int, int> > heights;
+        for(const auto& it: buildings) {
+            heights.push_back(make_pair(it[0], -it[2]));
+            heights.push_back(make_pair(it[1], it[2]));
+        }   
+        // + left, - right
+        sort(heights.begin(), heights.end(), myfunction);
+    
+        int pheight = 0;
+        multiset<int> layers;
+        for(const auto& it: heights){         
+            if(it.second < 0) { // left points
+                layers.insert(-it.second);
+            }   
+            else {
+                auto it2 = layers.find(it.second);
+                layers.erase(it2);
+            }  
+            if(layers.empty()) {
+                ret.push_back({it.first, 0});
+            }
+            else if(*layers.rbegin() != pheight){
+                 pheight = *layers.rbegin();
+                 ret.push_back({it.first, pheight});
+            }  
+        }
+       
+        return ret;
+    }   
+};
