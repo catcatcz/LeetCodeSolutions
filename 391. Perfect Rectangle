@@ -1,22 +1,24 @@
+
 class Solution {
 public:
     bool isRectangleCover(vector<vector<int>>& rectangles) {
-        set<pair<int,int> > points;
+        unordered_set<string > points;
         int area=0;
         int xmin = INT_MAX; int ymin = INT_MAX;
         int xmax = INT_MIN; int ymax = INT_MIN;
         for(const auto& bbox:rectangles){
-            pair<int, int> bl= make_pair(bbox[0], bbox[1]);
-            pair<int, int> tr= make_pair(bbox[2], bbox[3]);
-            pair<int, int> br= make_pair(bbox[2], bbox[1]);
-            pair<int, int> tl= make_pair(bbox[0], bbox[3]);
-            if(points.find(bl) == points.end()) { points.insert(bl);}
+            string bl= to_string(bbox[0])+"_"+to_string(bbox[1]);
+            string tr= to_string(bbox[2])+"_"+to_string(bbox[3]);
+            string br= to_string(bbox[2])+"_"+to_string(bbox[1]);
+            string tl= to_string(bbox[0])+"_"+to_string(bbox[3]);
+            
+            if(!points.count(bl)) { points.insert(bl);}
             else {points.erase(bl);}
-            if(points.find(tr) == points.end()) { points.insert(tr);}
+            if(!points.count(tr)) { points.insert(tr);}
             else {points.erase(tr);}
-            if(points.find(br) == points.end()) { points.insert(br);}
+            if(!points.count(br)) { points.insert(br);}
             else {points.erase(br);}
-            if(points.find(tl) == points.end()) { points.insert(tl);}
+            if(!points.count(tl)) { points.insert(tl);}
             else {points.erase(tl);}
             xmin = min(bbox[0], xmin); xmax = max(bbox[2], xmax);
             ymin = min(bbox[1], ymin); ymax = max(bbox[3], ymax);
@@ -26,10 +28,10 @@ public:
         if(total_area != area) {return false;}
         
         if(points.size()!=4) {return false;}
-        if(points.count(make_pair(xmin, ymin)) != 1) {return false;}
-        if(points.count(make_pair(xmax, ymax)) != 1) {return false;}
-        if(points.count(make_pair(xmin, ymax)) != 1) {return false;}
-        if(points.count(make_pair(xmax, ymin)) != 1) {return false;}
+        if(points.count(to_string(xmin)+"_"+to_string(ymin)) != 1) {return false;}
+        if(points.count(to_string(xmax)+"_"+to_string(ymax)) != 1) {return false;}
+        if(points.count(to_string(xmin)+"_"+to_string(ymax)) != 1) {return false;}
+        if(points.count(to_string(xmax)+"_"+to_string(ymin)) != 1) {return false;}
 
         return true;
     }   
