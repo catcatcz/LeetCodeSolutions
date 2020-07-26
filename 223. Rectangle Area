@@ -1,0 +1,74 @@
+bool myfunction(vector<int>& a, vector<int>& b) {
+    if(a[0]!= b[0]) { return a[0] < b[0];}
+    else {return a[1] < b[1];}
+}
+struct xedge{
+    int xbegin;int xend;int y;int sign;
+    xedge(int xbegin, int xend, int y, int sign):xbegin(xbegin), xend(xend), y(y), sign(sign){} 
+};
+bool edge_compare (const xedge& a, const xedge& b){ 
+    return a.y < b.y;
+}
+
+class Solution {
+public:
+    int computeArea(int A, int B, int C, int D, int E, int F, int G, int H) {
+        vector<vector<int> > ret;
+        ret.push_back({A, B, C, D});
+        ret.push_back({E, F, G, H});
+        sort(ret.begin(), ret.end(), myfunction);
+        set<int> xgrid;
+        for(const auto& it: ret){
+            xgrid.insert(it[0]);
+            xgrid.insert(it[2]);
+        }
+        vector<int> xgridv(xgrid.begin(), xgrid.end());
+        sort(xgridv.begin(), xgridv.end());
+        map<int, vector<vector<int> > > ret_map;
+        for(const auto& it:ret){
+            ret_map[it[0]].push_back(it);
+        }   
+        vector<xedge> edges;
+        int area =0; 
+        for(int ig=0; ig< xgridv.size()-1; ig++){
+            int x= xgridv[ig];
+            // add enter
+            for(const auto& it: ret_map[x]){
+                edges.push_back(xedge(it[0], it[2], it[1], -1));
+                edges.push_back(xedge(it[0], it[2], it[3], 1));
+            } 
+             // remove exit
+            vector<xedge> edges2;
+            for(auto& it: edges) {
+                if(it.xend != x) {
+                    edges2.push_back(it);
+                }
+            }
+            edges= edges2;
+            // get sorted intervals
+            vector<vector<int> > intervals;
+            for(const auto& it: edges){
+                intervals.push_back({it.y, it.sign});
+            }   
+            if(intervals.empty()) {continue;}
+            sort(intervals.begin(), intervals.end(), myfunction);
+            stack<int> layer;
+            int ybegin = intervals[0][0];
+            bool reset = false;
+            for(const auto& it: intervals){
+                if(it[1] < 0) {
+                    if(reset) {ybegin = it[0];}
+                    layer.push(it[0]);
+                }
+                else {
+                    layer.pop();     
+                }
+                if(layer.empty()) {
+                    area += (it[0]- ybegin) * (xgridv[ig+1]-xgridv[ig]);
+                    reset = true;
+                }
+            }
+        }
+        return area;
+    }
+};
