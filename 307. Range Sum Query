@@ -1,0 +1,33 @@
+using namespace std;
+class NumArray {
+public:
+    NumArray(vector<int>& nums) {
+        d_nums = nums;
+    }   
+    
+    void update(int i, int val) {
+        for(auto& it: sum_dict){
+            auto interval = it.first;
+            if(i >= interval.first && i<= interval.second){
+                it.second = it.second - d_nums[i] + val;
+            }   
+        }   
+        d_nums[i] = val;
+    }       
+    int sumRange(int i, int j) {
+        if(sum_dict.find(make_pair(i, j)) == sum_dict.end()){
+        int ss = 0;
+        for(int isum = i; isum< j+1; isum++){
+        ss += d_nums[isum];}
+        sum_dict[make_pair(i,j)] = ss;
+        return ss; 
+        }   
+        else{
+        return sum_dict[make_pair(i,j)];
+        }   
+    }   
+private:
+    vector<int> d_nums;
+    map<pair<int, int>, int> sum_dict;
+};
+
