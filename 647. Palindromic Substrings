@@ -1,0 +1,24 @@
+class Solution {
+public:
+    int countSubstrings(string s) {
+        size_t total_count =0; 
+        total_count += s.size();
+        queue<pair<int, int> > active_queue;
+        for(int i=0; i<s.size(); i++){
+            active_queue.push(make_pair(i,i));
+        }   
+        for(int i=0; i< s.size()-1; i++){
+            if(s[i] == s[i+1]) {active_queue.push(make_pair(i,i+1)); total_count +=1;}
+        }   
+
+        while(!active_queue.empty()){
+            auto range = active_queue.front(); active_queue.pop();
+            int begin = range.first; int end= range.second;
+            if(begin -1 >= 0 && end+1 < s.size()) {
+                if(s[begin-1] == s[end+1]) { active_queue.push(make_pair(begin-1, end+1)); total_count+=1;}
+            }   
+        }   
+        return int(total_count);
+    }   
+
+};
