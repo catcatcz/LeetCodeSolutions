@@ -1,0 +1,60 @@
+class Solution {
+public:
+   vector<int> diffWaysToCompute(string input) {
+        map<pair<int, int>, vector<int> >  result_cache;
+        vector<int> locations = GetOperatorLocations(input, make_pair(0, input.size()-1));  
+       if(locations.empty()){return vector<int>(1, stoi(input));}
+        result_cache[make_pair(-1, -1)] = vector<int>(1, stoi(input.substr(0, locations[0])));
+        for(size_t i=0; i< locations.size()-1; i++){
+            result_cache[make_pair(i, i)] = vector<int>(1, stoi(input.substr(locations[i]+1, locations[i+1] - locations[i] -1)));
+        }   
+        result_cache[make_pair(locations.size()-1, locations.size()-1)] = vector<int>(1, stoi(input.substr(locations[locations.size()-1]+1, input.size() - locations[locations.size()-1]-1)));
+        size_t width = 1;
+        while(width < locations.size() +1 ){
+            for(int i=-1; i< int(locations.size() -width); i++){ // i is the staring point of the range
+                vector<int> result_tmp;
+                for(int j = 0; j< width+1; j++){ // j is the end point of the first half
+                auto present = result_cache[make_pair(i, i+j)];//cout<<"present size="<<present.size()<<endl;
+                for(const auto& it: present) {
+                    //cout<<"locations.size()="<<locations.size()<<",i+j="<<i+j<<endl;
+                    char op = input[locations[i+j+1]];//cout<<"op="<<op<<endl;
+                    auto next_one = result_cache[make_pair(i+j+1, i+width)];
+                    for(const auto& itnext: next_one){
+                        int result = ComputeTwoNumberOperation(op, it, itnext); result_tmp.push_back(result);
+                    }   
+                }   
+                }   
+                result_cache[make_pair(i, i+width)] = result_tmp;
+            }   
+            width+=1;
+        }   
+        return result_cache[make_pair(-1, locations.size()-1)];
+    }   
+
+
+
+       int ComputeTwoNumberOperation(const char& op, const int num1, const int num2){
+        if(op == '+') {return num1+ num2;}
+        else if(op == '-') {return num1- num2;}
+        else if(op == '*') {return num1 * num2;}
+        else {
+            cout<<"operation not supported!"<<endl; return 0;
+        }
+    }
+
+
+     vector<int> GetOperatorLocations(const string& input, const pair<int, int>& range){
+        vector<int> ret;
+        if(range.first < 0 || range.second >= input.size())
+        {  
+            cout<<"unreasonable range "<<range.first<<", "<<range.second<<", input.size="<<input.size()<<endl;
+        }  
+        for(int i= range.first; i< range.second+1; i++){
+            if(input[i] == '+' || input[i]== '-' || input[i] == '*'){
+                ret.push_back(i);
+            }
+        }
+        return ret;
+    }
+
+};
