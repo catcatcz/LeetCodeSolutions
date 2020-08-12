@@ -1,0 +1,24 @@
+class Solution {
+public:
+  int trap(vector<int>& height) {
+        vector<int> left_max_array(height.size(), 0); 
+        vector<int> right_max_array(height.size(), height.size()-1);
+        for(int i=1; i< height.size(); i++){
+            left_max_array[i] = height[i] > height[left_max_array[i-1]] ? i: left_max_array[i-1];
+        }   
+        for(int i= height.size()-2; i>-1; i--){
+            right_max_array[i] = height[i] > height[right_max_array[i+1]] ? i: right_max_array[i+1];
+        }  
+        int sum = 0;
+        for(int i=0; i< height.size(); i++){
+            pair<int, int> ends= make_pair(left_max_array[i], right_max_array[i]);
+            if( ends.first != i && ends.second!= i&& height[ends.first] >= height[i] && height[ends.second] >= height[i]) {
+                sum += min(height[ends.first], height[ends.second]) - height[i];
+                //cout<<"delta="<<min(height[ends.first], height[ends.second]) - height[i]<<endl;
+            }   
+            //cout<<endl;
+        }   
+        return sum;
+    }   
+
+};
