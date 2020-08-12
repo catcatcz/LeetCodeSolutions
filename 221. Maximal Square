@@ -1,0 +1,46 @@
+class Solution {
+public:
+    int maximalSquare(vector<vector<char>>& matrix) {
+        if(matrix.size() == 0) {return 0;}
+        vector<vector<int> > area_matrix(matrix.size(), vector<int>(matrix[0].size(), 0) );
+        for(int i=0; i< area_matrix.size(); i++){
+            if(matrix[i][0] == '0') {area_matrix[i][0] = 0;} 
+            else {area_matrix[i][0] = 1;} 
+        }   
+        //cout<<"finish 0 row"<<endl;
+        for(int i=0; i< area_matrix[0].size(); i++){
+            if(matrix[0][i] == '0') {area_matrix[0][i] = 0;} 
+            else {area_matrix[0][i] = 1;} 
+        } 
+        //cout<<"finish 0 col"<<endl;
+        int cur_column = 1; int cur_row = 1;
+        while(cur_column < matrix.size() || cur_row < matrix[0].size() ){
+            if(cur_row < matrix[0].size()) {
+                for(int i= cur_column; i< matrix.size(); i++){
+                    if(matrix[i][cur_row] == '0') {area_matrix[i][cur_row] = 0;} 
+                    else {
+                       int new_area = area_matrix[i-1][cur_row-1]; new_area = min(area_matrix[i][cur_row-1], new_area); new_area = min(area_matrix[i-1][cur_row], new_area) ;
+                       area_matrix[i][cur_row] = new_area +1; 
+                    }   
+                }   
+            }   
+            if(cur_column < matrix.size()){
+                for(int i=cur_row; i< matrix[0].size(); i++){
+                    if(matrix[cur_column][i] =='0') {area_matrix[cur_column][i]=0;}
+                    else {
+                        int new_area = area_matrix[cur_column-1][i-1]; new_area = min(area_matrix[cur_column-1][i], new_area); new_area = min(area_matrix[cur_column][i-1], new_area);
+                        area_matrix[cur_column][i] = new_area +1; 
+                    }   
+                }   
+            }   
+            cur_column++; cur_row++;
+        }   
+        int max_len = 0;
+        for(int ix=0; ix< area_matrix.size(); ix++){
+            for(int iy=0; iy< area_matrix[ix].size(); iy++){
+                max_len = max(max_len, area_matrix[ix][iy]);
+            }   
+        }   
+        return max_len* max_len;
+    }   
+};
