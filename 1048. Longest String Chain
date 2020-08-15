@@ -1,0 +1,57 @@
+bool myfunction(const string& a, const string& b) {
+    return a.size() < b.size();
+}
+class Solution {
+public:
+    int longestStrChain(vector<string>& words) {
+        vector<vector<int> > connection_matrix(words.size(), vector<int>(words.size(), 0));
+        sort(words.begin(), words.end(), myfunction);
+        size_t current_max =0; 
+        queue<vector<int> > candidates;
+        map<size_t, vector<int> > bins;
+        size_t minsize = words[0].size(); size_t maxsize = 0;
+        for(int i=0; i< words.size(); i++) {
+            bins[words[i].size()].push_back(i);
+            minsize = min(words[i].size(), minsize); maxsize= max(words[i].size(), maxsize);
+        }   
+        for(int i=minsize;i<maxsize; i++){
+            for(int ix = 0; ix < bins[i].size(); ix++){
+                for(int iy = 0; iy < bins[i+1].size(); iy++){
+                if(IsPredecessor(words[bins[i][ix]],words[ bins[i+1][iy] ])) {connection_matrix[bins[i][ix]][bins[i+1][iy]] = 1;} 
+                }   
+            }   
+        }
+        
+        
+        for(const auto&it: bins){
+            for(int i=0; i< it.second.size(); i++){
+                candidates.push(vector<int>(1, it.second[i]));
+            }
+        }
+    
+        current_max = 1;
+        size_t queue_size = candidates.size();
+        while(queue_size > 0) {
+            for(int i=0; i< queue_size; i++){
+                auto v = candidates.front(); candidates.pop();
+                int v_last = v[v.size()-1];
+                auto nextbin =  bins[words[v_last].size()+1];
+                for(int j=0; j< nextbin.size(); j++) {
+                    if(connection_matrix[v_last][nextbin[j]] == 1) {
+                        auto vv = v; vv.push_back(nextbin[j]); candidates.push(vv); current_max = max(current_max, vv.size());
+                        //for(const auto& it: vv) {cout<<words[it]<<",";} cout<<endl;
+                    }   
+                }   
+            }   
+            queue_size = candidates.size();
+        }   
+        return current_max;
+    }   
+    bool IsPredecessor(const string& a, const string& b){ 
+        if(a.size() + 1 != b.size()) {return false;}
+        for(int i=0; i< b.size(); i++){
+            string sub= b; sub.erase(i, 1); if(a == sub) {return true;}
+        }   
+        return false;
+    }   
+};
