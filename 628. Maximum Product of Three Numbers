@@ -1,0 +1,22 @@
+class Solution {
+public:
+    int maximumProduct(vector<int>& nums) {
+        if(nums.size()<=3) {
+            int product=1; for(const auto& it: nums) {product*= it;} return product;
+        }   
+
+        sort(nums.begin(), nums.end());
+        // all smaller than 0
+        if(nums[nums.size()-1] < 0) { return nums[0]* nums[1] * nums[2];}
+        // one bigger or equal to 0
+        else if(nums[nums.size()-1] >= 0 && nums[nums.size()-2] <0) { return nums[0]* nums[1] * nums[nums.size()-1]; }
+        // two  bigger or requal to 0
+        else if(nums[nums.size()-2] >= 0 && nums[nums.size()-3] <0) {
+            return nums[0] * nums[1] * nums[nums.size()-1];
+        }   
+        // three bigger or equal to 0
+        else{
+            return max(nums[0] * nums[1] , nums[nums.size()-2] * nums[nums.size()-3]) * nums[nums.size()-1];
+        }   
+    }   
+};
