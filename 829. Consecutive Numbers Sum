@@ -1,0 +1,25 @@
+class Solution {
+public:
+    int consecutiveNumbersSum(int N) {
+        int ways =0; 
+        auto all_factors = FactorNumber(2*N);
+        for(const auto& it: all_factors){
+            int A = it.first; int B= it.second;
+            int i = (A-B+1)/2; int j = (A+B-1)/2; 
+            if( i * 2 == A-B+1 && j * 2 == A+B-1) {ways++;}
+        }   
+        return ways;
+    }   
+
+    vector<pair<int, int> > FactorNumber(int x){ 
+        vector<pair<int, int> > ret;
+        int mm = int(sqrt(x * 1.0))+1;
+        for(int i=1; i< mm; i++){
+            if(x / i * i == x) {
+                ret.push_back(make_pair(i, x/i));
+            }   
+        }   
+        //cout<<"ret.size="<<ret.size()<<endl;
+        return ret;
+    }   
+};
