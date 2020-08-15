@@ -1,0 +1,36 @@
+bool myfunction(const vector<int>& v1, const vector<int>& v2){
+    if(v1[0] != v2[0]) {return v1[0] < v2[0];}
+    else {
+        return v1[1] < v2[1];
+    }   
+}
+class Solution {
+public:
+    int minMeetingRooms(vector<vector<int>>& intervals) {
+        if(intervals.size() <2) {return intervals.size();}
+        sort(intervals.begin(), intervals.end(), myfunction);
+        set<int> pivits;
+        for(const auto& it: intervals) {pivits.insert(it[0]); pivits.insert(it[1]);}
+        vector<int> locs(pivits.begin(), pivits.end());
+        sort(locs.begin(), locs.end());
+        size_t starting_id = 0;
+        queue<size_t> interval_id;
+        size_t max_room = 1;
+        for(size_t i=0; i< locs.size(); i++) {
+            // check who will move out
+            size_t queue_size = interval_id.size();
+            for(size_t id = 0; id < queue_size; id++) {
+                size_t top_id = interval_id.front(); interval_id.pop();
+                if(intervals[top_id][1] > locs[i]) {interval_id.push(top_id);}
+            }   
+            // check who will be added
+            while(starting_id < intervals.size() && intervals[starting_id][0] == locs[i]) {
+                interval_id.push(starting_id);
+                starting_id +=1; 
+            }   
+            max_room = max(max_room, interval_id.size());
+        }   
+        return int(max_room);
+    }   
+};
+
