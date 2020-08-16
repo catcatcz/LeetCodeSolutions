@@ -1,0 +1,42 @@
+class Solution {
+public:
+    int firstMissingPositive(vector<int>& nums) {
+        if(nums.empty()) {return 1;}
+        int maxval = nums[0];
+        for(const auto& it: nums) { maxval = max(maxval, it);}
+        if(maxval <=0 ) {return 1;}
+       
+        const int size = 1e8+1; 
+        const int vector_len = maxval/size +1;
+        bitset<size> u;
+        vector<bitset<size> > a(vector_len, u);
+        
+        for(const auto& it: nums){
+            if(it <= 0) {continue;}
+            vector<int> vals;
+            AssignIntToBitsetVector(it, size, vals);
+            for(int i=0; i< vals.size(); i++){
+                a[i][vals[i]] = 1;
+            }
+        }
+        int baseval = 0;
+        for(int i=0; i< a.size(); i++){
+            baseval += pow(size, i)-1; 
+            for(int j=0; j< size; j++){
+                if(a[i][j] == 0 && !(i==0 && j==0)) {
+                    return baseval + j;
+                }
+            }
+        }
+        return 0;
+    }  
+        
+    void AssignIntToBitsetVector(const int a, const int unitsize, vector<int>& result){
+        result.clear();
+        int tmp =a ;
+        while(tmp > 0){
+            int u = tmp%unitsize;
+            result.push_back(u); tmp/= unitsize;
+        }
+    }
+};
