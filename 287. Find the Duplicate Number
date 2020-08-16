@@ -1,0 +1,14 @@
+class Solution {
+public:
+      int findDuplicate(vector<int>& nums) {
+        
+        const int size = 1e8 +1; 
+        bitset<size> tot;
+        for(const auto& it: nums) {
+            if(tot[it] == 0) {tot.set(it);}
+            else { return it;}
+        }   
+        return 0;
+    }   
+
+};
