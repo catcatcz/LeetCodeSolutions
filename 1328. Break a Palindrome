@@ -1,0 +1,47 @@
+class Solution {
+public:
+    string breakPalindrome(string palindrome) {
+        if(palindrome.size() <= 1) {return "";}
+        for(int i=0; i< palindrome.size(); i++) {
+            string pnew = FindSmallestNextPalindrome(palindrome, i); 
+            if(pnew != "") {return pnew;}
+        }
+        for(int i=palindrome.size()-1; i>-1; i--){
+            string pnew = RaiseString(palindrome, i);
+            if(pnew != "") {return pnew;}
+        }
+        return ""; 
+    }   
+
+    bool IsPalindrome(const string& p){ 
+        int left = 0; int right = p.size()-1;
+        while(p[left] == p[right] && left < right) {
+            if(p.size()/2*2 == p.size() && left + 1 == right) {return true;}
+            else if(p.size()/2*2 != p.size() && left +2 == right) {return true;}
+            left++; right--;
+        }   
+        return false;
+    }   
+
+    string FindSmallestNextPalindrome(const string& p, const int i) {
+        // by changing the char on the ith position to find next palin
+        int start = int(p[i]);
+        int end = int('a');
+        for(int t = end; t < start; t++  ) { 
+            string pnew = p; pnew[i] = char(t);cout<<pnew<<endl;
+            if(!IsPalindrome(pnew))  {return pnew;}
+        }   
+        return ""; 
+    }  
+    
+    string RaiseString(const string& p, const int i) {
+        int start = int(p[i]);
+        int end = int('z');
+        for(int t=start+1; t< end+1; t++){
+            string pnew = p; pnew[i] = char(t); cout<<pnew<<endl;
+            if(!IsPalindrome(pnew)) {return pnew;}
+        }
+        return "";
+    }
+    
+};
