@@ -1,0 +1,22 @@
+class Solution {
+public:
+    vector<int> relativeSortArray(vector<int>& arr1, vector<int>& arr2) {
+        vector<int> arr4, arr3;
+        map<int, size_t> counts;
+        for(const auto& it: arr1){
+            if(std::count(arr2.begin(), arr2.end(), it)) { counts[it]+=1;}
+            else {arr4.push_back(it);}
+        }   
+        sort(arr4.begin(), arr4.end());
+        for(const auto& it: arr2){
+            for(size_t i=0; i< counts[it]; i++){
+                arr3.push_back(it);
+            }   
+        }   
+        for(const auto& it: arr4){
+            arr3.push_back(it);
+        }   
+        return arr3;
+    }   
+};
+
