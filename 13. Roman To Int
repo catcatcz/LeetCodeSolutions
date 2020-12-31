@@ -1,0 +1,20 @@
+    static const  map<string, int> RToI_num = { \ 
+   {"I", 1}, {"V", 5}, {"X", 10}, {"L", 50}, {"C", 100}, {"D", 500}, {"M", 1000},  \
+   {"IV", 4}, {"IX", 9}, {"XL", 40}, {"XC", 90}, {"CD", 400}, {"CM", 900}, \
+   };  
+class Solution {
+public:
+    int romanToInt(string s) {
+        size_t try_size=s.size() < 4? s.size(): 4;
+        while(try_size > 0){ 
+            string key = s.substr(0, try_size);
+            if(RToI_num.find(key) != RToI_num.end()){
+                auto value = RToI_num.at(key);
+                string rest = s.substr(try_size, s.size());
+                return value + romanToInt(rest);
+            }   
+            try_size -= 1;
+        }   
+        return 0;
+    }   
+};
