@@ -1,24 +1,18 @@
-    static const  unordered_map<string, int> RToI_num = { \ 
-   {"I", 1}, {"V", 5}, {"X", 10}, {"L", 50}, {"C", 100}, {"D", 500}, {"M", 1000},  \
-   {"IV", 4}, {"IX", 9}, {"XL", 40}, {"XC", 90}, {"CD", 400}, {"CM", 900}, \
-    {"II", 2}, {"III", 3}, {"VI", 6}, {"VII", 7}, {"VIII", 8},\
-    {"XX",20}, {"XXX", 30}, {"LX", 60}, {"LXX", 70}, {"LXXX", 80},\
-    {"CC", 200}, {"CCC", 300},{"DC", 600}, {"DCC", 700}, {"DCCC", 800},\
-    {"MM", 2000}, {"MMM", 3000}
+      static const  map<string, int> RToI_num = { \ 
+   {"I", 1}, {"V", 5}, {"X", 10}, {"L", 50}, {"C", 100}, {"D", 500}, {"M", 1000}
    };  
 class Solution {
 public:
     int romanToInt(string s) {
-        size_t try_size=s.size() < 4? s.size(): 4;
-        while(try_size > 0){ 
-            string key = s.substr(0, try_size);
-            if(RToI_num.find(key) != RToI_num.end()){
-                auto value = RToI_num.at(key);
-                string rest = s.substr(try_size, s.size());
-                return value + romanToInt(rest);
+        int x = 0;
+        for(size_t i=0; i< s.size(); i++){
+            if(i< s.size() -1 && RToI_num.at(s.substr(i, 1)) < RToI_num.at(s.substr(i+1, 1))) {
+                x+= RToI_num.at(s.substr(i+1, 1)) - RToI_num.at(s.substr(i,1));i+=1;
             }   
-            try_size -= 1;
+            else {
+                x+= RToI_num.at(s.substr(i,1));
+            }   
         }   
-        return 0;
+        return x;
     }   
 };
