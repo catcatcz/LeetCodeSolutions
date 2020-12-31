@@ -1,0 +1,15 @@
+class Solution {
+public:
+    int strStr(string haystack, string needle) {
+        if(haystack.size() < needle.size()) {return -1;}
+        size_t i=0; 
+        while( i<= haystack.size() - needle.size()) {
+           
+            if(haystack.substr(i, needle.size()).compare(needle) ==0 ) { 
+            return int(i);
+            }   
+            i++;
+        }   
+        return -1; 
+    }   
+};
