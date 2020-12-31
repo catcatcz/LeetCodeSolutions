@@ -1,0 +1,20 @@
+class Solution {
+public:
+    string longestCommonPrefix(vector<string>& strs) {
+        if (strs.size() == 0 ) {return "";}
+        string shortest = strs[0];
+        for(const auto& it: strs) { if(it.size() < shortest.size()) { shortest = it;}}
+        size_t imax = shortest.size();
+        while(imax > 0){ 
+            bool pass= true;
+        for(const auto& it: strs) {
+            string sub = shortest.substr(0, imax);
+            if(sub.compare(it.substr(0, imax)) !=0) {pass= false; break;}
+        }   
+            if(pass) {break;}
+            else{
+        imax -= 1;}
+        }   
+        return shortest.substr(0, imax);
+    }   
+};
