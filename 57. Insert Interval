@@ -1,0 +1,21 @@
+class Solution {
+public:
+    vector<vector<int>> insert(vector<vector<int>>& intervals, vector<int>& newInterval) {
+        int left= newInterval[0]; int right = newInterval[1];
+        vector<vector<int> > merged;
+        for(size_t i=0; i< intervals.size();i++){
+            // disjoint with new
+            if( intervals[i][1] < newInterval[0]) {merged.push_back(intervals[i]);}
+            else if(intervals[i][0] > newInterval[1]) {merged.push_back(intervals[i]);}
+            // have overlap
+            else {
+                if(intervals[i][0] < newInterval[0]) {left = intervals[i][0];}
+                if(intervals[i][1] > newInterval[1]) {right = intervals[i][1];}
+            }   
+        }   
+        vector<int> a = {left, right};
+        merged.push_back(a);
+        sort(merged.begin(), merged.end(), [](const vector<int>& a, const vector<int>& b) {return a[0]< b[0];});
+        return merged;
+    }   
+};
