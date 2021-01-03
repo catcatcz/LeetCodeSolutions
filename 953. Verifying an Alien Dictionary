@@ -1,23 +1,28 @@
 class Solution {
 public:
     bool isAlienSorted(vector<string>& words, string order) {
+        for(size_t i=0; i< order.size(); i++) {
+            amap[order[i]] = i;
+        }   
         for(size_t i=0; i< words.size()-1; i++){
-            if(compare_words(words[i], words[i+1], order) == false) {return false;}
+            if(compare_words(words[i], words[i+1]) == false) {return false;}
         }   
         return true;
     }   
-    bool compare_words(const string& w1, const string& w2, const string& order){
+    bool compare_words(const string& w1, const string& w2) {
         size_t i=0;
-        while(i < min(w1.size(), w2.size())) {
+        while(i < min(w1.size(), w2.size())){
             if(w1[i] == w2[i]) {i++;}
-            else{
-                const auto& p1 = order.find(w1[i]);
-                const auto& p2 = order.find(w2[i]);
-                if(p1 < p2) {return true;}
+            else {
+                if(amap[w1[i]] < amap[w2[i]]) {return true;}
                 else {return false;}
             }   
         }   
-        if(w1.size() <= w2.size()) {return true;}
-        else{return false;}
+        if(w1.size() > w2.size()) {return false;}
+        else {return true;}
+
     }   
+private:
+   unordered_map<char, int> amap; 
 };
+
