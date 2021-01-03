@@ -1,38 +1,20 @@
-static const unordered_map<string, string>num_map= {{ "1", "A"}, {"2", "B"}, {"3", "C"}, {"4", "D"}, {"5", "E"},\
-    {"6", "F"}, {"7", "G"}, {"8", "H"}, {"9", "I"}, {"10", "J"},\
-    {"11", "K"}, {"12", "L"},{"13", "M"}, {"14", "N"}, {"15", "O"},\
-    {"16", "P"}, {"17", "Q"}, {"18", "R"}, {"19", "S"}, {"20", "T"},\
-    {"21", "U"}, {"22", "V"}, {"23", "W"}, {"24", "X"}, {"25", "Y"}, {"26", "Z"}
-};
-
 class Solution {
 public:
     int numDecodings(string s) {
-        for(size_t i=0; i< s.size(); i++){
-            string first = s.substr(i,1);
-            if(num_map.find(first) != num_map.end()) {result_dict[make_pair(i,i)] = 1;} 
-            else{ result_dict[make_pair(i,i)] = 0;}
-        }   
-        for(size_t i=0; i< s.size()-1; i++) {
-            string first_two = s.substr(i,2);
-            if(num_map.find(first_two) != num_map.end()) {
-                result_dict[make_pair(i,i+1)] = result_dict[make_pair(i,i)] * result_dict[make_pair(i+1,i+1)] + 1;
-            }   
-            else{
-                result_dict[make_pair(i,i+1)] = result_dict[make_pair(i,i)] * result_dict[make_pair(i+1,i+1)];
-            }   
-        }   
-        int range = 2;
-        while(range < s.size()) {
-            for(size_t i=0; i< s.size() - range; i++) {
-                result_dict[make_pair(i, i+ range)] =  (result_dict[make_pair(i, i+1)]  - result_dict[make_pair(i,i)] * result_dict[make_pair(i+1, i+1)] )* result_dict[make_pair(i+2, i+range)] + result_dict[make_pair(i, i)] * result_dict[make_pair(i+1, i+range)] ;
-            }   
-            range+=1;
-        }    
-        return result_dict[make_pair(0, s.size()-1)];
-    }   
-private:
-    map<pair<int, int>, int> result_dict;
-
+        a= vector<int>(s.size()+1, 0);
+        if(s.size() == 0) {return 0;}
+        if(s[0] == '0') {return 0;}
+        a[0]=1;
+        for(int i=1; i< s.size()+1; i++)
+        {
+            if(s[i-1]!= '0') {a[i] =a[i-1];}
+            if(i> 1 && stoi(s.substr(i-2,2)) <= 26 && stoi(s.substr(i-2,2)) >= 10){
+               a[i] += a[i-2];
+            }
+            
+        }
+        return a[s.size()];
+    }
+    private:
+    vector<int> a;
 };
-
