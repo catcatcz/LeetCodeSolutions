@@ -1,0 +1,50 @@
+#include <numeric>
+class Solution {
+public:
+    int subarraySum(vector<int>& nums, int k) {
+     int   count=0;
+        int tmp = 0;
+    for(size_t i=0; i< nums.size(); i++){
+        
+         tmp += nums[i];
+        if(sums.find(tmp) == sums.end()){
+        sums[tmp] = vector<int>(1, i); 
+            }
+        else{
+            sums[tmp].push_back(i);
+        }
+       
+    }
+        if(k==0) {
+            for(const auto& iter:sums){
+                size_t s = iter.second.size();
+                count += s * (s-1)/2;
+            }
+             if(sums.find(k) != sums.end()){
+            count+= sums[k].size();
+        }
+            return count;
+        }
+        
+        for(const auto&iter: sums){
+            if(sums.find(iter.first + k) != sums.end())
+            {
+                auto vec_i = iter.second;
+                auto vec_j = sums[iter.first+k];
+                
+                for(const auto& iti: vec_i){
+                    for(const auto& itj: vec_j){
+                        if(itj >= iti) {count++;}
+                    }
+                }
+            }
+        }
+        if(sums.find(k) != sums.end()){
+            count+= sums[k].size();
+        }
+       return count;
+        
+    }
+    private:
+    map<int, vector<int> >sums;
+};
