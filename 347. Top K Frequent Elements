@@ -1,0 +1,27 @@
+    bool cmp(pair<int, size_t>& a, pair<int, size_t>&b) {
+        return a.second> b.second;
+    }   
+class Solution {
+public:
+    vector<int> topKFrequent(vector<int>& nums, int k) {
+        for(const auto&it: nums){
+            count[it]++;
+        }   
+        vector<pair<int, size_t> > vec;
+        for(const auto&it: count){
+            vec.push_back(it);
+        }   
+        sort(vec.begin(), vec.end(), cmp);
+
+        vector<int> ret;
+        int i=0;
+        for(const auto& it:vec){
+            ret.push_back(it.first);
+            i++;
+            if(i == k){return ret;}
+        }   
+        return ret;
+    }   
+private:
+    map<int, size_t> count;
+};
