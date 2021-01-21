@@ -1,0 +1,44 @@
+class Solution {
+public:
+    string minWindow(string s, string t) {
+        for(const auto&it: t){mapt[it] ++;}
+        pair<int, int> best_result = make_pair(0, s.size()-1);
+        bool valid = false;
+        map<char, size_t> maps;
+        int left =0, right=0;
+        maps[s[left]] = 1;
+        while(size_t(right) < s.size() && left <= right){
+        
+        while(!found(mapt, maps) && right < s.size()-1){
+         
+            right ++;
+            maps[s[right]]++;
+        }
+        while(maps[s[left]] > mapt[s[left]] && left < right) {
+            maps[s[left]]--;
+            left ++;
+        }
+        //
+        if(best_result.second - best_result.first >= right - left && found(mapt, maps)){
+            best_result = make_pair(left, right);
+            valid = true;
+        }
+            
+            maps[s[left]]--;
+            left += 1;
+        }
+        if(valid){
+        return s.substr(best_result.first, best_result.second - best_result.first +1);}
+        else{return "";}
+    }
+    
+    bool found(const map<char, size_t>& mapt, const map<char,size_t>& maps){
+        for(const auto& it: mapt){
+            if(maps.find(it.first) == maps.end()) {return false;}
+            else if(maps.at(it.first) < mapt.at(it.first)) {return false;}
+        }
+        return true;
+    }
+    private:
+    map<char, size_t> mapt;
+};
