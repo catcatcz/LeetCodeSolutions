@@ -1,0 +1,62 @@
+const int big = 1000000000 + 7;
+class Solution {
+public:
+    int numFactoredBinaryTrees(vector<int>& arr) {
+        ways_to_decompose.clear();   
+        sorted_arr = arr;
+        sort(sorted_arr.begin(), sorted_arr.end());
+        for(const auto&it: arr) {ways_to_decompose[it] =-1;}
+        ways_to_decompose[sorted_arr[0]] = 1;
+        int n =0;
+        for(const auto& it: sorted_arr){
+            n = handle_large_number_add(n, compute_ways_to_decompose(it));
+        }
+        return n;
+    }
+    private:
+    int compute_ways_to_decompose(const int a){
+        if(ways_to_decompose[a] >0) {return ways_to_decompose[a];}
+        int ntot= 1;
+        for(size_t i=0; i< sorted_arr.size()&& sorted_arr[i]<a ; i++){
+            if(a%sorted_arr[i] !=0){continue;}
+            if(ways_to_decompose.find(a/sorted_arr[i]) == ways_to_decompose.end()){continue;}
+            int left = sorted_arr[i]; 
+            int right = a/sorted_arr[i]; 
+            int n_left = compute_ways_to_decompose(left);
+            int n_right = compute_ways_to_decompose(right);
+            int handled = handle_large_number_mult(n_left, n_right);
+            ntot = handle_large_number_add(ntot, handled);
+        }
+        ways_to_decompose[a] = ntot;
+        return ntot;
+    }
+    int handle_large_number_add(int a, int b){
+        // a < big, b< big, but a+b could be  > big
+        a= a%big;
+        b = b%big;
+        if(a> big - b){
+            return a-  big+b;
+        }
+        else{
+            return a+b;
+        }
+        
+    }
+    int handle_large_number_mult(int a, int b){
+        a = a%big;
+        b = b%big;
+        // a< big, b < big, but a* b > big
+        int bigger = a> b? a:b;
+        int smaller = a> b? b:a;
+        int mult = 0;
+        for(int i=1; i< smaller + 1; i ++){
+            if(mult > big-bigger){
+                mult = mult - big;
+            }
+            mult = mult+bigger;
+        }
+        return mult;
+    }
+    unordered_map<int, int> ways_to_decompose;
+    vector<int> sorted_arr; 
+};
