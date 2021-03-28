@@ -1,19 +1,23 @@
 class Solution {
 public:
     int smallestCommonElement(vector<vector<int>>& mat) {
-        for(int i=0; i< mat.size(); i++){
-            for(int j=0; j< mat[i].size(); j++){
-                count_dict[mat[i][j]]++;
-            }
-        }
+       bool found = false;
         int small = INT_MAX;
-        for(const auto& it: count_dict){
-            if(it.second == mat.size() && it.first < small){
-                small = it.first;
-            }
-        }
-        if(small == INT_MAX) {return -1;}
-        return small;
+       for(const auto&it: mat[0]){
+           bool found_now = true;
+           for(int i=1; i< mat.size(); i++ ){
+               auto p= std::find (mat[i].begin(), mat[i].end(), it);
+               if(p == mat[i].end()){
+                   found_now = false;
+                   break;
+               }
+           }
+           if(found_now) {
+               small = it;
+               return small;
+           }
+       }
+        return -1;
     }
     
 private:
