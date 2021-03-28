@@ -1,0 +1,21 @@
+class Solution {
+public:
+    int smallestCommonElement(vector<vector<int>>& mat) {
+        for(int i=0; i< mat.size(); i++){
+            for(int j=0; j< mat[i].size(); j++){
+                count_dict[mat[i][j]]++;
+            }
+        }
+        int small = INT_MAX;
+        for(const auto& it: count_dict){
+            if(it.second == mat.size() && it.first < small){
+                small = it.first;
+            }
+        }
+        if(small == INT_MAX) {return -1;}
+        return small;
+    }
+    
+private:
+    map<int, int>  count_dict;
+};
