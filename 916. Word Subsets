@@ -1,0 +1,41 @@
+class Solution {
+public:
+    vector<string> wordSubsets(vector<string>& A, vector<string>& B) {
+        auto superb = create_superb(B);
+        vector<string> ret;
+        for(const auto& ita: A){
+            auto a = create_dict(ita);
+            if(is_subset(a, superb)){
+                ret.push_back(ita);
+            }
+        }
+        return ret;
+    }
+    private:
+    vector<int> superb;
+    vector<int> create_superb(const vector<string>& B){
+        vector<int> ret(26, 0);
+        for(const auto& it:B){
+            auto local = create_dict(it);
+            for(int i=0; i< local.size(); i++){
+                ret[i] = max(local[i], ret[i]);
+            }
+        }
+        return ret;
+    }
+    vector<int> create_dict(const string& b){
+        vector<int> ret(26, 0);
+        for(const auto& it: b){
+            ret[it- 97]++; // 'a' = 97
+        }
+        return ret;
+    }
+    
+    bool is_subset(const vector<int>& a, const vector<int>& b) // if b is subset of a
+    {
+        for(int i=0; i< a.size(); i++){
+            if(a[i] < b[i]) {return false;}
+        }
+        return true;
+    }
+};
