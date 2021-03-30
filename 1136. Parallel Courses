@@ -1,0 +1,41 @@
+class Solution {
+public:
+    int minimumSemesters(int n, vector<vector<int>>& relations) {
+        construct_adjcent(n, relations);
+        int round_of_removal = 0;
+        while(!degree_map.empty()){
+            for(const auto& it: degree_map){
+                if(it.second == 0) {
+                    to_be_removed.push(it.first);
+                }
+            }
+            if(to_be_removed.empty()) {return -1;}
+            while(!to_be_removed.empty()){
+                auto x = to_be_removed.front();
+                to_be_removed.pop();
+                degree_map.erase(x);
+                for(auto& it: degree_map){
+                    if(adjcent[it.first][x] == 1){
+                        degree_map[it.first]--;
+                    }
+                }
+            }
+            round_of_removal++;
+        }
+        return round_of_removal;
+    }
+private:
+    map<int, int> degree_map;
+    vector<vector<int>> adjcent;
+    queue<int> to_be_removed;
+    void construct_adjcent(int n, vector<vector<int>>& relations){
+        for(int i=0; i<n; i++){
+            adjcent.push_back(vector<int>(n, 0));
+            degree_map[i] = 0;
+        }
+        for(const auto& it: relations){
+            adjcent[it[0]-1][it[1]-1] = 1;
+            degree_map[it[0]-1] ++;
+        }
+    }
+};
